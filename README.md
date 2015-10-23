@@ -1,8 +1,9 @@
 # burp_server_reports
 helpful reports for burp backup and restore
 
-Version 1 of burp only supported for now
-It doesn't use burp -a s, it looks into directory structure of burp 1 and also uses files:
+Version 1 of burp only supported for now.
+
+It doesn't use burp -a S, it looks into directory structure of burp 1 and also uses files:
 log, timestamp and backup_stats.
 
 Code is more detailed about how it uses the files, like working funcion: 

@@ -26,6 +26,8 @@ But I will not explain all these details here, because most of them are already 
 
 # Prepare the script for daily usage
 
+python3 is required to be installed
+
 clone the repo or copy the file. 
 
 I would recommend to copy to something like: /usr/local/share/burp-custom

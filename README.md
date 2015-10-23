@@ -40,7 +40,7 @@ You will be able to use `--reports_conf /file/path` if you want to use different
 
 File must contain: 
 
-`
+```
 burp_automation_folder = /storage/samba/automation
 # csv_file_to compare with external inventory:
 csv_file_data = /storage/samba/automation/inventory.csv
@@ -54,7 +54,7 @@ emails_to = emaildest@example.net
 emails_from = sendingfrom@example.net
 smtp_server = addres.or.name
 excluded_clients = list,of,clients,that,will,not,be,added,to,outdated,reports
-`
+```
 
 By default it reads burp config from /etc/burp/burp-server.conf to locate the clients dir.
 You can use `--burp_conf /path/file` to specify which config to use
@@ -64,10 +64,10 @@ You can use `--burp_conf /path/file` to specify which config to use
 ## The script has bultin help, so I would recommend to use those options first:
 
 (Every option should precedes with burp-server-reports command first, example: burp-server-reports --help)
-`
+```
 --help
 --print_usage
-`
+```
 
 ## Print list text of clients
 
@@ -102,11 +102,11 @@ If you specify in configuration a list of inventory like:
 `csv_file_data = /storage/samba/automation/inventory.csv`
 It must have: 
 
-`
+```
 name,status,det_status,whatever,else
 client1,active,,,
 client2,active,spare,,othercomments irrelevant for compare but will not be a problem
-`
+```
 As the example, it will give you details only on "active" assets and will compare if it is spare or not also. 
 
 You can use it to compare with your list of clients (useful to see if all your inventory is in burp or not). 

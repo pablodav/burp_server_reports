@@ -271,9 +271,10 @@ def burp_client_status():
             working_log = os.path.join(client_path, 'working', 'log')
             if os.path.isfile(working_log):
                 with open(working_log, 'r') as f:
-                    tail_content = deque(f, 10)
-                    content_full = f.read()
-                content = ''.join(tail_content)
+                    tail_content = deque(f, 10)  # tail of log for analysis
+                with open(working_log, 'r') as f:
+                    content_full = f.read()  # Complete log for analysis
+                content = ''.join(tail_content)  # Convert deque object to string
                 resume_errors = ["/working/unchanged: No such file or directory",
                                  "working/phase1.gz: No such file or directory",
                                  "gzwrite failed: 0!=-1"]

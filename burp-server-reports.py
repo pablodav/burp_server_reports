@@ -23,7 +23,7 @@ import json
 import platform
 # import pickle
 from datetime import datetime, timedelta
-
+from collections import deque
 
 today_date = datetime.now().strftime('%Y-%m-%d')
 log_timestamp = datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
@@ -271,34 +271,36 @@ def burp_client_status():
             working_log = os.path.join(client_path, 'working', 'log')
             if os.path.isfile(working_log):
                 with open(working_log, 'r') as f:
-                    content = f.read()
+                    tail_content = deque(f, 10)
+                    content_full = f.read()
+                content = ''.join(tail_content)
                 resume_errors = ["/working/unchanged: No such file or directory",
                                  "working/phase1.gz: No such file or directory",
                                  "gzwrite failed: 0!=-1"]
                 client_reset_error = 'SSL read problem: 5, errno=104 (Connection reset by peer)'
+                if 'working_dir_recovery_method: resume' in content:
+                    b_log_status = "Resume started"
+                if 'Resume previously resumed' in content:
+                    b_log_status = "In resume"
+                if 'soft quota exceeded' in content_full:
+                    b_log_status = 'soft quota excee'
                 # DETECTING: Generic error in log
                 if 'error in backup phase 2' in content:
                     b_log_status = 'with err'
                     if 'Connection timed out' in content:
                         b_log_status = 'dis timeout'
-                # DETECTING: Quota exceeded
-                if 'soft quota exceeded' in content:
-                    b_log_status = 'soft quota excee'
-                if 'hard quota exceeded' in content:
-                    b_log_status = 'hard quota excee'
-                    b_status = 'outdated'
                 # DETECTING: Resume errors
                 for msg in resume_errors:
                     if msg in content:
                         b_log_status = 'Resume err'
-                # DETECTING: Resume errors with no clie reset
-                if 'working_dir_recovery_method: resume' in content:
-                    if 'error in backup phase 2' in content:
-                        if client_reset_error not in content:
-                            b_log_status = "Resume err"
-                        else:
-                            if 'Resume err' not in b_log_status:
-                                b_log_status = "cli reset"
+                # DETECTING: client reset
+                if 'error in backup phase 2' in content:
+                    if client_reset_error in content:
+                        b_log_status = "cli reset"
+                # DETECTING: Quota exceeded
+                if 'hard quota exceeded' in content_full:
+                    b_log_status = 'hard quota excee'
+                    b_status = 'outdated'
             else:
                 # If not log file on working
                 b_log_status = ''

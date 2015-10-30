@@ -330,6 +330,9 @@ def burp_client_status():
         else:
             excluded = 'no'
 
+        if not b_status:
+            b_status = 'new'
+
         # Setup dictionary values based on processed information of the client
 
         l_clients_list.setdefault(client, {})['b_status'] = b_status

@@ -2,7 +2,7 @@
 # This script will generate list of outdated
 # Create folders /usr/local/share/burp-custom and /var/log/burp-custom
 # chmod +x the py file
-# Locate this file in  /usr/local/share/burp-custom/burp-custom-reports.py
+# Locate this file in  /usr/local/share/burp-custom/burp-reports.py
 # link to if desired ln -s /usr/local/share/burp-custom/burp-custom-reports.py /usr/local/bin/burp-custom-reports
 
 """ Notes to add later:
@@ -654,7 +654,7 @@ def reports_config_global(burp_custom=None, example=None):
     """
     Creates global variables to use by the script
 
-    if exist /etc/burp/burp-custom-reports.conf uses parameters from that file
+    if exist /etc/burp/burp-reports.conf uses parameters from that file
 
     Example config file:
     burp_automation_folder = /storage/samba/automation
@@ -674,7 +674,7 @@ def reports_config_global(burp_custom=None, example=None):
 
 
     :param burp_custom: path to use for config of this script
-    :param example: prints an example to create your own burp-custom-reports.conf file
+    :param example: prints an example to create your own burp-reports.conf file
     :return:
     """
     global burp_automation_folder
@@ -687,10 +687,8 @@ def reports_config_global(burp_custom=None, example=None):
     global config_excluded_clients
     # Global to parse to help TODO:change it to return and try to use classes if possible and there is time for it :)
     global burp_custom_file
-    if not burp_custom:
-        burp_custom_file = os.path.join(os.sep, 'etc', 'burp', 'burp-custom-reports.conf')
-    else:
-        burp_custom_file = burp_custom
+    burp_custom_file = burp_custom
+
     # ###### ------------ BURP custom reports variables -------------------- #########
     if os.path.isfile(burp_custom_file):
         if not example:
@@ -871,9 +869,11 @@ def parser_commandline():
     compare_result = []
     parser = argparse.ArgumentParser()
     parser.add_argument('--burp_conf', nargs='?', const=os.path.join(os.sep, 'etc', 'burp', 'burp-server.conf'),
+                        default=os.path.join(os.sep, 'etc', 'burp', 'burp-server.conf'),
                         help='burp-server.conf file')
     parser.add_argument('--reports_conf', const=os.path.join(os.sep, 'etc', 'burp', 'burp-reports.conf'),
-                        nargs='?', help='burp-custom-server.conf file')
+                        default=os.path.join(os.sep, 'etc', 'burp', 'burp-reports.conf'),
+                        nargs='?', help='burp-reports.conf file')
     parser.add_argument('--import_json', nargs='?',
                         help='clients_status.json file')
     parser.add_argument('--outdated', '-o', nargs='?', const='print',

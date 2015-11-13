@@ -34,11 +34,11 @@ clone the repo or copy the file.
 I would recommend to copy to something like: /usr/local/share/burp-custom
 Then create a symbolik link to that with something like: 
 
-`ln -s /usr/local/share/burp-custom/burp-server-reports.py /usr/local/bin/burp-server-reports`
+`ln -s /usr/local/share/burp-custom/burp-reports.py /usr/local/bin/burp-server-reports`
 
 With this done you will be able to call burp-server-reports command anywhere
 
-Create a file with config desired for most of the functions: `/etc/burp/burp-custom-reports.conf `
+Create a file with config desired for most of the functions: `/etc/burp/burp-reports.conf `
 You will be able to use `--reports_conf /file/path` if you want to use different place for this file.
 
 File must contain: 
@@ -62,7 +62,7 @@ excluded_clients = list,of,clients,that,will,not,be,added,to,outdated,reports
 By default it reads burp config from /etc/burp/burp-server.conf to locate the clients dir.
 You can use `--burp_conf /path/file` to specify which config to use
 
-# Usage of burp-server-reports.py
+# Usage of burp-reports.py
 
 ## The script has bultin help, so I would recommend to use those options first:
 

@@ -872,7 +872,7 @@ def parser_commandline():
     parser = argparse.ArgumentParser()
     parser.add_argument('--burp_conf', nargs='?', const=os.path.join(os.sep, 'etc', 'burp', 'burp-server.conf'),
                         help='burp-server.conf file')
-    parser.add_argument('--reports_conf', const=os.path.join(os.sep, 'etc', 'burp', 'burp-custom-reports.conf'),
+    parser.add_argument('--reports_conf', const=os.path.join(os.sep, 'etc', 'burp', 'burp-reports.conf'),
                         nargs='?', help='burp-custom-server.conf file')
     parser.add_argument('--import_json', nargs='?',
                         help='clients_status.json file')

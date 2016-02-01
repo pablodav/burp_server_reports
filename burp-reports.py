@@ -96,7 +96,7 @@ def get_time_stamp(client_path):
             return burp_links[i] + ' ' + timestamp
         else:
             continue
-    print('WARNING: client timestamp file ', time_stamp_file,
+    print('client timestamp file ', time_stamp_file,
           'exit get_time_stamp function without reading timestamp. ', timestamp)
     return None
 
@@ -245,7 +245,7 @@ def burp_client_status():
                 b_time = timestamp[3]
                 b_number = timestamp[1]
             else:
-                print('WARNING: client', client_path, ' exit without timestamp')
+                print('take care of client', client_path, ' exit without timestamp')
 
             stats_links = ('current', 'finishing')
             for i in range(len(stats_links)):
@@ -270,9 +270,9 @@ def burp_client_status():
             # Get some details from working/log file and set b_log_status
             working_log = os.path.join(client_path, 'working', 'log')
             if os.path.isfile(working_log):
-                with open(working_log, 'r') as f:
+                with open(working_log, 'r', encoding='utf-8') as f:
                     tail_content = deque(f, 10)  # tail of log for analysis
-                with open(working_log, 'r') as f:
+                with open(working_log, 'r', encoding='utf-8') as f:
                     content_full = f.read()  # Complete log for analysis
                 content = ''.join(tail_content)  # Convert deque object to string
                 resume_errors = ["/working/unchanged: No such file or directory",
@@ -555,6 +555,29 @@ def automation_fixes():
                 clients_list.setdefault(client, {})['b_log_status'] = 'fixed_res1'
 
 
+def csv_as_dict(file, ref_header, delimiter=None):
+    """
+    http://stackoverflow.com/questions/14091387/creating-a-dictionary-from-a-csv-file
+    :param file: Input csv file
+    :param ref_header: Column name reference for each key
+    :param delimiter: simbol to read the csv
+
+    :return:
+    """
+    import csv
+    if not delimiter:
+        delimiter = ';'
+    reader = csv.DictReader(open(file, encoding='utf-8'), delimiter=delimiter)
+    result = {}
+    for row in reader:
+        key = row.pop(ref_header)
+        if key in result:
+            # implement your duplicate row handling here
+            pass
+        result[key] = row
+    return result
+
+
 def load_csv_data(csv_filename=None):
     if not csv_filename:
         csv_filename = csv_file_data
@@ -563,7 +586,7 @@ def load_csv_data(csv_filename=None):
     else:
         return str('we could not read the source csv:', csv_filename)
     csv_rows = []
-    csv_file_obj = open(csv_filename)
+    csv_file_obj = open(csv_filename, encoding='utf-8')
     reader_obj = csv.reader(csv_file_obj, delimiter=';')
     for row in reader_obj:
         if reader_obj.line_num == 1:
@@ -578,7 +601,7 @@ def save_csv_data(csv_rows=None, csv_filename=None):
     if not csv_rows:
         return 'There are no csv rows to write'
     print('saving to csv file:', csv_filename)
-    csv_file_obj = open(csv_filename, 'w', newline='')
+    csv_file_obj = open(csv_filename, 'w', newline='', encoding='utf-8')
     csv_writer = csv.writer(csv_file_obj, delimiter=';')
     for row in csv_rows:
         csv_writer.writerow(row)
@@ -588,16 +611,38 @@ def save_csv_data(csv_rows=None, csv_filename=None):
             print('exported to:', csv_filename)
 
 
-def inventory_compare(csv_filename=None):
+def inventory_compare(csv_filename=None, client_column='Device name', separator=';'):
+    """
+
+    :param csv_filename: Input filename to compare from
+    :param client_column: reference column to use in csv
+    :param separator: csv separator, like ;
+    :return: list csv_rows_inventory_status (status of each client) in nested list one row per client
+    """
     import socket
     server_name = socket.gethostname()
     if not csv_filename or csv_filename == "default":
-        inventory = load_csv_data()
-    else:
-        inventory = load_csv_data(csv_filename)
-    csv_rows_inventory_status = [['client', 'status', 'server' 'inv_status', 'sub_status']]
-    for i in range(len(inventory)):
-        client, status, det_status = inventory[i][0:3]
+        csv_filename = csv_file_data
+
+    # Get inventory from CSV file
+    inventory = csv_as_dict(csv_filename, client_column, separator)
+
+    csv_rows_inventory_status = []
+
+    first_client = next (iter (inventory.keys()))  # Gets first key of dict
+    headers = list(inventory[first_client].keys())  # Get headers from input dict
+    headers.insert(0, 'client')  # First header column as client
+    headers.insert(1, 'status')  # Second header column as status
+    headers.insert(2, 'serverinv_status')  # Third header column as server
+    headers.insert(3, 'Status (detailed)')  # Fourth header column as status detailed
+    # Prepare the header list to return:
+    csv_rows_inventory_status.append(headers)  # First row as headers
+
+    for k in sorted(inventory):
+        client = k
+        status = inventory[client].get('Status', '')
+        det_status = inventory[client].get('Status (detailed)')
+
         if client in clients_list:
             if det_status.lower() == 'spare':
                 burp_status = 'wrong spare in burp'
@@ -609,10 +654,15 @@ def inventory_compare(csv_filename=None):
             burp_status = 'ignored spare'
         else:
             burp_status = 'absent'
-        row = inventory[i]
-        row.insert(1, burp_status)
-        row.insert(2, server_name)
+
+        # Generate list row with client's status and other data
+        row = [client, burp_status, server_name, det_status]
+
+        for i in range(4, len(headers)):  # Start from fourth column in headers
+            row.append(inventory[client].get(headers[i]))  # Insert each value of client to the row
+
         csv_rows_inventory_status.append(row)
+
     return csv_rows_inventory_status
 
 def parse_config(filename, stats=None):

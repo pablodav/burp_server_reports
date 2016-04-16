@@ -321,14 +321,14 @@ def burp_client_status():
                 b_status = 'UNKNOWN'
                 b_type = "never"
 
-        if b_status == 'outdated':
-            if is_up(client):
-                b_phase_status = "ping ok"
 
         if client in config_excluded_clients:
             excluded = 'yes'
         else:
             excluded = 'no'
+            if b_status == 'outdated': # Check ping to not excluded clients and outdated
+                if is_up(client):
+                    b_phase_status = "ping ok"
 
         if not b_status:
             b_status = 'new'
@@ -565,12 +565,20 @@ def csv_as_dict(file, ref_header, delimiter=None):
     :return:
     """
     import csv
+    import itertools
+
+    # Function to make first row lower
+    def lower_first(iterator):
+        return itertools.chain([next(iterator).lower()], iterator)
+
     if not delimiter:
         delimiter = ';'
-    reader = csv.DictReader(open(file, encoding='utf-8'), delimiter=delimiter)
+
+    reader = csv.DictReader(lower_first(open(file, encoding='utf-8')), delimiter=delimiter)
+
     result = {}
     for row in reader:
-        key = row.pop(ref_header)
+        key = row.pop(ref_header.lower())
         if key in result:
             # implement your duplicate row handling here
             pass
@@ -611,7 +619,7 @@ def save_csv_data(csv_rows=None, csv_filename=None):
             print('exported to:', csv_filename)
 
 
-def inventory_compare(csv_filename=None, client_column='Device name', separator=';'):
+def inventory_compare(csv_filename=None, client_column='device name', separator=';'):
     """
 
     :param csv_filename: Input filename to compare from
@@ -634,14 +642,14 @@ def inventory_compare(csv_filename=None, client_column='Device name', separator=
     headers.insert(0, 'client')  # First header column as client
     headers.insert(1, 'status')  # Second header column as status
     headers.insert(2, 'serverinv_status')  # Third header column as server
-    headers.insert(3, 'Status (detailed)')  # Fourth header column as status detailed
+    headers.insert(3, 'status (detailed)')  # Fourth header column as status detailed
     # Prepare the header list to return:
     csv_rows_inventory_status.append(headers)  # First row as headers
 
     for k in sorted(inventory):
         client = k
-        status = inventory[client].get('Status', '')
-        det_status = inventory[client].get('Status (detailed)')
+        status = inventory[client].get('status', '')
+        det_status = inventory[client].get('status (detailed)')
 
         if client in clients_list:
             if det_status.lower() == 'spare':

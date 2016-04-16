@@ -101,7 +101,7 @@ def inventory_of_servers(result_csv=None , servers=None ):
     headers.insert(0, 'client')  # First header column as client
     headers.insert(1, 'status')  # Second header column as status
     headers.insert(2, 'serverinv_status')  # Third header column as server
-    headers.insert(3, 'Status (detailed)')  # Fourth header column as status detailed (Status (detailed))
+    headers.insert(3, 'status (detailed)')  # Fourth header column as status detailed (Status (detailed))
     # Prepare the header list to return:
 
     lista1 = []
@@ -110,7 +110,7 @@ def inventory_of_servers(result_csv=None , servers=None ):
     for k in sorted(all_clients):
         k_status = all_clients[k].get('status')
         k_serverinv_status = all_clients[k].get('serverinv_status')
-        k_sub_status = all_clients[k].get('Status (detailed)')
+        k_sub_status = all_clients[k].get('status (detailed)')
 
         row = [k, k_status, k_serverinv_status, k_sub_status]  # Adds client at the first column, plus fixed columns
 

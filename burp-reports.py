@@ -115,7 +115,9 @@ def get_client_working_status(client_path):
     }
 
     :param client_path:
-    :return: burp_phase_dict
+    :return: burp_phase_dic
+
+    t
     """
     burp_phases = ('phase2', 'phase1')
     burp_phase_dict = {}

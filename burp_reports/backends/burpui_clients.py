@@ -2,6 +2,7 @@
 
 class Clients:
     """
+    Get clients information.
 
     """
 
@@ -22,17 +23,21 @@ class Clients:
 
         self.backend = Burp(conf=self.buiconf)
 
-    def get_clients_data():
-        self.backend.get_all_clients()
+    def get_client(self, client_name=None):
+        """
 
+        :param client_name: Name of the client to retrieve data.
+        :return: [{'received': 4025, 'end': 1466374965, 'encrypted': False, 'number': u'186', 'deletable': True, 'date': 1466374593, 'size': 2456396123}]
+        """
+        self.backend.get_client(name=client_name)
 
-
-
-
-
-        #  server.get_client(name='clientname')
-        #  [{'received': 4025, 'end': 1466374965, 'encrypted': False, 'number': u'186', 'deletable': True, 'date': 1466374593, 'size': 2456396123}]
-
-
+    def get_clients(self):
+        """
         #  server.get_all_clients()
-        #  [{'state': 'idle', 'last': 'never', 'name': u'clientname'}]
+        #
+        :return: [{'state': 'idle', 'last': 'never', 'name': u'clientname'}]
+        """
+        all_clients = self.backend.get_all_clients()
+
+
+

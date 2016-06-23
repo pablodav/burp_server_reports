@@ -16,9 +16,11 @@ class Clients:
         self.version = burp_version
         self.buiconf = conf
 
+        # Use burpui backend for specified burp version
+
         if self.version == 1:
             from burpui.misc.backend.burp1 import Burp
-        elif self.buiconf == 2:
+        elif self.version == 2:
             from burpui.misc.backend.burp2 import Burp
 
         self.backend = Burp(conf=self.buiconf)
@@ -38,6 +40,7 @@ class Clients:
         :return: [{'state': 'idle', 'last': 'never', 'name': u'clientname'}]
         """
         all_clients = self.backend.get_all_clients()
+        return all_clients
 
 
 

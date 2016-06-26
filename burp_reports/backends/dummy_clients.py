@@ -17,14 +17,6 @@ class Clients:
         self.version = burp_version
         self.buiconf = conf
 
-        # Use burpui backend for specified burp version
-    
-        if self.version == 1:
-            from burpui.misc.backend.burp1 import Burp
-        elif self.version == 2:
-            from burpui.misc.backend.burp2 import Burp
-
-        self.backend = Burp(conf=self.buiconf)
 
     def get_client(self, client='monitor'):
         """
@@ -33,8 +25,9 @@ class Clients:
         :return: [{'received': 326753806, 'end': 1466714070, 'encrypted': False, 'number': 1, 'deletable': True, 'date': 1466713986, 'size': 572911431}]
         """
         
-        client_data = self.backend.get_client(name=client)
-        return client_data
+        client_data = [{'received': 326753806, 'end': 1466714070, 'encrypted': False, 'number': 1, 'deletable': True, 'date': 1466713986, 'size': 572911431}]
+        return client_data 
+        
 
     def get_clients(self):
         """
@@ -42,20 +35,9 @@ class Clients:
         #
         :return: [{'state': u'idle', 'last': 1466703186, 'name': u'monitor'}]
         """
-                 
-        all_clients = self.backend.get_all_clients()
+                
+        all_clients = [{'state': u'idle', 'last': 1466703186, 'name': u'monitor'}]
+
         return all_clients
-
-    def get_b_logs(self, number, client):
-        """
-
-        :param number: backup number
-        :param client: name of the client
-        :return:
-        """
-
-        backup_data = self.backend.get_backup_logs(self, number, client)
-        return backup_data
-
 
 

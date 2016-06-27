@@ -3,15 +3,13 @@ Expected format:
 
 Usable by reports scripts:
 
-{'client_name':
-        { 'b_number'  : 'number',
-          'b_date'    : 'date',
-          'b_type'    : 'working/current',
-          'b_phase' : 'phase1/phase2',
-          'b_phase_date' : 'date',
-          'backup_stats' : {'contents': 'all contents of backup_stats file for the client'}
+        {'client_name':
+            { 'b_last'    : 'date',
+              'b_state'    : 'working/current',
+              'b_phase' : 'phase1/phase2',
+              'b_last' : 'date',
+            }
         }
-}
 
 More information that will be processed later:
 

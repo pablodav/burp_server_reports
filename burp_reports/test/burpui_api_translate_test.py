@@ -1,7 +1,7 @@
 # -*- coding: utf8 -*-
 
 from .burpui_api_translate import TranslateBurpuiAPI
-from ..backends.burpui_clients import Clients
+from ..dummy.burpui_dummy_api import Clients
 
 class BUIClients:
     """"
@@ -9,4 +9,8 @@ class BUIClients:
     """
 
     def __init__(self):
+        """
+
+        """
+        self.clientes = Clients
 

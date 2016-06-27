@@ -13,10 +13,13 @@ class Clients:
 
     def __init__(self, user, password, server, port):
         """
+        It will define the url to connect to the api
+        like: http:/user:password@server:port/api/
 
-        :param burp_version: version of burp backend to work with 1/2
-        :param conf: burp_ui configuration to use.
-        :param dummy: if true all functions will return only examples outputs.
+        :param user: User to connect the api url
+        :param password: Password to connect the api url
+        :param server: server to connect api url
+        :param port: port to connect api url
         """
 
         self.serviceurl = 'http://' + user + ':' + password + '@' + server + ':' + port + '/api/'

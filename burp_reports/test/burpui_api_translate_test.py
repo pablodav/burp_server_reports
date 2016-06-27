@@ -1,7 +1,8 @@
 # -*- coding: utf8 -*-
 
-from .burpui_api_translate import TranslateBurpuiAPI
+from ..interfaces.burpui_api_translate import TranslateBurpuiAPI
 from ..dummy.burpui_dummy_api import Clients
+
 
 class BUIClients:
     """"
@@ -12,5 +13,22 @@ class BUIClients:
         """
 
         """
-        self.clientes = Clients
+        # Define clients from Interface
+        self.clientsobj = Clients
+        # Get the list of clients from the Interface
+        self.clients = self.clientsobj.get_clients()
+
+    def translate_clients(self):
+        """
+
+        :return: clients translated
+        """
+
+        # Set clients list from api interface to TranslateBurpuiAPI object
+        clients_list_api = TranslateBurpuiAPI(clients=self.clients)
+        # Translate with method translate_clients()
+        clients_reports = clients_list_api.translate_clients()
+
+        return clients_reports
+
 

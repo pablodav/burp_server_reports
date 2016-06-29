@@ -1,1 +1,2 @@
-#from .burp_reports.backends.dummy_clients.py import Clients
+# Added to run build on codenvy
+# Nothing interesting here yet.

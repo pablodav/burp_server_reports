@@ -19,6 +19,11 @@ setup(name='burp_reports',
       author_email='pablodav@gmail.com',
       license='MIT',
       packages=['burp_reports'],
+      entry_points={
+          'console_scripts': [
+              'burp-reports = burp_reports.__main__:main'
+          ]
+      },
       install_requires=[
             'invpy_libs',
       ],

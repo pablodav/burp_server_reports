@@ -11,27 +11,24 @@ class Clients:
 
     """
 
-    def __init__(self, user, password, server, port):
+    def __init__(self, apiurl):
         """
-        It will define the url to connect to the api
+        should be the api to connect
         like: http:/user:password@server:port/api/
 
-        :param user: User to connect the api url
-        :param password: Password to connect the api url
-        :param server: server to connect api url
-        :param port: port to connect api url
+        :param apiurl
         """
 
-        self.serviceurl = 'http://' + user + ':' + password + '@' + server + ':' + port + '/api/'
+        self.apiurl = apiurl
 
     @staticmethod
-    def get_url_data(url):
+    def get_url_data(serviceurl):
         """
 
         :param url: url to retrieve data
         :return: json url_data
         """
-        uh = urllib.urlopen(url)
+        uh = urllib.urlopen(serviceurl)
         data = uh.read()
 
         try:
@@ -53,8 +50,8 @@ class Clients:
         "name": "monitor"}]
         """
 
-        url = self.serviceurl + 'clients/stats'
-        clients_stats = self.get_url_data(url=url)
+        serviceurl = self.apiurl + 'clients/stats'
+        clients_stats = self.get_url_data(serviceurl=serviceurl)
 
         return clients_stats
 

@@ -16,25 +16,19 @@ class BUIClients:
         """
 
         if not conf:
-            config_file = '../defaults/burpui_api.conf'
+            config_file = '../defaults/burp-reports.conf'
         else:
             config_file = conf
 
         try:
             config_options = parse_config(config_file)
         except:
-            raise NoConfigFile('Try to define a config file for burp_api.conf')
+            raise Exception("NoConfigFile: Try to define a config file for burp_api.conf")
 
-        username = config_options.get('user')
-        password = config_options.get('password')
-        server = config_options.get('server')
-        port = config_options.get('port')
+        burpui_apiurl = config_options.get('burpui_apiurl')
 
         # Define clients from Interface
-        self.clientsobj = Clients(user=username,
-                                password=password,
-                                server=server,
-                                port=port)
+        self.clientsobj = Clients(apiurl=burpui_apiurl)
 
         # Get the list of clients from the Interface
         self.clients = self.clientsobj.get_clients()

@@ -1,8 +1,7 @@
 # -*- coding: utf8 -*-
 
-from ..interfaces.burpui_api_translate import TranslateBurpuiAPI
+from .burpui_api_translate import TranslateBurpuiAPI
 from ..backends.burpui_api import Clients
-from ..lib.configs import parse_config
 
 
 class BUIClients:
@@ -10,22 +9,10 @@ class BUIClients:
     Get data from burp ui clients
     """
 
-    def __init__(self, conf=None):
+    def __init__(self, burpui_apiurl):
         """
 
         """
-
-        if not conf:
-            config_file = '../defaults/burp-reports.conf'
-        else:
-            config_file = conf
-
-        try:
-            config_options = parse_config(config_file)
-        except:
-            raise Exception("NoConfigFile: Try to define a config file for burp_api.conf")
-
-        burpui_apiurl = config_options.get('burpui_apiurl')
 
         # Define clients from Interface
         self.clientsobj = Clients(apiurl=burpui_apiurl)

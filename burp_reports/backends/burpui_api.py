@@ -1,5 +1,5 @@
 # -*- coding: utf8 -*-
-import urllib
+import urllib.request
 import json
 
 
@@ -28,9 +28,15 @@ class Clients:
         :param url: url to retrieve data
         :return: json url_data
         """
-        uh = urllib.urlopen(serviceurl)
-        data = uh.read()
 
+        # Only python3 compatible functionality
+        # Get data from the url
+        print("Try to open url", serviceurl )
+
+        with urllib.request.urlopen(serviceurl) as response:
+            data = response.read()
+
+        # Convert data on string and load with json file
         try:
             js = json.loads(str(data))
         except:
@@ -49,6 +55,7 @@ class Clients:
         "last": "2016-06-23 14:33:06-03:00",
         "name": "monitor"}]
         """
+        print("Url received: {}".format(self.apiurl))
 
         serviceurl = self.apiurl + 'clients/stats'
         clients_stats = self.get_url_data(serviceurl=serviceurl)

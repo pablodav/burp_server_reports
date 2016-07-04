@@ -39,12 +39,13 @@ def main():
     try:
         config_options = parse_config(config_file)
     except:
-        raise Exception("NoConfigFile: Try to define a config file for burp_api.conf")
+        raise Exception("NoConfigFile: Try to define a config file for burp-reports.conf")
 
     # If there is an option to for burpui_apiurl, get clients from that apiurl
     if config_options.get('burpui_apiurl'):
+        burpui_apiurl = config_options.get('burpui_apiurl')
         from .interfaces.burpui_api_interface import BUIClients
-        bui_clients = BUIClients()
+        bui_clients = BUIClients(burpui_apiurl=burpui_apiurl)
         clients_dict = bui_clients.translate_clients()
 
 

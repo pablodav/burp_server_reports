@@ -55,7 +55,7 @@ def main():
         bui_clients = BUIClients(burpui_apiurl=burpui_apiurl)
         clients_dict = bui_clients.translate_clients_stats()
 
-    # Add some report option to use, use clients_dict alredy set
+    # Add some report option to use, use clients_dict already set
 
 
 

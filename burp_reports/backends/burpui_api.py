@@ -1,9 +1,6 @@
 # -*- coding: utf8 -*-
-import urllib.request
-import json
+from ..lib.urlget import get_url_data
 
-
-# -*- coding: utf8 -*-
 
 class Clients:
     """
@@ -11,7 +8,7 @@ class Clients:
 
     """
 
-    def __init__(self, apiurl):
+    def __init__(self, apiurl, debug=False):
         """
         should be the api to connect
         like: http:/user:password@server:port/api/
@@ -20,29 +17,7 @@ class Clients:
         """
 
         self.apiurl = apiurl
-
-    @staticmethod
-    def get_url_data(serviceurl):
-        """
-
-        :param url: url to retrieve data
-        :return: json url_data
-        """
-
-        # Only python3 compatible functionality
-        # Get data from the url
-        print("Try to open url", serviceurl )
-
-        with urllib.request.urlopen(serviceurl) as response:
-            data = response.read()
-
-        # Convert data on string and load with json file
-        try:
-            js = json.loads(str(data))
-        except:
-            js = None
-
-        return js
+        self.debug = debug
 
     def get_clients(self):
         """
@@ -55,13 +30,11 @@ class Clients:
         "last": "2016-06-23 14:33:06-03:00",
         "name": "monitor"}]
         """
-        print("Url received: {}".format(self.apiurl))
+
+        if self.debug:
+            print("Url received: {}".format(self.apiurl))
 
         serviceurl = self.apiurl + 'clients/stats'
-        clients_stats = self.get_url_data(serviceurl=serviceurl)
+        clients_stats = get_url_data(serviceurl=serviceurl)
 
         return clients_stats
-
-
-
-

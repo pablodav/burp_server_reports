@@ -19,7 +19,7 @@ class Clients:
         self.apiurl = apiurl
         self.debug = debug
 
-    def get_clients(self):
+    def get_clients_stats(self):
         """
         #  server.get_all_clients()
         #
@@ -52,4 +52,4 @@ class Clients:
         serviceurl = self.apiurl + 'clients/stats'
         clients_stats = get_url_data(serviceurl=serviceurl)
 
-        return clients_stats[0]
+        return clients_stats

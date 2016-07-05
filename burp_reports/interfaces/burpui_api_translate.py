@@ -16,7 +16,7 @@ class TranslateBurpuiAPI:
     def translate_clients_function(self, data_t):
         """
 
-        :param data_t: dictionary to use for translation
+        :param data_t: list of clients dicts to use for translation
         :return: d_clients dictionary of clients translated to use in burp_reports
         example from clients stats:
 
@@ -30,8 +30,8 @@ class TranslateBurpuiAPI:
         """
         d_clients = {}
 
-        for cli in self.clients[0]:
-            # Get the client data from list of clients
+        for cli in range(len(self.clients)):
+            # Get the client dict data from list of clients
             client_data = self.clients[cli]
 
             # Translate and define variables:

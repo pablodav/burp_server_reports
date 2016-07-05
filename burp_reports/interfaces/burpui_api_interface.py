@@ -17,17 +17,17 @@ class BUIClients:
         # Define clients from Interface
         self.clientsobj = Clients(apiurl=burpui_apiurl)
 
-        # Get the list of clients from the Interface
-        self.clients = self.clientsobj.get_clients()
-
-    def translate_clients(self):
+    def translate_clients_stats(self):
         """
 
         :return: clients translated
         """
 
+        # Get the list of clients from the Interface
+        clients = self.clientsobj.get_clients_stats()
+
         # Set clients list from api interface to TranslateBurpuiAPI object
-        clients_list_api = TranslateBurpuiAPI(clients=self.clients)
+        clients_list_api = TranslateBurpuiAPI(clients=clients)
         # Translate with method translate_clients()
         clients_reports = clients_list_api.translate_clients()
 

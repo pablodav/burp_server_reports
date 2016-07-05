@@ -18,6 +18,8 @@ def parse_args():
                         const=os.path.join(os.sep, 'etc', 'burp', 'burp-reports.conf'),
                         default=os.path.join(os.sep, 'etc', 'burp', 'burp-reports.conf'),
                         nargs='?', help='burp-reports.conf configuration file')
+    parser.add_argument('-ui', '--burpui_apiurl', dest='burpui_apiurl', nargs='?', default=False, const=False,
+                        help='full url to burpui api, like http://user:pass@server:port/api/')
     parser.add_argument('--outdated', '-o', dest='outdated', nargs='?', const='print',
                         help='Report outdated or --outdated=file')
 
@@ -32,21 +34,28 @@ def main():
     """
     options = parse_args()
 
-    # Define the configuration file to use.
-    config_file = options.reports_conf
-
-    # Get a configuration options from config_file
-    try:
+    if options.reports_conf:
+        # Define the configuration file to use.
+        config_file = options.reports_conf
+        # Get a configuration options from config_file
         config_options = parse_config(config_file)
-    except:
-        raise Exception("NoConfigFile: Try to define a config file for burp-reports.conf")
+
+        # burpui_apiurl from config file
+        if config_options.get('burpui_apiurl', False):
+            burpui_apiurl = config_options.get('burpui_apiurl')
+
+    # burpui_apiurl to defined on command line options
+    if options.burpui_apiurl:
+        burpui_apiurl = options.burpui_apiurl
 
     # If there is an option to for burpui_apiurl, get clients from that apiurl
-    if config_options.get('burpui_apiurl'):
-        burpui_apiurl = config_options.get('burpui_apiurl')
+    if burpui_apiurl:
+        # Get clients stats from burpui_api_interface
         from .interfaces.burpui_api_interface import BUIClients
         bui_clients = BUIClients(burpui_apiurl=burpui_apiurl)
-        clients_dict = bui_clients.translate_clients()
+        clients_dict = bui_clients.translate_clients_stats()
+
+    # Add some report option to use, use clients_dict alredy set
 
 
 

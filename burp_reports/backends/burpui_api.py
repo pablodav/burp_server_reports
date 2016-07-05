@@ -23,12 +23,27 @@ class Clients:
         """
         #  server.get_all_clients()
         #
-        :return: [{
-        "phase": null,
-        "percent": 0,
-        "state": "idle",
-        "last": "2016-06-23 14:33:06-03:00",
-        "name": "monitor"}]
+        :return example: [{
+            "phase": 'null',
+            "percent": 0,
+            "state": "idle",
+            "last": "2016-06-23 14:33:06-03:00",
+            "name": "monitor"},
+            {
+                "last": "2015-05-17 11:40:02",
+                "name": "client1",
+                "state": "idle",
+                "phase": "phase1",
+                "percent": 12,
+            },
+            {
+                "last": "never",
+                "name": "client2",
+                "state": "idle",
+                "phase": "phase2",
+                "percent": 42,
+            }
+        ]
         """
 
         if self.debug:
@@ -37,4 +52,4 @@ class Clients:
         serviceurl = self.apiurl + 'clients/stats'
         clients_stats = get_url_data(serviceurl=serviceurl)
 
-        return clients_stats
+        return clients_stats[0]

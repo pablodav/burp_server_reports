@@ -52,8 +52,7 @@ class TranslateBurpuiAPI:
         {'client_name':
             { 'b_last'    : 'date',
               'b_state'    : 'working/current',
-              'b_phase' : 'phase1/phase2',
-              'b_last' : 'date',
+              'b_phase' : 'phase1/phase2'
             }
         }
         """

@@ -1,6 +1,7 @@
 
 from datetime import datetime, timedelta
 from ..lib.humanize import humanize_file_size
+import os
 
 class TxtReports:
   
@@ -12,83 +13,140 @@ class TxtReports:
         self.clients = clients
         self.file = file
 
-    def print_text(self, client=None, header=None, footer=None, detail=None, comments=None):
+    def format_client_text(self, client=None, header=None, footer=None, detail=None, comments=None):
         """
         print only header once with client=None, header=True
         header to file:
         print_text(client=None, file=file, header=True)
 
+        :param client: client_name to report
+        :param footer: True/None to report footer information
+        :param comments: String text with Additional comments to add to the client
+        :param header: True/None to report header formatted
+        :param detail: adds detailed information of clients
+        :return: client/footer/header depending on the option choosen
+        """
+
+        jt = 11
+
+        # List with dict {header: report_key to use from reports dict}
+        client_details = [{'LastDate': 'b_last'},
+                          {'Phase': 'b_phase'},
+                          {'State': 'b_state'}
+                          ]
+
+        if detail:
+            # Extend more data to client_details list
+            # Will be appended to both: header and data on report
+            client_details.append({'exclude': 'exclude'})
+
+        # Format basic header
+        if header:
+            headers_text = str('\n burp report'.ljust(jt * 9) + datetime.now().strftime('%Y-%m-%d %H:%M:%S') + '\n')
+
+            # The clients name will be centered if there is detail, so the string starts different for client
+            if detail:
+                headers_text += str('Name'[:jt].rjust(jt))
+            else:
+                headers_text += str('Name'[:jt].rjust(jt+jt+jt))
+
+            # Look on each item on client_details list
+            for n in range(len(client_details)):
+                detail_dict = client_details[n]
+                for k in detail_dict.keys():
+                    # Append header from clients_details
+                    headers_text += str(k)[:jt].center(jt)
+
+            if comments:
+                headers_text += str('Comments'[:jt].center(jt))
+
+        # Format basic client information for the basic header
+        if client:
+            client_data = self.clients[client]
+
+            # The clients name will be centered if there is detail, so the string starts different for client
+            if detail:
+                client_text =  str(client[:jt].rjust(jt))
+            else:
+                client_text = str(client[:jt].rjust(jt + jt + jt))
+
+            # Look on each item on client_details list
+            for n in range(len(client_details)):
+                detail_dict = client_details[n]
+                for key, value in detail_dict.items():
+                    # Add client data to the string client_text using client_details list to fetch keys
+                    client_text += str(self.client_data.get(value, '')[:jt].center(jt))
+
+            if comments:
+                client_text += comments[:jt].center(jt)
+
+        # Additional details to add on headers and clients to the end of the strings
+        if detail:
+
+            if header:
+                # Additional calculated added data
+                headers_text += str('time taken'[:jt].ljust(jt))
+                headers_text += str('backup size'[:jt].ljust(jt) + 'bytes received'[:jt].ljust(jt))
+
+            if client:
+                s = int(self.client_data.get('backup_stats', 0).get('time_taken', 0))
+                time_taken = str('{:02}:{:02}:{:02}'.format(s // 3600, s % 3600 // 60, s % 60))
+                backup_size = int(self.client_data.get('backup_stats', 0).get('bytes_in_backup', 0))
+                bytes_received = int(self.client_data.get('backup_stats', 0).get('bytes_received', 0))
+
+                # Additional calculated added data
+                client_text += str(time_taken)[:jt].ljust(jt)
+                client_text += str(humanize_file_size(backup_size))[:jt].ljust(jt)
+                client_text += str(humanize_file_size(bytes_received))[:jt].ljust(jt)
+
+        if footer:
+            if detail:
+                footer_text = str('\n\n'.rjust(jt) + ''.center(jt) + ''.center(jt) + ''.center(jt))
+                footer_text += str(''.center(jt) + ''.center(jt) + ''.center(jt) + ''.ljust(jt))
+                footer_text += str('  '.ljust(jt) + ''.ljust(jt) + ''.ljust(jt), footer.ljust(jt) + '\n')
+
+        # Return formated text
+        if header:
+            return headers_text
+        if client:
+            return client_text
+        if footer:
+            return footer_text
+
+    def print_text(self, client=None, header=None, footer=None, detail=None):
+        """
+        print only header once with client=None, header=True
+        header to file:
+        print_text(client=None, file=file, header=True)
+
+        :param client:
+        :param footer:
+        :param comments:
         :param header: print header
         :param detail: adds detailed print of clients
         """
 
         jt = 11
         f = None
-        
+
         if self.file:
             if header:
                 f = open(self.file, 'w')
             else:
                 f = open(self.file, 'a')
-                
+
         if header:
-            print('\n burp report'.ljust(jt*9), str(datetime.now().strftime('%Y-%m-%d %H:%M:%S')), '\n', file=f)
-
-            headers_text = str('Number'[:jt].center(jt)) + str('LastDate'[:jt].center(jt))
-            headers_text += str('Time'[:jt].center(jt)) + str('Phase'[:jt].center(jt)) + str('State'[:jt].center(jt))
-
-            if comments:
-                headers_text += str('Comments'[:jt].center(jt))
-
-            if detail:
-                print('clients'[:jt].rjust(jt), headers_text, 'exclude'[:jt].center(jt),
-                      'phase'[:jt].ljust(jt),
-                      'phase date  '[:jt].ljust(jt), 'phase status'[:jt].ljust(jt), 'curr log'[:jt].ljust(jt),
-                      'log status'[:jt].ljust(jt), 'time taken'[:jt].ljust(jt), 'backup size'[:jt].ljust(jt),
-                      'bytes received'[:jt].ljust(jt), '\n', file=f)
-            else:
-                print(str('Clients'[:jt].rjust(jt+jt+jt)), headers_text, '\n', file=f)
+            header_text = self.format_client_text(client=None, header=True, detail=detail)
+            print(header_text, file=f)
 
         if client:
-            v = client
+            client_text = self.format_client_text(client, header=None, detail=detail)
+            print(client_text, file=f)
 
-            client_text = str(self.clients[v].get('b_number', ''))[:jt].center(jt)
-            client_text += str(self.clients[v].get('b_last', ''))[:jt].center(jt)
-            client_text += str(self.clients[v].get('b_time', ''))[:jt].center(jt)
-            client_text += self.clients[v].get('b_phase', '')[:jt].center(jt)
-            client_text += self.clients[v].get('b_state', '')[:jt].center(jt)
-
-            if comments:
-                client_text += comments[:jt].center(jt)
-
-            if detail:
-                s = int(self.clients[v].get('backup_stats', 0).get('time_taken', 0))
-                time_taken = str('{:02}:{:02}:{:02}'.format(s//3600, s % 3600//60, s % 60))
-                backup_size = int(self.clients[v].get('backup_stats', 0).get('bytes_in_backup', 0))
-                bytes_received = int(self.clients[v].get('backup_stats', 0).get('bytes_received', 0))
-                print(v[:jt].rjust(jt), client_text,
-                      self.clients[v].get('exclude', '')[:jt].center(jt),
-                      str(self.clients[v].get('b_phase', ''))[:jt].ljust(jt),
-                      str(self.clients[v].get('b_phase_date', ''))[:jt].ljust(jt),
-                      '', str(self.clients[v].get('b_phase_status', ''))[:jt].ljust(jt),
-                      str(self.clients[v].get('b_log_date', ''))[:jt].ljust(jt),
-                      str(self.clients[v].get('b_log_status', ''))[:jt].ljust(jt),
-                      str(time_taken)[:jt].ljust(jt),
-                      str(humanize_file_size(backup_size))[:jt].ljust(jt),
-                      str(humanize_file_size(bytes_received))[:jt].ljust(jt),
-                      file=f
-                      )
-            else:
-                print(v.rjust(jt+jt+jt), client_text,
-                      file=f
-                      )
         if footer:
-            if detail:
-                print('\n\n'.rjust(jt), ''.center(jt), ''.center(jt), ''.center(jt),
-                      ''.center(jt), ''.center(jt), ''.center(jt), ''.ljust(jt),
-                      '  '.ljust(jt), ''.ljust(jt), ''.ljust(jt), footer.ljust(jt), '\n', file=f)
-            else:
-                print(footer, file=f)
+            footer_text = self.format_client_text(client=None, footer=True)
+            print(footer_text, file=f)
+
 
     def report_to_txt(self, detail=None):
         """

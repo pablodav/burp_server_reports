@@ -137,7 +137,6 @@ class TxtReports:
         :param footer:
         :param comments:
         :param header: print header
-        :param detail: adds detailed print of clients
         """
 
         jt = 11
@@ -175,7 +174,7 @@ class TxtReports:
         total_clients = 0
         self.print_text(client=None, header=True)
         
-        for k, v in sorted(self.clients.items()):
+        for client, v in sorted(self.clients.items()):
             client_data = self.clients[client]
             self.print_text(client)
             

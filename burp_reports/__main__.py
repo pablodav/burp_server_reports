@@ -18,8 +18,10 @@ def parse_args():
                         const=os.path.join(os.sep, 'etc', 'burp', 'burp-reports.conf'),
                         default=os.path.join(os.sep, 'etc', 'burp', 'burp-reports.conf'),
                         nargs='?', help='burp-reports.conf configuration file')
+    
     parser.add_argument('-ui', '--burpui_apiurl', dest='burpui_apiurl', nargs='?', default=False, const=False,
                         help='full url to burpui api, like http://user:pass@server:port/api/')
+    
     parser.add_argument('--outdated', '-o', dest='outdated', nargs='?', const='print',
                         help='Report outdated or --outdated=file')
 

@@ -6,6 +6,8 @@ import sys
 import os
 from argparse import ArgumentParser
 from .lib.configs import parse_config
+from . reports.clients_reports import BurpReports
+
 
 def parse_args():
     """
@@ -22,12 +24,34 @@ def parse_args():
     parser.add_argument('-ui', '--burpui_apiurl', dest='burpui_apiurl', nargs='?', default=False, const=False,
                         help='full url to burpui api, like http://user:pass@server:port/api/')
     
-    parser.add_argument('--outdated', '-o', dest='outdated', nargs='?', const='print',
-                        help='Report outdated or --outdated=file')
+    parser.add_argument('--report', '-r', dest='report', nargs='?', const='print', default='print',
+                        help='Report choice, options: '
+                             'print: Print txt clients list only')
+
+    parser.add_argument('--debug', dest='debug', nargs='?', default=None, const=True,
+                        help='Activate for debugging purposes')
 
     options = parser.parse_args()
 
     return options
+
+
+def bui_api_clients_stats(burpui_apiurl, debug=None):
+    """
+
+    :param burpui_apiurl: string to burpui_apiurl, full url http://user:pass@server:port/api/
+    :return: dict with clients stats
+    """
+    from .interfaces.burpui_api_interface import BUIClients
+    bui_clients = BUIClients(burpui_apiurl=burpui_apiurl)
+    clients_dict = bui_clients.translate_clients_stats()
+
+    if debug:
+        from pprint import pprint
+        print('List of clients got:')
+        pprint(clients_dict)
+
+    return clients_dict
 
 
 def main():
@@ -35,6 +59,8 @@ def main():
     Main function
     """
     options = parse_args()
+
+    debug = options.debug
 
     if options.reports_conf:
         # Define the configuration file to use.
@@ -53,11 +79,14 @@ def main():
     # If there is an option to for burpui_apiurl, get clients from that apiurl
     if burpui_apiurl:
         # Get clients stats from burpui_api_interface
-        from .interfaces.burpui_api_interface import BUIClients
-        bui_clients = BUIClients(burpui_apiurl=burpui_apiurl)
-        clients_dict = bui_clients.translate_clients_stats()
+        clients_dict = bui_api_clients_stats(burpui_apiurl, debug)
+        burp_reports = BurpReports(clients_dict)
 
     # Add some report option to use, use clients_dict already set
+    if options.report == 'print':
+        burp_reports.print_basic_txt()
+
+
 
 
 

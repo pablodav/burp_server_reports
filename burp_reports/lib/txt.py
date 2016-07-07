@@ -1,14 +1,15 @@
 
 from datetime import datetime, timedelta
-from ..lib.humanize import humanize_file_size
+from .humanize import humanize_file_size
 import os
+
 
 class TxtReports:
     """
     Formats a dict of clients and prints to stdout or exports to file
     """
   
-    def __init__(self, clients, file=None, detail=None):
+    def __init__(self, clients, file=None, detail=None, debug=None):
         """
         
         :param clients: dict of clients formated for burp reports.
@@ -18,6 +19,7 @@ class TxtReports:
         self.clients = clients
         self.file = file
         self.detail = detail
+        self.debug = debug
 
     def format_client_text(self, client=None, header=None, footer=None,  comments=None):
         """
@@ -30,12 +32,10 @@ class TxtReports:
         :param comments: String text with Additional comments to add to the client
         :param header: True/None to report header formatted
         :param detail: adds detailed information of clients
-        :return: client/footer/header depending on the option choosen
+        :return: client/footer/header str depending on the option choosen
         """
 
         jt = 11
-        
-        detail = self.detail
 
         # List with dict {header: report_key to use from reports dict}
         client_details = [{'LastDate': 'b_last'},
@@ -43,7 +43,7 @@ class TxtReports:
                           {'State': 'b_state'}
                           ]
 
-        if detail:
+        if self.detail:
             # Extend more data to client_details list
             # Will be appended to both: header and data on report
             client_details.append({'exclude': 'exclude'})
@@ -53,10 +53,10 @@ class TxtReports:
             headers_text = str('\n burp report'.ljust(jt * 9) + datetime.now().strftime('%Y-%m-%d %H:%M:%S') + '\n')
 
             # The clients name will be centered if there is detail, so the string starts different for client
-            if detail:
-                headers_text += str('Name'[:jt].rjust(jt))
+            if self.detail:
+                headers_text += str('Name '[:jt].rjust(jt))
             else:
-                headers_text += str('Name'[:jt].rjust(jt+jt+jt))
+                headers_text += str('Name '[:jt].rjust(jt+jt+jt))
 
             # Look on each item on client_details list
             for n in range(len(client_details)):
@@ -74,23 +74,28 @@ class TxtReports:
             client_data = self.clients[client]
 
             # The clients name will be centered if there is detail, so the string starts different for client
-            if detail:
-                client_text =  str(client[:jt].rjust(jt))
+            if self.detail:
+                client_text =  str(client[:jt].rjust(jt)) + ' '
             else:
-                client_text = str(client[:jt].rjust(jt + jt + jt))
+                client_text = str(client[:jt].rjust(jt + jt + jt)) + ' '
 
             # Look on each item on client_details list
             for n in range(len(client_details)):
                 detail_dict = client_details[n]
                 for key, value in detail_dict.items():
                     # Add client data to the string client_text using client_details list to fetch keys
-                    client_text += str(self.client_data.get(value, '')[:jt].center(jt))
+                    item_value = client_data.get(value, '')
+                    # Check if item value is valid to be a string, if not add empty str value.
+                    if not item_value:
+                        item_value = ''
+                    # Add the value of the item from client dictionary to client_text
+                    client_text += str(item_value)[:jt].center(jt)
 
             if comments:
                 client_text += comments[:jt].center(jt)
 
         # Additional details to add on headers and clients to the end of the strings
-        if detail:
+        if self.detail:
 
             if header:
                 # Additional calculated added data
@@ -99,12 +104,12 @@ class TxtReports:
 
             if client:
                 # Look into client_data['backup_stats']['time_taken']
-                s = int(self.client_data.get('backup_stats', 0).get('time_taken', 0))
+                s = int(client_data.get('backup_stats', 0).get('time_taken', 0))
                 time_taken = str('{:02}:{:02}:{:02}'.format(s // 3600, s % 3600 // 60, s % 60))
                 # Look into client_data['backup_stats']['bytes_in_backup']
-                backup_size = int(self.client_data.get('backup_stats', 0).get('bytes_in_backup', 0))
+                backup_size = int(client_data.get('backup_stats', 0).get('bytes_in_backup', 0))
                 # Look into client_data['backup_stats']['bytes_received']
-                bytes_received = int(self.client_data.get('backup_stats', 0).get('bytes_received', 0))
+                bytes_received = int(client_data.get('backup_stats', 0).get('bytes_received', 0))
 
                 # Additional calculated added data
                 client_text += str(time_taken)[:jt].ljust(jt)
@@ -112,7 +117,7 @@ class TxtReports:
                 client_text += str(humanize_file_size(bytes_received))[:jt].ljust(jt)
 
         if footer:
-            if detail:
+            if self.detail:
                 footer_text = str('\n\n'.rjust(jt) + ''.center(jt) + ''.center(jt) + ''.center(jt))
                 footer_text += str(''.center(jt) + ''.center(jt) + ''.center(jt) + ''.ljust(jt))
                 footer_text += str('  '.ljust(jt) + ''.ljust(jt) + ''.ljust(jt), footer.ljust(jt) + '\n')
@@ -160,15 +165,11 @@ class TxtReports:
             footer_text = self.format_client_text(client=None, footer=True)
             print(footer_text, file=f)
 
-
     def report_to_txt(self):
         """
 
         """
 
-        if self.detail:
-            detail = True
-            
         total_taken = 0
         bytes_in_backup = 0
         total_clients = 0
@@ -178,12 +179,12 @@ class TxtReports:
             client_data = self.clients[client]
             self.print_text(client)
             
-            if detail:
+            if self.detail:
                 total_taken += int(client_data.get('backup_stats', 0).get('time_taken', 0))
                 bytes_in_backup += int((client_data.get('backup_stats', 0).get('bytes_in_backup', 0)))
                 total_clients += 1
                 
-        if detail:
+        if self.detail:
             s = total_taken
             foot_notes = str('total time backups taken: {:02}:{:02}:{:02}'.format(s // 3600, s % 3600 // 60, s % 60))
             foot_notes += str('\ntotal size in backup: ')

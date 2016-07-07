@@ -1,3 +1,4 @@
+from ..lib.txt import TxtReports
 
 
 class BurpReports:
@@ -17,4 +18,9 @@ class BurpReports:
         """
 
         self.clients = clients_dict
+
+    def print_basic_txt(self):
+        clients_reports = TxtReports(self.clients)
+        clients_reports.report_to_txt()
+
 

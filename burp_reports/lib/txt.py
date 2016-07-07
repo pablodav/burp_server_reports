@@ -26,6 +26,7 @@ class TxtReports:
         print only header once with client=None, header=True
         header to file:
         print_text(client=None, file=file, header=True)
+        Recommended doc: https://pyformat.info/
 
         :param client: client_name to report
         :param footer: True/None to report footer information
@@ -54,16 +55,16 @@ class TxtReports:
 
             # The clients name will be centered if there is detail, so the string starts different for client
             if self.detail:
-                headers_text += str('Name '[:jt].rjust(jt))
+                headers_text += '{:>{}.{}}'.format('Name   ', jt, jt)
             else:
-                headers_text += str('Name '[:jt].rjust(jt+jt+jt))
+                headers_text += '{:>{}.{}}'.format('Name   ', jt*4, jt)
 
             # Look on each item on client_details list
             for n in range(len(client_details)):
                 detail_dict = client_details[n]
                 for k in detail_dict.keys():
                     # Append header from clients_details
-                    headers_text += str(k)[:jt].center(jt)
+                    headers_text += ' {:{}.{}} '.format(k, jt, jt)
 
             if comments:
                 headers_text += str('Comments'[:jt].center(jt))
@@ -75,9 +76,9 @@ class TxtReports:
 
             # The clients name will be centered if there is detail, so the string starts different for client
             if self.detail:
-                client_text =  str(client[:jt].rjust(jt)) + ' '
+                client_text =  '{:>{}.{}} '.format(client, jt, jt)
             else:
-                client_text = str(client[:jt].rjust(jt + jt + jt)) + ' '
+                client_text = '{:>{}.{}} '.format(client, jt*4, jt)
 
             # Look on each item on client_details list
             for n in range(len(client_details)):
@@ -89,7 +90,8 @@ class TxtReports:
                     if not item_value:
                         item_value = ''
                     # Add the value of the item from client dictionary to client_text
-                    client_text += str(item_value)[:jt].center(jt)
+                    # :Will put left , .Will truncate
+                    client_text += '{:{}.{}} '.format(item_value, jt, jt)
 
             if comments:
                 client_text += comments[:jt].center(jt)

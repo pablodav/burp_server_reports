@@ -432,7 +432,7 @@ def send_email(text_file):
     msg['From'] = fromaddr
     msg['To'] = toaddr
     msg['subject'] = 'Sending content of file %s' % text_file
-    server = smtplib.SMTP('10.196.81.38')
+    server = smtplib.SMTP(smtp_server)
     server.set_debuglevel(1)
     server.send_message(msg)
     server.quit()

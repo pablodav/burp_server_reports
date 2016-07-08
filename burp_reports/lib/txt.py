@@ -39,8 +39,8 @@ class TxtReports:
         jt = 11
 
         # List with dict {header: report_key to use from reports dict}
-        client_details = [{'Date': 'b_date'},
-                          {'Time': 'b_time'},
+        client_details = [{'Date(local)': 'b_date'},
+                          {'Time(local)': 'b_time'},
                           {'State': 'b_state'},
                           {'Phase': 'b_phase'}
                           ]

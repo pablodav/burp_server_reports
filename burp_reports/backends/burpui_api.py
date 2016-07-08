@@ -19,6 +19,16 @@ class Clients:
         self.apiurl = apiurl
         self.debug = debug
 
+    # Notes for future detection of multi-agent mode:
+    # url to check /api/servers/report
+    # If not {"servers": {"name": null}}
+    # Then we should look on the list of servers with their names.
+    # https://burp-ui.readthedocs.io/en/latest/api.html#get--api-servers-report
+    # And use:
+    # Parameters:
+    # server (str)  Which server to collect data from when in multi-agent mode
+
+
     def get_clients_stats(self):
         """
         #  server.get_all_clients()

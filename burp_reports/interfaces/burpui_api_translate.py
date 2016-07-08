@@ -1,5 +1,5 @@
 # -*- coding: utf8 -*-
-
+from datetime import datetime
 
 class TranslateBurpuiAPI:
     """
@@ -42,6 +42,13 @@ class TranslateBurpuiAPI:
                     # similar and simplified to: d_clients.setdefault(client_name, {})['b_phase'] = b_phase
                     d_clients.setdefault(client_name, {})[k] = client_data.get(data_t[k])
 
+                # Add b_date and b_time from b_last information
+                if k is 'b_last' and client_data.get(data_t[k]) and client_data.get(data_t[k]) not in 'never':
+                    date_and_time = datetime.strptime(client_data.get(data_t[k])[:19], '%Y-%m-%d %M:%S:%f')
+                    d_clients.setdefault(client_name, {})['b_date'] = date_and_time.strftime('%Y-%m-%d')
+                    d_clients.setdefault(client_name, {})['b_time'] = date_and_time.strftime('%M:%S')
+
+
         # Return dictionary of clients expected to use in burp_reports
         return d_clients
 
@@ -50,7 +57,7 @@ class TranslateBurpuiAPI:
 
         :return:
         {'client_name':
-            { 'b_last'    : 'date',
+            { 'b_last'    : '2016-06-23 14:33:06-03:00',
               'b_state'    : 'working/current',
               'b_phase' : 'phase1/phase2'
             }

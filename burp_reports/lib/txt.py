@@ -39,9 +39,10 @@ class TxtReports:
         jt = 11
 
         # List with dict {header: report_key to use from reports dict}
-        client_details = [{'LastDate': 'b_last'},
-                          {'Phase': 'b_phase'},
-                          {'State': 'b_state'}
+        client_details = [{'Date': 'b_date'},
+                          {'Time': 'b_time'},
+                          {'State': 'b_state'},
+                          {'Phase': 'b_phase'}
                           ]
 
         if self.detail:
@@ -55,9 +56,9 @@ class TxtReports:
 
             # The clients name will be centered if there is detail, so the string starts different for client
             if self.detail:
-                headers_text += '{:>{}.{}}'.format('Name   ', jt, jt)
+                headers_text += ' {:>{}.{}} '.format('Name   ', jt, jt)
             else:
-                headers_text += '{:>{}.{}}'.format('Name   ', jt*4, jt)
+                headers_text += ' {:>{}.{}} '.format('Name   ', jt*3, jt)
 
             # Look on each item on client_details list
             for n in range(len(client_details)):
@@ -67,7 +68,7 @@ class TxtReports:
                     headers_text += ' {:{}.{}} '.format(k, jt, jt)
 
             if comments:
-                headers_text += str('Comments'[:jt].center(jt))
+                headers_text += ' {:{}.{}} '.format('Comments', jt, jt)
 
         # Format basic client information for the basic header
         if client:
@@ -76,9 +77,9 @@ class TxtReports:
 
             # The clients name will be centered if there is detail, so the string starts different for client
             if self.detail:
-                client_text =  '{:>{}.{}} '.format(client, jt, jt)
+                client_text =  ' {:>{}.{}} '.format(client, jt, jt)
             else:
-                client_text = '{:>{}.{}} '.format(client, jt*4, jt)
+                client_text = ' {:>{}.{}} '.format(client, jt*3, jt)
 
             # Look on each item on client_details list
             for n in range(len(client_details)):
@@ -91,18 +92,19 @@ class TxtReports:
                         item_value = ''
                     # Add the value of the item from client dictionary to client_text
                     # :Will put left , .Will truncate
-                    client_text += '{:{}.{}} '.format(item_value, jt, jt)
+                    client_text += ' {:{}.{}} '.format(item_value, jt, jt)
 
             if comments:
-                client_text += comments[:jt].center(jt)
+                client_text += ' {:{}.{}} '.format(comments, jt, jt)
 
         # Additional details to add on headers and clients to the end of the strings
         if self.detail:
 
             if header:
                 # Additional calculated added data
-                headers_text += str('time taken'[:jt].ljust(jt))
-                headers_text += str('backup size'[:jt].ljust(jt) + 'bytes received'[:jt].ljust(jt))
+                headers_text += ' {:{}.{}} '.format('time taken', jt, jt)
+                headers_text += ' {:{}.{}} '.format('backup size', jt, jt)
+                headers_text += ' {:{}.{}} '.format('bytes received', jt, jt)
 
             if client:
                 # Look into client_data['backup_stats']['time_taken']
@@ -114,15 +116,13 @@ class TxtReports:
                 bytes_received = int(client_data.get('backup_stats', 0).get('bytes_received', 0))
 
                 # Additional calculated added data
-                client_text += str(time_taken)[:jt].ljust(jt)
-                client_text += str(humanize_file_size(backup_size))[:jt].ljust(jt)
-                client_text += str(humanize_file_size(bytes_received))[:jt].ljust(jt)
+                client_text += ' {:{}.{}} '.format(time_taken, jt, jt)
+                client_text += ' {:{}.{}} '.format(backup_size, jt, jt)
+                client_text += ' {:{}.{}} '.format(bytes_received, jt, jt)
 
         if footer:
             if self.detail:
-                footer_text = str('\n\n'.rjust(jt) + ''.center(jt) + ''.center(jt) + ''.center(jt))
-                footer_text += str(''.center(jt) + ''.center(jt) + ''.center(jt) + ''.ljust(jt))
-                footer_text += str('  '.ljust(jt) + ''.ljust(jt) + ''.ljust(jt), footer.ljust(jt) + '\n')
+                footer_text = '\n\n {:{}} \n'.format(footer, jt)
             else:
                 footer_text = str(footer)
 

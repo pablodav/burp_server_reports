@@ -28,6 +28,25 @@ class Clients:
     # Parameters:
     # server (str)  Which server to collect data from when in multi-agent mode
 
+    # Comments from Ziirish:
+    # You'd better test /api/servers/stats
+    # It returns an empty list ([]) when there are no agents and then switch back to
+    # the "standalone" mode.
+    # Now if the list is not empty, you'll have something like:
+
+    # [
+    # {
+    #   'alive': true,
+    #   'clients': 2,
+    #   'name': 'burp1',
+    # },
+    #  {
+    #   'alive': false,
+    #   'clients': 0,
+    #   'name': 'burp2',
+    #   },
+    #  ]
+
 
     def get_clients_stats(self):
         """

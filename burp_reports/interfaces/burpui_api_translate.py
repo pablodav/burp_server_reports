@@ -1,6 +1,5 @@
 # -*- coding: utf8 -*-
 import arrow
-from dateutil import tz
 
 class TranslateBurpuiAPI:
     """
@@ -22,10 +21,11 @@ class TranslateBurpuiAPI:
         example from clients stats:
 
         {'client_name':
-            { 'b_last'    : 'date',
+            { 'b_last'    : 'YY-MM-DD HH:mm:ssZZ',
               'b_state'    : 'working/current',
               'b_phase' : 'phase1/phase2',
-              'b_last' : 'date',
+              'b_date' : 'date(local)',
+              'b_time' : 'time(local)'
             }
         }
         """

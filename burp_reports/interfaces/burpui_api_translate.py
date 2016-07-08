@@ -1,5 +1,6 @@
 # -*- coding: utf8 -*-
-from datetime import datetime
+import arrow
+from dateutil import tz
 
 class TranslateBurpuiAPI:
     """
@@ -44,9 +45,10 @@ class TranslateBurpuiAPI:
 
                 # Add b_date and b_time from b_last information
                 if k is 'b_last' and client_data.get(data_t[k]) and client_data.get(data_t[k]) not in 'never':
-                    date_and_time = datetime.strptime(client_data.get(data_t[k])[:19], '%Y-%m-%d %M:%S:%f')
-                    d_clients.setdefault(client_name, {})['b_date'] = date_and_time.strftime('%Y-%m-%d')
-                    d_clients.setdefault(client_name, {})['b_time'] = date_and_time.strftime('%M:%S')
+                    date_and_time = arrow.get(client_data.get(data_t[k]), 'YY-MM-DD HH:mm:ssZZ')
+                    date_and_time = date_and_time.to('local')
+                    d_clients.setdefault(client_name, {})['b_date'] = date_and_time.format('YYYY-MM-DD')
+                    d_clients.setdefault(client_name, {})['b_time'] = date_and_time.format('HH:mm:ss')
 
 
         # Return dictionary of clients expected to use in burp_reports

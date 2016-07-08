@@ -1,16 +1,25 @@
+Requirements notes:
+==================
+arrow: will manage all datetime functionality
+requests: will be used to fetch data from rest urls.
+
+
 Expected format:
 ==============
 
 Usable by reports scripts:
 
         {'client_name':
-            { 'b_last'    : 'date time',
+            { 'b_last'    : 'YY-MM-DD HH:mm:ssZZ',
               'b_state'    : 'working/current',
               'b_phase' : 'phase1/phase2',
               'b_date' : 'date'
               'b_time' : 'time'
             }
         }
+
+*b_last:* will use http://crsmithdev.com/arrow/ - As described in https://git.ziirish.me/ziirish/burp-ui/issues/146#note_1306
+*b_date and b_time* will be converted to local time always. (It simplifies the txt module)
 
 More information that will be processed later:
 

@@ -59,7 +59,7 @@ class Clients:
             "last": "2016-06-23 14:33:06-03:00",
             "name": "monitor"},
             {
-                "last": "2015-05-17 11:40:02",
+                "last": "2015-05-17 11:40:02-03:00",
                 "name": "client1",
                 "state": "idle",
                 "phase": "phase1",

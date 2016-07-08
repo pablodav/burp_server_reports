@@ -7,26 +7,26 @@
 from setuptools import setup
 
 setup(name='burp_reports',
-      version='0.0.1',
-      description='Burp reports package',
-      classifiers=[
-            'Development Status :: 1 - Not usable yet',
-            'License :: OSI Approved :: MIT License',
-            'Programming Language :: Python :: 3.4',
-      ],
-      url='https://github.com/pablodav/burp_server_reports',
-      author='Pablo Estigarribia',
-      author_email='pablodav@gmail.com',
-      license='MIT',
-      packages=['burp_reports'],
-      entry_points={
-          'console_scripts': [
-              'burp-reports = burp_reports.__main__:main'
-          ]
-      },
-      install_requires=[
-            'invpy_libs',
-            'requests'
-      ],
-      zip_safe=False)
-
+    version='0.0.1',
+    description='Burp reports package',
+    classifiers=[
+      'Development Status :: 1 - Not usable yet',
+      'License :: OSI Approved :: MIT License',
+      'Programming Language :: Python :: 3.4',
+    ],
+    url='https://github.com/pablodav/burp_server_reports',
+    author='Pablo Estigarribia',
+    author_email='pablodav@gmail.com',
+    license='MIT',
+    packages=['burp_reports'],
+    entry_points={
+      'console_scripts': [
+          'burp-reports = burp_reports.__main__:main'
+      ]
+    },
+    install_requires=[
+      'invpy_libs',
+      'requests',
+      'arrow'
+    ],
+    zip_safe=False)

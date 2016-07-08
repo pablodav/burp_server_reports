@@ -4,9 +4,11 @@ Expected format:
 Usable by reports scripts:
 
         {'client_name':
-            { 'b_last'    : 'date',
+            { 'b_last'    : 'date time',
               'b_state'    : 'working/current',
               'b_phase' : 'phase1/phase2',
+              'b_date' : 'date'
+              'b_time' : 'time'
             }
         }
 
@@ -16,7 +18,7 @@ More information that will be processed later:
         { 'b_number'  : 'number',
           'b_date'    : 'date',
           'b_status'  : 'outdated/ok',
-          'b_type'    : 'finishing/working/current',
+          # 'b_type'    : 'finishing/working/current',
           'quota'   : 'ok/soft/hard',
           'warnings': 'warnings',
           'exclude' : 'yes/no',
@@ -26,7 +28,8 @@ More information that will be processed later:
           'b_log_date' : 'date of log file',
           'b_log_status' : 'outdated/ok',
           'b_curr_taken' : 'seconds',
-          'backup_stats' : {'contents': 'all contents of backup_stats file for the client'}
+          'backup_stats' : {'contents': 'all contents of backup_stats file for the client', some example:
+                            'time_taken': 'seconds', 'bytes_in_backup': 'bytes', bytes_received: 'bytes'}
         }
 }
 

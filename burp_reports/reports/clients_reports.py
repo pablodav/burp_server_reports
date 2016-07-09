@@ -24,16 +24,28 @@ class BurpReports:
         clients_reports = TxtReports(self.clients)
         clients_reports.report_to_txt()
 
-    def report_outdated(self):
+    def report_outdated(self, export_txt=None):
+        """
+
+        :param print: if print, it will print the outdated clients
+        :return: dict of outdated clients.
+        """
         outdated_clients = {}
+
         for k, v in self.clients.items():
+            # Get actual time with arrow module
             actual_time = arrow.get()
+            # get date to consider as outdated
             outdated_time = actual_time.replace(days=-1)
             if v.get('b_last') < outdated_time:
                 outdated_clients.setdefault(k, v)
 
-        client_reports =  TxtReports(outdated_clients)
-        client_reports.report_to_txt()
+        clients_reports =  TxtReports(outdated_clients)
+
+        if export_txt:
+            clients_reports.report_to_txt()
+
+        return clients_reports
 
 
 

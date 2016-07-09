@@ -5,7 +5,7 @@
 import sys
 import os
 from argparse import ArgumentParser
-from .lib.configs import parse_config
+from . lib.configs import parse_config
 from . reports.clients_reports import BurpReports
 
 
@@ -26,7 +26,8 @@ def parse_args():
     
     parser.add_argument('--report', '-r', dest='report', nargs='?', const='print', default='print',
                         help='Report choice, options: '
-                             'print: Print txt clients list only')
+                             'print: Print txt clients list only \n'
+                             'o - outdated: will print list of outdated clients')
 
     parser.add_argument('--debug', dest='debug', nargs='?', default=None, const=True,
                         help='Activate for debugging purposes')
@@ -78,15 +79,19 @@ def main():
 
     # If there is an option to for burpui_apiurl, get clients from that apiurl
     if burpui_apiurl:
-        # Get clients stats from burpui_api_interface
-        clients_dict = bui_api_clients_stats(burpui_apiurl, debug)
+        if burpui_apiurl.lower() == 'dummy':
+            from . dummy.burpui_api_translate_dummy import BUIClients
+            clients_dict = BUIClients.translate_clients_stats()
+        else:
+            # Get clients stats from burpui_api_interface
+            clients_dict = bui_api_clients_stats(burpui_apiurl, debug)
         burp_reports = BurpReports(clients_dict)
 
     # Add some report option to use, use clients_dict already set
     if options.report == 'print':
         burp_reports.print_basic_txt()
-
-
+    elif options.report in ['outdated', 'o']:
+        burp_reports.report_outdated(export_txt=True)
 
 
 

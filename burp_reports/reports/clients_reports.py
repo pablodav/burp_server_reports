@@ -37,8 +37,20 @@ class BurpReports:
             actual_time = arrow.get()
             # get date to consider as outdated
             outdated_time = actual_time.replace(days=-1)
-            if v.get('b_last') < outdated_time:
+            client_last = v.get('b_last', None)
+
+            # Add client to outdated list if not backup
+            if client_last.lower() in 'never' or not client_last:
                 outdated_clients.setdefault(k, v)
+                continue
+
+            # Convert client_last to arrow date
+            client_last = arrow.get(v.get('b_last', None), 'YY-MM-DD HH:mm:ssZZ')
+            
+            # Add client to outdated list if outdated
+            if not isinstance(client_last, str):
+                if client_last < outdated_time:
+                    outdated_clients.setdefault(k, v)
 
         clients_reports =  TxtReports(outdated_clients)
 

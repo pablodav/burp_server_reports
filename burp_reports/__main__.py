@@ -14,26 +14,32 @@ def parse_args():
     Information extracted from: https://mkaz.com/2014/07/26/python-argparse-cookbook/
     :return:
     """
-    compare_result = []
     parser = ArgumentParser()
     parser.add_argument('-c', '--reports_conf', dest='reports_conf',
                         const=os.path.join(os.sep, 'etc', 'burp', 'burp-reports.conf'),
-                        default=os.path.join(os.sep, 'etc', 'burp', 'burp-reports.conf'),
+                        default=None,
                         nargs='?', help='burp-reports.conf configuration file')
     
-    parser.add_argument('-ui', '--burpui_apiurl', dest='burpui_apiurl', nargs='?', default=False, const=False,
-                        help='full url to burpui api, like http://user:pass@server:port/api/')
+    parser.add_argument('-ui', '--burpui_apiurl', dest='burpui_apiurl', nargs='?', default=None, const=None,
+                        help='full url to burpui api, like http://user:pass@server:port/api/ ')
     
+    # Adding report choices with subcommand
     parser.add_argument('--report', '-r', dest='report', nargs='?', const='print', default='print',
-                        help='Report choice, options: '
-                             'print: Print txt clients list only \n'
+                        choices=['print', 'outdated'],
+                        help='Report choice, options: \n\n'
+                             '\nprint: Print txt clients list only \n'
                              'o - outdated: will print list of outdated clients')
+    
 
     parser.add_argument('--debug', dest='debug', nargs='?', default=None, const=True,
                         help='Activate for debugging purposes')
+    
+    # Print help if no arguments where parsed
+    if len(sys.argv)==1:
+        parser.print_help()
+        sys.exit(1)
 
     options = parser.parse_args()
-
     return options
 
 
@@ -59,7 +65,9 @@ def main():
     """
     Main function
     """
+    burpui_apiurl = None
     options = parse_args()
+
 
     debug = options.debug
 
@@ -81,7 +89,8 @@ def main():
     if burpui_apiurl:
         if burpui_apiurl.lower() == 'dummy':
             from . dummy.burpui_api_translate_dummy import BUIClients
-            clients_dict = BUIClients.translate_clients_stats()
+            clients_dict = BUIClients()
+            clients_dict = clients_dict.translate_clients_stats()
         else:
             # Get clients stats from burpui_api_interface
             clients_dict = bui_api_clients_stats(burpui_apiurl, debug)

@@ -44,6 +44,7 @@ class BurpReports:
             # Add client to outdated list if not backup
             if client_last.lower() in 'never' or not client_last:
                 outdated_clients.setdefault(k, v)
+                outdated_clients[k]['b_state'] = 'never'
                 continue
 
             # Convert client_last to arrow date
@@ -53,6 +54,7 @@ class BurpReports:
             if not isinstance(client_last, str):
                 if client_last < outdated_time:
                     outdated_clients.setdefault(k, v)
+                    outdated_clients[k]['b_state'] = 'outdated'
 
         clients_reports = TxtReports(outdated_clients)
 

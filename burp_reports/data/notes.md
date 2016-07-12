@@ -10,7 +10,7 @@ Expected format:
 Usable by reports scripts:
 
         {'client_name':
-            { 'b_last'    : 'YY-MM-DD HH:mm:ssZZ',
+            { 'b_last'    : 'YYYY-MM-DD HH:mm:ssZZ',
               'b_state'    : 'working/current',
               'b_phase' : 'phase1/phase2',
               'b_date' : 'date'

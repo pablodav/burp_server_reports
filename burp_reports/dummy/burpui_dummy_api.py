@@ -1,5 +1,6 @@
 # -*- coding: utf8 -*-
-
+import arrow
+import random
 
 class Clients:
     """
@@ -24,6 +25,7 @@ class Clients:
         "last": "2016-06-23 14:33:06-03:00",
         "name": "monitor"}]
         """
+        actual_time = arrow.get()
 
         clients_stats = [{
             "phase": 'null',
@@ -46,6 +48,23 @@ class Clients:
                 "percent": 42,
             }
         ]
+
+        # Add clients with random last in a range of 100
+        for num in range(1, 101):
+            client_time = actual_time.replace(days=-random.randrange(5, 200))
+            client_last = client_time.format('YYYY-MM-DD HH:mm:ssZZ')
+            client_name = "client_{:03d}".format(num)
+            client_state = 'idle'
+            client_phase = 'null'
+            client_percent = 0
+
+            clients_stats.append({
+                "last": client_last,
+                "name": client_name,
+                "state": client_state,
+                "phase": client_phase,
+                "percent": client_percent,
+            })
 
         return clients_stats
 

@@ -9,7 +9,7 @@ class BurpReports:
 
         :param clients_dict: list of clients in burp_reports format, example:
         {'client_name':
-            { 'b_last'    : 'YY-MM-DD HH:mm:ssZZ',
+            { 'b_last'    : 'YYYY-MM-DD HH:mm:ssZZ',
               'b_state'    : 'working/current',
               'b_phase' : 'phase1/phase2',
               'b_last' : 'date',
@@ -48,7 +48,7 @@ class BurpReports:
                 continue
 
             # Convert client_last to arrow date
-            client_last = arrow.get(v.get('b_last', None), 'YY-MM-DD HH:mm:ssZZ')
+            client_last = arrow.get(v.get('b_last', None), 'YYYY-MM-DD HH:mm:ssZZ')
             
             # Add client to outdated list if outdated
             if not isinstance(client_last, str):

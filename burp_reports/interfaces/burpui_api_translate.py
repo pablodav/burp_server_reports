@@ -21,7 +21,7 @@ class TranslateBurpuiAPI:
         example from clients stats:
 
         {'client_name':
-            { 'b_last'    : 'YY-MM-DD HH:mm:ssZZ',
+            { 'b_last'    : 'YYYY-MM-DD HH:mm:ssZZ',
               'b_state'    : 'working/current',
               'b_phase' : 'phase1/phase2',
               'b_date' : 'date(local)',
@@ -45,7 +45,7 @@ class TranslateBurpuiAPI:
 
                 # Add b_date and b_time from b_last information
                 if k is 'b_last' and client_data.get(data_t[k]) and client_data.get(data_t[k]) not in 'never':
-                    date_and_time = arrow.get(client_data.get(data_t[k]), 'YY-MM-DD HH:mm:ssZZ')
+                    date_and_time = arrow.get(client_data.get(data_t[k]), 'YYYY-MM-DD HH:mm:ssZZ')
                     date_and_time = date_and_time.to('local')
                     d_clients.setdefault(client_name, {})['b_date'] = date_and_time.format('YYYY-MM-DD')
                     d_clients.setdefault(client_name, {})['b_time'] = date_and_time.format('HH:mm:ss')

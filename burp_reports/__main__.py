@@ -27,9 +27,8 @@ def parse_args():
     parser.add_argument('--report', '-r', dest='report', nargs='?', const='print', default='print',
                         choices=['print', 'outdated'],
                         help='Report choice, options: \n\n'
-                             '\nprint: Print txt clients list only \n'
-                             'o - outdated: will print list of outdated clients')
-    
+                             'print: Print txt clients list only \n'
+                             'outdated: will print list of outdated clients')
 
     parser.add_argument('--debug', dest='debug', nargs='?', default=None, const=True,
                         help='Activate for debugging purposes')
@@ -61,15 +60,21 @@ def bui_api_clients_stats(burpui_apiurl, debug=None):
     return clients_dict
 
 
-def main():
+def bui_dummy_clients_stats():
+    # Get data from dummy module (for testing the functions only)
+    from .dummy.burpui_api_translate_dummy import BUIClients
+    clients_dict = BUIClients()
+    clients_dict = clients_dict.translate_clients_stats()
+    return clients_dict
+
+
+def get_burpui_apiurl(options):
     """
-    Main function
+
+    :param options: options from argparse
+    :return: burpui_apiurl from conf or cmdline args.
     """
     burpui_apiurl = None
-    options = parse_args()
-
-
-    debug = options.debug
 
     if options.reports_conf:
         # Define the configuration file to use.
@@ -85,24 +90,56 @@ def main():
     if options.burpui_apiurl:
         burpui_apiurl = options.burpui_apiurl
 
+    return burpui_apiurl
+
+
+def get_main_conf(options):
+    """
+
+    :param options: options from argparse
+    :return: dict with options from config file or defaults
+    """
+    _options = {}
+    config_options = {}
+
+    if options.reports_conf:
+        config_options = parse_config(options.reports_conf)
+
+    # Creating default values for our config:
+    _options.setdefault('days_outdated', int(config_options.get('days_outdated', 30)))
+
+    return _options
+
+
+def main():
+    """
+    Main function
+    """
+    clients_dict = {}
+    options = parse_args()
+    config_options = get_main_conf(options)
+
+    debug = options.debug
+
+    burpui_apiurl = get_burpui_apiurl(options)
+
     # If there is an option to for burpui_apiurl, get clients from that apiurl
     if burpui_apiurl:
         if burpui_apiurl.lower() == 'dummy':
-            from . dummy.burpui_api_translate_dummy import BUIClients
-            clients_dict = BUIClients()
-            clients_dict = clients_dict.translate_clients_stats()
+            clients_dict = bui_dummy_clients_stats()
         else:
             # Get clients stats from burpui_api_interface
             clients_dict = bui_api_clients_stats(burpui_apiurl, debug)
-        burp_reports = BurpReports(clients_dict)
+
+    burp_reports = BurpReports(clients_dict,
+                               days_outdated=config_options.get('days_outdated'))
 
     # Add some report option to use, use clients_dict already set
     if options.report == 'print':
         burp_reports.print_basic_txt()
+
     elif options.report in ['outdated', 'o']:
         burp_reports.report_outdated(export_txt=True)
-
-
 
 
 

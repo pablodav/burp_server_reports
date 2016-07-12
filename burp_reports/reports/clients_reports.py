@@ -4,7 +4,7 @@ import arrow
 
 class BurpReports:
 
-    def __init__(self, clients_dict):
+    def __init__(self, clients_dict, days_outdated=31):
         """
 
         :param clients_dict: list of clients in burp_reports format, example:
@@ -19,6 +19,7 @@ class BurpReports:
         """
 
         self.clients = clients_dict
+        self.days_outdated = days_outdated
 
     def print_basic_txt(self):
         clients_reports = TxtReports(self.clients)
@@ -28,6 +29,7 @@ class BurpReports:
         """
 
         :param print: if print, it will print the outdated clients
+        :param export_txt: use it if you want to print on screen, used with cli
         :return: dict of outdated clients.
         """
         outdated_clients = {}
@@ -36,7 +38,7 @@ class BurpReports:
             # Get actual time with arrow module
             actual_time = arrow.get()
             # get date to consider as outdated
-            outdated_time = actual_time.replace(days=-1)
+            outdated_time = actual_time.replace(days=-self.days_outdated)
             client_last = v.get('b_last', None)
 
             # Add client to outdated list if not backup
@@ -52,7 +54,7 @@ class BurpReports:
                 if client_last < outdated_time:
                     outdated_clients.setdefault(k, v)
 
-        clients_reports =  TxtReports(outdated_clients)
+        clients_reports = TxtReports(outdated_clients)
 
         if export_txt:
             clients_reports.report_to_txt()

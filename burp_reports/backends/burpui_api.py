@@ -85,7 +85,7 @@ class Clients:
 
             for cli in range(len(server_clients_stats)):
                 client_stats = server_clients_stats[cli]
-                clients_stats['server'] = server
+                client_stats['server'] = server
                 clients_stats.append(client_stats)
 
         return clients_stats

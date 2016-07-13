@@ -2,6 +2,7 @@
 import arrow
 import random
 
+
 class Clients:
     """
     Get clients from burpui api url.

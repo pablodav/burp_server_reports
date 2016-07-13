@@ -4,7 +4,7 @@ import arrow
 
 class BurpReports:
 
-    def __init__(self, clients_dict, days_outdated=31):
+    def __init__(self, clients_dict, days_outdated=31, detail=None):
         """
 
         :param clients_dict: list of clients in burp_reports format, example:
@@ -15,14 +15,18 @@ class BurpReports:
               'b_last' : 'date',
             }
         }
+        :param days_outdated: number to consider days outdated
+        :param detail: Used to print more details or not
 
         """
 
         self.clients = clients_dict
         self.days_outdated = days_outdated
+        self.detail = detail
 
     def print_basic_txt(self):
-        clients_reports = TxtReports(self.clients)
+        clients_reports = TxtReports(self.clients,
+                                     detail=self.detail)
         clients_reports.report_to_txt()
 
     def report_outdated(self, export_txt=None):
@@ -56,7 +60,10 @@ class BurpReports:
                     outdated_clients.setdefault(k, v)
                     outdated_clients[k]['b_status'] = 'outdated'
 
-        clients_reports = TxtReports(outdated_clients)
+        columns = {'Status': 'b_status'}
+        clients_reports = TxtReports(outdated_clients,
+                                     additional_columns=columns,
+                                     detail=self.detail)
 
         if export_txt:
             clients_reports.report_to_txt()

@@ -32,6 +32,9 @@ def parse_args():
 
     parser.add_argument('--debug', dest='debug', nargs='?', default=None, const=True,
                         help='Activate for debugging purposes')
+
+    parser.add_argument('--detail', dest='detail', nargs='?', default=None, const=True,
+                        help='Adds more details to reports')
     
     # Print help if no arguments where parsed
     if len(sys.argv)==1:
@@ -132,7 +135,8 @@ def main():
             clients_dict = bui_api_clients_stats(burpui_apiurl, debug)
 
     burp_reports = BurpReports(clients_dict,
-                               days_outdated=config_options.get('days_outdated'))
+                               days_outdated=config_options.get('days_outdated'),
+                               detail=options.detail)
 
     # Add some report option to use, use clients_dict already set
     if options.report == 'print':

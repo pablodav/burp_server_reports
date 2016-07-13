@@ -19,34 +19,48 @@ class Clients:
         self.apiurl = apiurl
         self.debug = debug
 
-    # Notes for future detection of multi-agent mode:
-    # url to check /api/servers/report
-    # If not {"servers": {"name": null}}
-    # Then we should look on the list of servers with their names.
-    # https://burp-ui.readthedocs.io/en/latest/api.html#get--api-servers-report
-    # And use:
-    # Parameters:
-    # server (str)  Which server to collect data from when in multi-agent mode
+        self.IsMultiAgent = self._is_multi_agent()
 
-    # Comments from Ziirish:
-    # You'd better test /api/servers/stats
-    # It returns an empty list ([]) when there are no agents and then switch back to
-    # the "standalone" mode.
-    # Now if the list is not empty, you'll have something like:
+    @staticmethod
+    def _is_multi_agent(self):
+        """
 
-    # [
-    # {
-    #   'alive': true,
-    #   'clients': 2,
-    #   'name': 'burp1',
-    # },
-    #  {
-    #   'alive': false,
-    #   'clients': 0,
-    #   'name': 'burp2',
-    #   },
-    #  ]
+        :param self:
+        :return: True/None
+        """
+        # Notes for future detection of multi-agent mode:
+        # url /api/servers/report
+        # Then we should look on the list of servers with their names.
+        # https://burp-ui.readthedocs.io/en/latest/api.html#get--api-servers-report
+        # And use:
+        # Parameters:
+        # server (str)  Which server to collect data from when in multi-agent mode
 
+        # Comments from Ziirish:
+        # You'd better test /api/servers/stats
+        # It returns an empty list ([]) when there are no agents and then switch back to
+        # the "standalone" mode.
+        # Now if the list is not empty, you'll have something like:
+
+        # [
+        # {
+        #   'alive': true,
+        #   'clients': 2,
+        #   'name': 'burp1',
+        # },
+        #  {
+        #   'alive': false,
+        #   'clients': 0,
+        #   'name': 'burp2',
+        #   },
+        #  ]
+        serviceurl = self.apiurl + 'servers/stats'
+        burpui_servers = get_url_data(serviceurl)
+
+        if burpui_servers:
+            return True
+        else:
+            return None
 
     def get_clients_stats(self):
         """

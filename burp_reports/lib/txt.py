@@ -198,7 +198,7 @@ class TxtReports:
                 
         if self.detail:
 
-            foot_notes = '{:>30}  {:02}:{:02}:{:02}'.format('total time backups taken:',
+            foot_notes = '\n{:>30}  {:02}:{:02}:{:02}'.format('total time backups taken:',
                                                                total_taken // 3600,
                                                                total_taken % 3600 // 60,
                                                                total_taken % 60)

@@ -87,7 +87,7 @@ class Clients:
             serviceurl = self.apiurl + 'clients/{}/stats'.format(server)
 
             if self.debug:
-                print('serviceurl: {} params: {}'.format(serviceurl))
+                print('serviceurl: {}'.format(serviceurl))
 
             server_clients_stats = get_url_data(serviceurl=serviceurl)
             if self.debug:

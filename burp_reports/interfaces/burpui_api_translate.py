@@ -1,6 +1,7 @@
 # -*- coding: utf8 -*-
 import arrow
 
+
 class TranslateBurpuiAPI:
     """
     Translate data from burpui_api to burp_reports

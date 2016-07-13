@@ -61,6 +61,35 @@ class Clients:
         else:
             return None
 
+    def _get_clients_stats_multi(self):
+        """
+
+        :return: return a complete list of clients for each alive server in multi-agent server.
+        """
+
+        serviceurl = self.apiurl + 'servers/stats'
+        burpui_servers = get_url_data(serviceurl)
+        clients_stats = []
+
+        for i in range(len(burpui_servers)):
+
+            # Do not get data from servers offline
+            if not burpui_servers[i]['alive']:
+                continue
+
+            server = burpui_servers[i]['name']
+            burpui_api_params = {'server': server}
+
+            serviceurl = self.apiurl + 'clients/stats'
+            server_clients_stats = get_url_data(serviceurl=serviceurl, params=burpui_api_params)
+
+            for cli in range(len(server_clients_stats)):
+                client_stats = server_clients_stats[cli]
+                clients_stats['server'] = server
+                clients_stats.append(client_stats)
+
+        return clients_stats
+
     def get_clients_stats(self):
         """
         #  server.get_all_clients()
@@ -91,7 +120,10 @@ class Clients:
         if self.debug:
             print("Url received: {}".format(self.apiurl))
 
-        serviceurl = self.apiurl + 'clients/stats'
-        clients_stats = get_url_data(serviceurl=serviceurl)
+        if self.IsMultiAgent:
+            clients_stats = self._get_clients_stats_multi()
+        else:
+            serviceurl = self.apiurl + 'clients/stats'
+            clients_stats = get_url_data(serviceurl=serviceurl)
 
         return clients_stats

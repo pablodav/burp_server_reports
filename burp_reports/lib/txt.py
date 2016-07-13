@@ -1,5 +1,5 @@
 
-from datetime import datetime, timedelta
+from datetime import datetime
 from .humanize import humanize_file_size
 import os
 
@@ -13,7 +13,7 @@ class TxtReports:
                  additional_columns=None):
         """
         
-        :param clients: dict of clients formated for burp reports.
+        :param clients: dict of clients formatted for burp reports.
         :param file: file to export the printed text
         :param detail: Use True when more detailed information is required
         :param debug: Used to active more debug info if required.
@@ -37,11 +37,13 @@ class TxtReports:
         :param footer: True/None to report footer information
         :param comments: String text with Additional comments to add to the client
         :param header: True/None to report header formatted
-        :param detail: adds detailed information of clients
-        :return: client/footer/header str depending on the option choosen
+        :return: client/footer/header str depending on the option chosen
         """
 
         jt = 11
+        headers_text = ''
+        client_text = ''
+        footer_text = ''
 
         # List with dict {header: report_key to use from reports dict}
         client_details = [{'Date(local)': 'b_date'},
@@ -80,6 +82,10 @@ class TxtReports:
             if comments:
                 headers_text += ' {:{}.{}} '.format('Comments', jt, jt)
 
+            # Add more details from static method
+            if self.detail:
+                headers_text += self._txt_header_details(jt)
+
         # Format basic client information for the basic header
         if client:
             # Dict of client only data
@@ -107,28 +113,9 @@ class TxtReports:
             if comments:
                 client_text += ' {:{}.{}} '.format(comments, jt, jt)
 
-        # Additional details to add on headers and clients to the end of the strings
-        if self.detail:
-
-            if header:
-                # Additional calculated added data
-                headers_text += ' {:{}.{}} '.format('time taken', jt, jt)
-                headers_text += ' {:{}.{}} '.format('backup size', jt, jt)
-                headers_text += ' {:{}.{}} '.format('bytes received', jt, jt)
-
-            if client:
-                # Look into client_data['backup_stats']['time_taken']
-                s = int(client_data.get('backup_stats', {}).get('time_taken', 0))
-                time_taken = str('{:02}:{:02}:{:02}'.format(s // 3600, s % 3600 // 60, s % 60))
-                # Look into client_data['backup_stats']['bytes_in_backup']
-                backup_size = int(client_data.get('backup_stats', {}).get('bytes_in_backup', 0))
-                # Look into client_data['backup_stats']['bytes_received']
-                bytes_received = int(client_data.get('backup_stats', {}).get('bytes_received', 0))
-
-                # Additional calculated added data
-                client_text += ' {:^{}} '.format(time_taken, jt, jt)
-                client_text += ' {:<{}d} '.format(backup_size, jt)
-                client_text += ' {:<{}d} '.format(bytes_received, jt)
+            # Add more details from static method
+            if self.detail:
+                client_text += self._txt_client_details(client_data, jt)
 
         if footer:
             if self.detail:
@@ -136,13 +123,52 @@ class TxtReports:
             else:
                 footer_text = '\n\n{}\n'.format(footer)
 
-        # Return formated text
+        # Return formatted text
         if header:
             return headers_text
         if client:
             return client_text
         if footer:
             return footer_text
+
+    @staticmethod
+    def _txt_header_details(jt):
+        """
+
+        :param jt: number of spaces to use to justify and format columns
+        :return:
+        """
+        # Additional details to add on headers and clients to the end of the strings
+        headers_text = ' {:{}.{}} '.format('time taken', jt, jt)
+        headers_text += ' {:{}.{}} '.format('backup size', jt, jt)
+        headers_text += ' {:{}.{}} '.format('bytes received', jt, jt)
+
+        return headers_text
+
+    @staticmethod
+    def _txt_client_details(client_data, jt):
+        """
+
+        :param client_data: dict in burp reports format only for the client you want to get additional details
+        :param jt: number of spaces to use to justify and format columns
+        :return:
+        """
+        # Additional details to add on headers and clients to the end of the strings
+        # Additional calculated added data
+        # Look into client_data['backup_stats']['time_taken']
+        s = int(client_data.get('backup_stats', {}).get('time_taken', 0))
+        time_taken = str('{:02}:{:02}:{:02}'.format(s // 3600, s % 3600 // 60, s % 60))
+        # Look into client_data['backup_stats']['bytes_in_backup']
+        backup_size = int(client_data.get('backup_stats', {}).get('bytes_in_backup', 0))
+        # Look into client_data['backup_stats']['bytes_received']
+        bytes_received = int(client_data.get('backup_stats', {}).get('bytes_received', 0))
+
+        # Additional calculated added data
+        client_text = ' {:^{}} '.format(time_taken, jt, jt)
+        client_text += ' {:<{}d} '.format(backup_size, jt)
+        client_text += ' {:<{}d} '.format(bytes_received, jt)
+
+        return client_text
 
     def print_text(self, client=None, header=None, footer=None):
         """
@@ -152,11 +178,9 @@ class TxtReports:
 
         :param client:
         :param footer:
-        :param comments:
         :param header: print header
         """
 
-        jt = 11
         f = None
 
         if self.file:

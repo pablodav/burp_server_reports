@@ -21,7 +21,6 @@ class Clients:
 
         self.IsMultiAgent = self._is_multi_agent()
 
-    @staticmethod
     def _is_multi_agent(self):
         """
 

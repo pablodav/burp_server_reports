@@ -132,9 +132,9 @@ class TxtReports:
 
         if footer:
             if self.detail:
-                footer_text = '\n\n'.format(footer)
+                footer_text = '\n\n{}\n'.format(footer)
             else:
-                footer_text = '\n\n'.format(footer)
+                footer_text = '\n\n{}\n'.format(footer)
 
         # Return formated text
         if header:

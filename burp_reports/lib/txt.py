@@ -199,9 +199,9 @@ class TxtReports:
         if self.detail:
 
             foot_notes = '\n{:>30}  {:02}:{:02}:{:02}'.format('total time backups taken:',
-                                                               total_taken // 3600,
-                                                               total_taken % 3600 // 60,
-                                                               total_taken % 60)
+                                                              total_taken // 3600,
+                                                              total_taken % 3600 // 60,
+                                                              total_taken % 60)
 
             foot_notes += "\n{:>30}  {}".format('total size in backup:',
                                                 humanize_file_size(bytes_in_backup))

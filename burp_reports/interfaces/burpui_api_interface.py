@@ -9,13 +9,15 @@ class BUIClients:
     Get data from burp ui clients
     """
 
-    def __init__(self, burpui_apiurl):
+    def __init__(self, burpui_apiurl, debug=None):
         """
 
         """
 
         # Define clients from Interface
-        self.clientsobj = Clients(apiurl=burpui_apiurl)
+        self.clientsobj = Clients(apiurl=burpui_apiurl,
+                                  debug=debug)
+        self.debug = debug
 
     def translate_clients_stats(self):
         """

@@ -49,10 +49,12 @@ def bui_api_clients_stats(burpui_apiurl, debug=None):
     """
 
     :param burpui_apiurl: string to burpui_apiurl, full url http://user:pass@server:port/api/
+    :param debug: To activate debug on script
     :return: dict with clients stats
     """
     from .interfaces.burpui_api_interface import BUIClients
-    bui_clients = BUIClients(burpui_apiurl=burpui_apiurl)
+    bui_clients = BUIClients(burpui_apiurl=burpui_apiurl,
+                             debug=debug)
     clients_dict = bui_clients.translate_clients_stats()
 
     if debug:

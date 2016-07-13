@@ -69,6 +69,10 @@ class Clients:
 
         serviceurl = self.apiurl + 'servers/stats'
         burpui_servers = get_url_data(serviceurl)
+
+        if self.debug:
+            print('burpui_servers: {}'.format(burpui_servers))
+
         clients_stats = []
 
         for i in range(len(burpui_servers)):
@@ -78,10 +82,16 @@ class Clients:
                 continue
 
             server = burpui_servers[i]['name']
-            burpui_api_params = {'server': server}
+            # Not used now: burpui_api_params = {'server': server}
 
-            serviceurl = self.apiurl + 'clients/stats'
-            server_clients_stats = get_url_data(serviceurl=serviceurl, params=burpui_api_params)
+            serviceurl = self.apiurl + 'clients/{}/stats'.format(server)
+
+            if self.debug:
+                print('serviceurl: {} params: {}'.format(serviceurl))
+
+            server_clients_stats = get_url_data(serviceurl=serviceurl)
+            if self.debug:
+                print('server_clients_stats: {}'.format(server_clients_stats))
 
             for cli in range(len(server_clients_stats)):
                 client_stats = server_clients_stats[cli]

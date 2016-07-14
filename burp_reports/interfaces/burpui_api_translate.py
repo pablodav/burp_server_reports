@@ -35,11 +35,19 @@ class TranslateBurpuiAPI:
         for cli in range(len(self.clients)):
             # Get the client dict data from list of clients
             client_data = self.clients[cli]
+            client_name = client_data.get(data_t['client_name'])
+
+            # Add server list if it exists
+            if client_data.get('server', None):
+                if client_name in d_clients:
+                    d_clients[client_name]['server'].append(client_data['server'])
+                else:
+                    d_clients.setdefault(client_name, {})['server'] = [client_data['server']]
 
             # Translate and define variables:
             # Define a dict with data to clients
             for k, v in data_t.items():
-                client_name = client_data.get(data_t['client_name'])
+
                 if k is not 'client_name':
                     # similar and simplified to: d_clients.setdefault(client_name, {})['b_phase'] = b_phase
                     d_clients.setdefault(client_name, {})[k] = client_data.get(data_t[k])
@@ -50,7 +58,6 @@ class TranslateBurpuiAPI:
                     date_and_time = date_and_time.to('local')
                     d_clients.setdefault(client_name, {})['b_date'] = date_and_time.format('YYYY-MM-DD')
                     d_clients.setdefault(client_name, {})['b_time'] = date_and_time.format('HH:mm:ss')
-
 
         # Return dictionary of clients expected to use in burp_reports
         return d_clients

@@ -93,6 +93,7 @@ class Clients:
             if self.debug:
                 print('server_clients_stats: {}'.format(server_clients_stats))
 
+            # Append client to clients_stats
             for cli in range(len(server_clients_stats)):
                 client_stats = server_clients_stats[cli]
                 client_stats['server'] = server

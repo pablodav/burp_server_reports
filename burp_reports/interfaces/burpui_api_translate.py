@@ -50,10 +50,10 @@ class TranslateBurpuiAPI:
 
                 if k is not 'client_name':
                     # similar and simplified to: d_clients.setdefault(client_name, {})['b_phase'] = b_phase
-                    d_clients.setdefault(client_name, {})[k] = client_data.get(data_t[k])
+                    d_clients.setdefault(client_name, {})[k] = client_data.get(v)
 
                 # Add b_date and b_time from b_last information
-                if k is 'b_last' and client_data.get(data_t[k]) and client_data.get(data_t[k]) not in 'never':
+                if k is 'b_last' and client_data.get(v) and client_data.get(v) not in 'never':
                     date_and_time = arrow.get(client_data.get(data_t[k]), 'YYYY-MM-DD HH:mm:ssZZ')
                     date_and_time = date_and_time.to('local')
                     d_clients.setdefault(client_name, {})['b_date'] = date_and_time.format('YYYY-MM-DD')

@@ -37,12 +37,12 @@ class TranslateBurpuiAPI:
             client_data = self.clients[cli]
             client_name = client_data.get(data_t['client_name'])
 
-            # Add server list if it exists
+            # Add server dict if it exists
             if client_data.get('server', None):
                 if client_name in d_clients:
-                    d_clients[client_name]['server'].append(client_data['server'])
+                    d_clients[client_name]['server'].add(client_data['server'])
                 else:
-                    d_clients.setdefault(client_name, {})['server'] = [client_data['server']]
+                    d_clients.setdefault(client_name, {})['server'] = {client_data['server']}
 
             # Translate and define variables:
             # Define a dict with data to clients

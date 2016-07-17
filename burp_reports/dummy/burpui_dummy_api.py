@@ -50,14 +50,19 @@ class Clients:
             }
         ]
 
+        server = 'server1'
         # Add clients with random last in a range of 100
         for num in range(1, 101):
             client_time = actual_time.replace(days=-random.randrange(5, 200))
             client_last = client_time.format('YYYY-MM-DD HH:mm:ssZZ')
             client_name = "client_{:03d}".format(num)
-            client_state = 'idle'
+            client_state = random.choice(['idle', 'working'])
             client_phase = 'null'
             client_percent = 0
+            if client_state == 'working':
+                client_phase = 'phase2'
+                client_percent = random.randrange(30, 90)
+            if num > 50: server = 'server2'
 
             clients_stats.append({
                 "last": client_last,
@@ -65,6 +70,7 @@ class Clients:
                 "state": client_state,
                 "phase": client_phase,
                 "percent": client_percent,
+                "server": server,
             })
 
         return clients_stats

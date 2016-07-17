@@ -26,7 +26,8 @@ class TranslateBurpuiAPI:
               'b_state'    : 'working/current',
               'b_phase' : 'phase1/phase2',
               'b_date' : 'date(local)',
-              'b_time' : 'time(local)'
+              'b_time' : 'time(local)',
+              'server': 'server in multi-agent mode'
             }
         }
         """

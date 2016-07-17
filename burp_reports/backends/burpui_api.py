@@ -101,6 +101,23 @@ class Clients:
 
         return clients_stats
 
+    def _get_backup_report_stats(self, server, client):
+        """
+        GET /api/client/(server)/report/(name)
+        GET /api/client/report/(name)
+
+        will be used: totsize, received, duration. 
+        """
+
+        serviceurl = self.apiurl + 'api/client/report/{}'.format(client)
+
+        if server:
+            serviceurl = self.apiurl + 'api/client/{}/report/{}'.format(server, client)
+
+        backup_report = get_url_data(serviceurl)
+
+        return backup_report
+
     def get_clients_stats(self):
         """
         #  server.get_all_clients()

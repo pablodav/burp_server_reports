@@ -15,7 +15,7 @@ Usable by reports scripts:
               'b_phase' : 'phase1/phase2',
               'b_date' : 'date',
               'b_time' : 'time',
-              'server' : 'server in multi-agent mode'
+              'server' : ['server',  'list', 'in multi-agent mode']
             }
         }
 

@@ -1,5 +1,6 @@
 # -*- coding: utf8 -*-
 import arrow
+from collections import defaultdict
 
 
 class TranslateBurpuiAPI:
@@ -31,19 +32,15 @@ class TranslateBurpuiAPI:
             }
         }
         """
-        d_clients = {}
+        d_clients = defaultdict(dict)
 
         for cli in range(len(self.clients)):
             # Get the client dict data from list of clients
             client_data = self.clients[cli]
-            client_name = client_data.get(data_t['client_name'])
+            client_name = client_data.get(data_t['client_name'], None)
 
-            # Add server dict if it exists
-            if client_data.get('server', None):
-                if client_name in d_clients:
-                    d_clients[client_name]['server'].add(client_data['server'])
-                else:
-                    d_clients.setdefault(client_name, {})['server'] = {client_data['server']}
+            # Go to next item in client_data if there is not 'client_name'
+            if not client_name: continue
 
             # Translate and define variables:
             # Define a dict with data to clients
@@ -51,14 +48,19 @@ class TranslateBurpuiAPI:
 
                 if k is not 'client_name':
                     # similar and simplified to: d_clients.setdefault(client_name, {})['b_phase'] = b_phase
-                    d_clients.setdefault(client_name, {})[k] = client_data.get(v)
+                    d_clients[client_name][k] = client_data.get(v, None)
 
                 # Add b_date and b_time from b_last information
                 if k is 'b_last' and client_data.get(v) and client_data.get(v) not in 'never':
                     date_and_time = arrow.get(client_data.get(data_t[k]), 'YYYY-MM-DD HH:mm:ssZZ')
                     date_and_time = date_and_time.to('local')
-                    d_clients.setdefault(client_name, {})['b_date'] = date_and_time.format('YYYY-MM-DD')
-                    d_clients.setdefault(client_name, {})['b_time'] = date_and_time.format('HH:mm:ss')
+                    d_clients[client_name]['b_date'] = date_and_time.format('YYYY-MM-DD')
+                    d_clients[client_name]['b_time'] = date_and_time.format('HH:mm:ss')
+
+            # Add server list if not exists
+            if not d_clients[client_name].get('server', None): d_clients[client_name]['server'] = []
+            # Append servers if exist
+            if client_data.get('server', None): d_clients[client_name]['server'].append(client_data['server'])
 
         # Return dictionary of clients expected to use in burp_reports
         return d_clients

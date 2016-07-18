@@ -1,5 +1,6 @@
 # -*- coding: utf8 -*-
 from ..lib.urlget import get_url_data
+from collections import defaultdict
 
 
 class Clients:
@@ -101,22 +102,54 @@ class Clients:
 
         return clients_stats
 
-    def _get_backup_report_stats(self, server, client):
+    def _get_backup_report_stats(self, client, number, server=None):
         """
-        GET /api/client/(server)/report/(name)
-        GET /api/client/report/(name)
+        GET /api/client/(server)/report/(name)/(int: backup)
+        GET /api/client/report/(name)/(int: backup)
 
         will be used: totsize, received, duration. 
         """
 
-        serviceurl = self.apiurl + 'api/client/report/{}'.format(client)
+        serviceurl = self.apiurl + 'client/report/{client}/{number}'.format(client, number)
 
         if server:
-            serviceurl = self.apiurl + 'api/client/{}/report/{}'.format(server, client)
+            serviceurl = self.apiurl + 'client/{server}/stats/{client}/{number}'.format(server, client, number)
+
+        if self.debug: print('apiurl: {}'.format(serviceurl))
 
         backup_report = get_url_data(serviceurl)
 
         return backup_report
+
+    def _get_client_report_stats(self, client, server=None):
+        """
+        https://burp-ui.readthedocs.io/en/latest/api.html#get--api-client-stats-(name)
+        GET  /api/client/stats/(name)
+        GET /api/client/(server)/stats/(name)
+
+        :return:
+        [
+          {
+            "date": "2015-01-25 13:32:00",
+            "deletable": true,
+            "encrypted": true,
+            "received": 123,
+            "size": 1234,
+            "number": 1
+          },
+        ]
+        """
+
+        serviceurl = self.apiurl + 'client/stats/{}'.format(client)
+
+        if server:
+            serviceurl = self.apiurl + 'client/{}/stats/{}'.format(server, client)
+
+        if self.debug: print('apiurl: {}'.format(serviceurl))
+
+        client_report = get_url_data(serviceurl)
+
+        return client_report
 
     def get_clients_stats(self):
         """
@@ -155,3 +188,56 @@ class Clients:
             clients_stats = get_url_data(serviceurl=serviceurl)
 
         return clients_stats
+
+    def get_clients_reports(self):
+        """
+        Clients reports method
+        :return: [client_report_dict, ]
+        """
+
+        # Get a list of clients to use
+        clients_stats = self.get_clients_stats()
+
+        if self.debug: print('clients_stats: {}'.format(clients_stats))
+
+        # Create a new list to return
+        clients_report = []
+
+        for cli in range(len(clients_stats)):
+
+            # Server, client is required to fetch report_stats
+            server = clients_stats[cli].get('server', None)
+            if self.debug: print('server: {}'.format(server))
+            client = clients_stats[cli].get('name', None)
+
+            # Create dict with all data of the client's dict
+            client_report_dict = defaultdict(dict)
+            client_report_dict.update(clients_stats[cli])
+            # Create new list to use a list of numbers of backups only
+            backups = []
+
+            if not client: continue
+
+            if clients_stats[cli].get('last', 'None') not in ['None', 'never']:
+
+                # Get client_report_stats and create a list of backups numbers only
+                cr_stats = self._get_client_report_stats(client, server=server)
+                for n in range(len(cr_stats)): backups.append(cr_stats[n].get('number'))
+                import pdb; pdb.set_trace()
+                # Get the maximum number of backup to use
+                number = max(backups)
+                # Add the backup_report to the dict of the client
+                client_report_dict['backup_report'] = self._get_backup_report_stats(client, number, server=server)
+            else:
+                client_report_dict['backup_report'] = []
+
+            # if self.debug: print('backup_report: {}'.format(client_report_dict))
+
+            clients_report.append(client_report_dict)
+
+        return clients_report
+
+
+
+
+

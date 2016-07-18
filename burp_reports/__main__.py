@@ -45,7 +45,7 @@ def parse_args():
     return options
 
 
-def bui_api_clients_stats(burpui_apiurl, debug=None):
+def bui_api_clients_stats(burpui_apiurl, debug=None, detail=None):
     """
 
     :param burpui_apiurl: string to burpui_apiurl, full url http://user:pass@server:port/api/
@@ -55,7 +55,8 @@ def bui_api_clients_stats(burpui_apiurl, debug=None):
     from .interfaces.burpui_api_interface import BUIClients
     bui_clients = BUIClients(burpui_apiurl=burpui_apiurl,
                              debug=debug)
-    clients_dict = bui_clients.translate_clients_stats()
+
+    clients_dict = bui_clients.translate_clients_stats(detail=detail)
 
     if debug:
         from pprint import pprint
@@ -134,7 +135,9 @@ def main():
             clients_dict = bui_dummy_clients_stats()
         else:
             # Get clients stats from burpui_api_interface
-            clients_dict = bui_api_clients_stats(burpui_apiurl, debug)
+            clients_dict = bui_api_clients_stats(burpui_apiurl,
+                                                 debug,
+                                                 detail=options.detail)
 
     burp_reports = BurpReports(clients_dict,
                                days_outdated=config_options.get('days_outdated'),

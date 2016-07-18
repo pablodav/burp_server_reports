@@ -19,14 +19,17 @@ class BUIClients:
                                   debug=debug)
         self.debug = debug
 
-    def translate_clients_stats(self):
+    def translate_clients_stats(self, detail=None):
         """
 
         :return: clients translated
         """
 
         # Get the list of clients from the Interface
-        clients = self.clientsobj.get_clients_stats()
+        if detail:
+            clients = self.clientsobj.get_clients_reports()
+        else:
+            clients = self.clientsobj.get_clients_stats()
 
         if self.debug:
             print('clients: {}'.format(clients))

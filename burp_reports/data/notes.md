@@ -35,10 +35,10 @@ Usable by reports scripts:
 
     {'client_name':
         { --- ommited values ---,
-          'backup_stats': {
-              'time_taken': seconds
-              'bytes_in_backup': bytes
-              'bytes_received': bytes
+          'backup_report': {
+              'duration': seconds
+              'totsize': bytes
+              'received': bytes
           }
         }
     }

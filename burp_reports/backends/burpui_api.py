@@ -113,7 +113,7 @@ class Clients:
         serviceurl = self.apiurl + 'client/report/{}/{}'.format(client, number)
 
         if server:
-            serviceurl = self.apiurl + 'client/{}/stats/{}/{}'.format(server, client, number)
+            serviceurl = self.apiurl + 'client/{}/report/{}/{}'.format(server, client, number)
 
         if self.debug: print('apiurl: {}'.format(serviceurl))
 
@@ -220,12 +220,15 @@ class Clients:
 
             if clients_stats[cli].get('last', 'None') not in ['None', 'never']:
 
-                # Get client_report_stats and create a list of backups numbers only
+                # Get client_report_stats ;
+                # Needs to add test if it's [] retry n times due to issue:
+                # https://git.ziirish.me/ziirish/burp-ui/issues/148
                 cr_stats = self._get_client_report_stats(client, server=server)
+                # and create a list of backups numbers only
                 for n in range(len(cr_stats)): backups.append(cr_stats[n].get('number'))
-                import pdb; pdb.set_trace()
                 # Get the maximum number of backup to use
                 number = max(backups)
+
                 # Add the backup_report to the dict of the client
                 client_report_dict['backup_report'] = self._get_backup_report_stats(client, number, server=server)
             else:

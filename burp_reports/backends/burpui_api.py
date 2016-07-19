@@ -110,10 +110,10 @@ class Clients:
         will be used: totsize, received, duration. 
         """
 
-        serviceurl = self.apiurl + 'client/report/{client}/{number}'.format(client, number)
+        serviceurl = self.apiurl + 'client/report/{}/{}'.format(client, number)
 
         if server:
-            serviceurl = self.apiurl + 'client/{server}/stats/{client}/{number}'.format(server, client, number)
+            serviceurl = self.apiurl + 'client/{}/stats/{}/{}'.format(server, client, number)
 
         if self.debug: print('apiurl: {}'.format(serviceurl))
 

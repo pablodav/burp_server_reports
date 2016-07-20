@@ -25,8 +25,9 @@ setup(name='burp_reports',
       ]
     },
     install_requires=[
-      'invpy_libs',
-      'requests',
-      'arrow'
+        'invpy_libs',
+        'requests',
+        'arrow',
+        'requests-cache'
     ],
     zip_safe=False)

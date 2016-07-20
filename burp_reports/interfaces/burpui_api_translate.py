@@ -84,5 +84,10 @@ class TranslateBurpuiAPI:
             "b_last": "last",
             "client_name": "name" }
 
+        # Check if key backup_report exists in clients
+        if 'backup_report' in self.clients[0]:
+            # Add to dictionary of client
+            data_t['backup_report'] = 'backup_report'
+
         reports_clients = self.translate_clients_function(data_t=data_t)
         return reports_clients

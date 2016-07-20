@@ -232,7 +232,7 @@ class Clients:
                 # Add the backup_report to the dict of the client
                 client_report_dict['backup_report'] = self._get_backup_report_stats(client, number, server=server)
             else:
-                client_report_dict['backup_report'] = []
+                client_report_dict['backup_report'] = {}
 
             # if self.debug: print('backup_report: {}'.format(client_report_dict))
 

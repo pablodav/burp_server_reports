@@ -139,9 +139,9 @@ class TxtReports:
         :return:
         """
         # Additional details to add on headers and clients to the end of the strings
-        headers_text = ' {:{}.{}} '.format('time taken', jt, jt)
-        headers_text += ' {:{}.{}} '.format('backup size', jt, jt)
-        headers_text += ' {:{}.{}} '.format('bytes received', jt, jt)
+        headers_text = ' {:{}.{}} '.format('Duration', jt, jt)
+        headers_text += ' {:{}.{}} '.format('Size', jt, jt)
+        headers_text += ' {:{}.{}} '.format('Received', jt, jt)
 
         return headers_text
 
@@ -155,18 +155,18 @@ class TxtReports:
         """
         # Additional details to add on headers and clients to the end of the strings
         # Additional calculated added data
-        # Look into client_data['backup_stats']['time_taken']
-        s = int(client_data.get('backup_stats', {}).get('time_taken', 0))
-        time_taken = str('{:02}:{:02}:{:02}'.format(s // 3600, s % 3600 // 60, s % 60))
-        # Look into client_data['backup_stats']['bytes_in_backup']
-        backup_size = int(client_data.get('backup_stats', {}).get('bytes_in_backup', 0))
-        # Look into client_data['backup_stats']['bytes_received']
-        bytes_received = int(client_data.get('backup_stats', {}).get('bytes_received', 0))
+        # Look into client_data['backup_report']['duration']
+        s = int(client_data.get('backup_report', {}).get('duration', 0))
+        duration = str('{:02}:{:02}:{:02}'.format(s // 3600, s % 3600 // 60, s % 60))
+        # Look into client_data['backup_report']['totsize']
+        totsize = int(client_data.get('backup_report', {}).get('totsize', 0))
+        # Look into client_data['backup_report']['received']
+        received = int(client_data.get('backup_report', {}).get('received', 0))
 
         # Additional calculated added data
-        client_text = ' {:^{}} '.format(time_taken, jt, jt)
-        client_text += ' {:<{}d} '.format(backup_size, jt)
-        client_text += ' {:<{}d} '.format(bytes_received, jt)
+        client_text = ' {:^{}} '.format(duration, jt, jt)
+        client_text += ' {:<{}} '.format(humanize_file_size(totsize), jt)
+        client_text += ' {:<{}} '.format(humanize_file_size(received), jt)
 
         return client_text
 
@@ -207,7 +207,7 @@ class TxtReports:
         """
 
         total_taken = 0
-        bytes_in_backup = 0
+        totsize = 0
         total_clients = 0
         self.print_text(client=None, header=True)
         
@@ -216,19 +216,19 @@ class TxtReports:
             self.print_text(client)
             
             if self.detail:
-                total_taken += int(client_data.get('backup_stats', {}).get('time_taken', 0))
-                bytes_in_backup += int((client_data.get('backup_stats', {}).get('bytes_in_backup', 0)))
+                total_taken += int(client_data.get('backup_report', {}).get('duration', 0))
+                totsize += int((client_data.get('backup_report', {}).get('totsize', 0)))
                 total_clients += 1
                 
         if self.detail:
 
-            foot_notes = '\n{:>30}  {:02}:{:02}:{:02}'.format('total time backups taken:',
+            foot_notes = '\n{:>30}  {:02}:{:02}:{:02}'.format('total duration backups taken:',
                                                               total_taken // 3600,
                                                               total_taken % 3600 // 60,
                                                               total_taken % 60)
 
             foot_notes += "\n{:>30}  {}".format('total size in backup:',
-                                                humanize_file_size(bytes_in_backup))
+                                                humanize_file_size(totsize))
 
             foot_notes += '\n{:>30}  {}'.format('Total clients:',
                                                 total_clients)

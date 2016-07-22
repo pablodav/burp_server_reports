@@ -24,7 +24,7 @@ def parse_args():
     parser.add_argument('-ui', '--burpui_apiurl', dest='burpui_apiurl', nargs='?', default=None, const=None,
                         help='full url to burpui api, like http://user:pass@server:port/api/ ')
     
-    # Adding report choices with subcommand
+    # Adding report choices
     parser.add_argument('--report', '-r', dest='report', nargs='?', const='print', default='print',
                         choices=['print', 'outdated'],
                         help='Report choice, options: \n\n'
@@ -54,6 +54,7 @@ def bui_api_clients_stats(burpui_apiurl, debug=None, detail=None):
 
     :param burpui_apiurl: string to burpui_apiurl, full url http://user:pass@server:port/api/
     :param debug: To activate debug on script
+    :param detail: Adds more detailed info, backup_report nested dict with some info like: duration, received, totsize.
     :return: dict with clients stats
     """
     from .interfaces.burpui_api_interface import BUIClients

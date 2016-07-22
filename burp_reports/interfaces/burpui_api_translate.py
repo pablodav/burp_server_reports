@@ -51,11 +51,15 @@ class TranslateBurpuiAPI:
                     d_clients[client_name][k] = client_data.get(v, None)
 
                 # Add b_date and b_time from b_last information
-                if k is 'b_last' and client_data.get(v) and client_data.get(v) not in 'never':
-                    date_and_time = arrow.get(client_data.get(data_t[k]), 'YYYY-MM-DD HH:mm:ssZZ')
-                    date_and_time = date_and_time.to('local')
-                    d_clients[client_name]['b_date'] = date_and_time.format('YYYY-MM-DD')
-                    d_clients[client_name]['b_time'] = date_and_time.format('HH:mm:ss')
+                # if k is b_last and b_last has data and is not never, add the keys.
+                if k is 'b_last':
+                    last_backup = client_data.get(v, None)
+                    if last_backup and last_backup not in 'never':
+                        date_and_time = arrow.get(last_backup, 'YYYY-MM-DD HH:mm:ssZZ')
+                        # Convert date_and_time to local time
+                        date_and_time = date_and_time.to('local')
+                        d_clients[client_name]['b_date'] = date_and_time.format('YYYY-MM-DD')
+                        d_clients[client_name]['b_time'] = date_and_time.format('HH:mm:ss')
 
             # Add server list if not exists
             if not d_clients[client_name].get('server', None): d_clients[client_name]['server'] = []
@@ -73,6 +77,9 @@ class TranslateBurpuiAPI:
             { 'b_last'    : '2016-06-23 14:33:06-03:00',
               'b_state'    : 'working/current',
               'b_phase' : 'phase1/phase2'
+              'b_date' : 'local time date'
+              'b_time' : 'local time'
+              'backup_report' : 'dict with backup report, data like duration, totsize, received'
             }
         }
         """

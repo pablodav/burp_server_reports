@@ -7,6 +7,7 @@ import os
 from argparse import ArgumentParser
 from . lib.configs import parse_config
 from . reports.clients_reports import BurpReports
+from collections import defaultdict
 
 
 def parse_args():
@@ -77,45 +78,26 @@ def bui_dummy_clients_stats():
     return clients_dict
 
 
-def get_burpui_apiurl(options):
-    """
-
-    :param options: options from argparse
-    :return: burpui_apiurl from conf or cmdline args.
-    """
-    burpui_apiurl = None
-
-    if options.reports_conf:
-        # Define the configuration file to use.
-        config_file = options.reports_conf
-        # Get a configuration options from config_file
-        config_options = parse_config(config_file)
-
-        # burpui_apiurl from config file
-        if config_options.get('burpui_apiurl', False):
-            burpui_apiurl = config_options.get('burpui_apiurl')
-
-    # burpui_apiurl to defined on command line options
-    if options.burpui_apiurl:
-        burpui_apiurl = options.burpui_apiurl
-
-    return burpui_apiurl
-
-
 def get_main_conf(options):
     """
 
     :param options: options from argparse
     :return: dict with options from config file or defaults
     """
-    _options = {}
+    _options = defaultdict(dict)
     config_options = {}
 
     if options.reports_conf:
         config_options = parse_config(options.reports_conf)
 
     # Creating default values for our config:
-    _options.setdefault('days_outdated', int(config_options.get('days_outdated', 30)))
+    _options['days_outdated'] = int(config_options.get('days_outdated', 30))
+    _options['burpui_apiurl'] = config_options.get('burpui_apiurl', None)
+
+    # burpui_apiurl to defined on command line options
+    # Override the burpui_apiurl defined before
+    if options.burpui_apiurl:
+        _options['burpui_apiurl'] = options.burpui_apiurl
 
     return _options
 
@@ -130,7 +112,7 @@ def main():
 
     debug = options.debug
 
-    burpui_apiurl = get_burpui_apiurl(options)
+    burpui_apiurl = config_options.get('burpui_apiurl')
 
     # If there is an option to for burpui_apiurl, get clients from that apiurl
     if burpui_apiurl:
@@ -142,6 +124,7 @@ def main():
                                                  debug,
                                                  detail=options.detail)
 
+    # Generate burp_reports object to use for reports.
     burp_reports = BurpReports(clients_dict,
                                days_outdated=config_options.get('days_outdated'),
                                detail=options.detail)

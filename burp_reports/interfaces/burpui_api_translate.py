@@ -40,7 +40,8 @@ class TranslateBurpuiAPI:
             client_name = client_data.get(data_t['client_name'], None)
 
             # Go to next item in client_data if there is not 'client_name'
-            if not client_name: continue
+            if not client_name:
+                continue
 
             # Translate and define variables:
             # Define a dict with data to clients
@@ -62,9 +63,11 @@ class TranslateBurpuiAPI:
                         d_clients[client_name]['b_time'] = date_and_time.format('HH:mm:ss')
 
             # Add server list if not exists
-            if not d_clients[client_name].get('server', None): d_clients[client_name]['server'] = []
+            if not d_clients[client_name].get('server', None):
+                d_clients[client_name]['server'] = []
             # Append servers if exist
-            if client_data.get('server', None): d_clients[client_name]['server'].append(client_data['server'])
+            if client_data.get('server', None):
+                d_clients[client_name]['server'].append(client_data['server'])
 
         # Return dictionary of clients expected to use in burp_reports
         return d_clients
@@ -89,7 +92,7 @@ class TranslateBurpuiAPI:
             "b_phase": 'phase',
             "b_state": "state",
             "b_last": "last",
-            "client_name": "name" }
+            "client_name": "name"}
 
         # Check if key backup_report exists in clients
         if 'backup_report' in self.clients[0]:

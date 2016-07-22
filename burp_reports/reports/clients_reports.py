@@ -114,28 +114,32 @@ class BurpReports:
 
         # Get inventory from CSV file
         inventory = csv_as_dict(csv_inventory, client_column, separator)
+        # Get a list of clients outdated in burp:
         outdated_clients = self._get_outdated()
 
         # Set a list of status:
         spare_status = ['spare']
         active_status = ['active']
+        status_column = 'status'
+        substatus_column = 'status (detailed)'
 
         csv_rows_inventory_status = []
 
         first_client = next(iter(inventory.keys()))  # Gets first key of dict
         headers = list(inventory[first_client].keys())  # Get headers from input dict
         headers.insert(0, 'client')  # Change First header column as client
-        headers.insert(1, 'status')  # Change Second header column as status
-        headers.insert(2, 'serverinv_status')  # Change Third header column as server
-        headers.insert(3, 'status (detailed)')  # Change Fourth header column as status detailed
+        headers.insert(1, status_column)  # Change Second header column as status
+        headers.insert(2, 'server')  # Change Third header column as server
+        headers.insert(3, substatus_column)  # Change Fourth header column as status detailed
         # Prepare the header list to return:
         csv_rows_inventory_status.append(headers)  # First row as headers
 
         # Verify inventory and compare with clients in burp
         for k in sorted(inventory):
             client = k
-            status = inventory[client].get('status', '')
-            det_status = inventory[client].get('status (detailed)')
+
+            status = inventory[client].get(status_column, '')
+            det_status = inventory[client].get(substatus_column, '')
 
             if client in self.clients:
 
@@ -158,13 +162,37 @@ class BurpReports:
             else:
                 burp_status = 'absent'
 
+            # Add server_name information
+            if self.clients[client].get('server', None):
+                server_name = self.clients[client]['server']
+                # Mark the status of the client as duplicated if there is more than one server on it.
+                if len(server_name) > 1:
+                    burp_status = 'duplicated'
+            else:
+                server_name = ''
+
             # Generate list row with client's status and other data
             row = [client, burp_status, server_name, det_status]
 
-            for i in range(4, len(headers)):  # Start from fourth column in headers
+            # Add all other columns, starting from fourth column in headers
+            for i in range(4, len(headers)):
                 row.append(inventory[client].get(headers[i]))  # Insert each value of client to the row
 
             csv_rows_inventory_status.append(row)
+
+        # Check if there is some client in burp but not in the inventory
+        for burp_client in self.clients.keys():
+            if burp_client not in inventory:
+                burp_status = 'not in inventory'
+                if self.clients[burp_client].get('server', None):
+                    server_name = self.clients[burp_client]['server']
+                else:
+                    server_name = ''
+                det_status = ''
+                # Generate list row with client's status and other data
+                row = [client, burp_status, server_name, det_status]
+
+                csv_rows_inventory_status.append(row)
 
         return csv_rows_inventory_status
 

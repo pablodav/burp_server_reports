@@ -190,7 +190,7 @@ class BurpReports:
                     server_name = ''
                 det_status = ''
                 # Generate list row with client's status and other data
-                row = [client, burp_status, server_name, det_status]
+                row = [burp_client, burp_status, server_name, det_status]
 
                 csv_rows_inventory_status.append(row)
 

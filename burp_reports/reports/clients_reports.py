@@ -63,7 +63,7 @@ class BurpReports:
             # Add client to outdated list if outdated
             if not isinstance(client_last, str):
                 if client_last < outdated_time:
-                    outdated_clients[k][v]
+                    outdated_clients[k] = v
                     outdated_clients[k]['b_status'] = 'outdated'
 
         if ping:

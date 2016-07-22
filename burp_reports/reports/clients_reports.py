@@ -55,13 +55,15 @@ class BurpReports:
             if client_last.lower() in 'never' or not client_last:
                 outdated_clients[k] = v
                 outdated_clients[k]['b_status'] = 'never'
+                # Go to next client
                 continue
 
             # Convert client_last to arrow date
             client_last = arrow.get(v.get('b_last', None), 'YYYY-MM-DD HH:mm:ssZZ')
             
-            # Add client to outdated list if outdated
+            # Ensure client_last is not string now
             if not isinstance(client_last, str):
+                # Add client to outdated list if outdated
                 if client_last < outdated_time:
                     outdated_clients[k] = v
                     outdated_clients[k]['b_status'] = 'outdated'

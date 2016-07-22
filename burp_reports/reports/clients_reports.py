@@ -78,6 +78,7 @@ class BurpReports:
                 # Add the column comments to report
                 columns['comments'] = 'comments'
 
+        # Create the object to export the report
         clients_reports = TxtReports(outdated_clients,
                                      additional_columns=columns,
                                      detail=self.detail)
@@ -85,7 +86,7 @@ class BurpReports:
         if export_txt:
             clients_reports.report_to_txt()
 
-        return clients_reports
+        return outdated_clients
 
 
 

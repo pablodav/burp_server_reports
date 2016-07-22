@@ -26,7 +26,7 @@ class TxtReports:
         self.debug = debug
         self.additional_columns = additional_columns
 
-    def format_client_text(self, client=None, header=None, footer=None,  comments=None):
+    def format_client_text(self, client=None, header=None, footer=None):
         """
         print only header once with client=None, header=True
         header to file:
@@ -35,7 +35,6 @@ class TxtReports:
 
         :param client: client_name to report
         :param footer: True/None to report footer information
-        :param comments: String text with Additional comments to add to the client
         :param header: True/None to report header formatted
         :return: client/footer/header str depending on the option chosen
         """
@@ -79,9 +78,6 @@ class TxtReports:
                     # Append header from clients_details
                     headers_text += ' {:{}.{}} '.format(k, jt, jt)
 
-            if comments:
-                headers_text += ' {:{}.{}} '.format('Comments', jt, jt)
-
             # Add more details from static method
             if self.detail:
                 headers_text += self._txt_header_details(jt)
@@ -109,9 +105,6 @@ class TxtReports:
                     # Add the value of the item from client dictionary to client_text
                     # :Will put left , .Will truncate
                     client_text += ' {:{}.{}} '.format(item_value, jt, jt)
-
-            if comments:
-                client_text += ' {:{}.{}} '.format(comments, jt, jt)
 
             # Add more details from static method
             if self.detail:

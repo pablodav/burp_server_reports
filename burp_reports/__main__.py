@@ -35,6 +35,9 @@ def parse_args():
 
     parser.add_argument('--detail', dest='detail', nargs='?', default=None, const=True,
                         help='Adds more details to reports')
+
+    parser.add_argument('--ping', dest='ping', nargs='?', default=None, const=True,
+                        help='Adds ping check to outdated report only')
     
     # Print help if no arguments where parsed
     if len(sys.argv)==1:
@@ -148,8 +151,8 @@ def main():
         burp_reports.print_basic_txt()
 
     elif options.report in ['outdated', 'o']:
-        burp_reports.report_outdated(export_txt=True)
-
+        burp_reports.report_outdated(export_txt=True,
+                                     ping=options.ping)
 
 
 if __name__ == "__main__":

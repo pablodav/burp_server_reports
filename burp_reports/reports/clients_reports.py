@@ -1,5 +1,7 @@
 from ..lib.txt import TxtReports
 import arrow
+from collections import defaultdict
+from ..lib.is_up import is_up
 
 
 class BurpReports:
@@ -29,17 +31,21 @@ class BurpReports:
                                      detail=self.detail)
         clients_reports.report_to_txt()
 
-    def report_outdated(self, export_txt=None):
+    def report_outdated(self, export_txt=None, ping=None):
         """
 
-        :param print: if print, it will print the outdated clients
         :param export_txt: use it if you want to print on screen, used with cli
+        :param ping: Tries to ping the host to check it's availability
         :return: dict of outdated clients.
         """
-        outdated_clients = {}
+        outdated_clients = defaultdict(dict)
+        # Create a list of additional columns to add to the report
+        columns = {'Status': 'b_status'}
 
         for k, v in self.clients.items():
             # Get actual time with arrow module
+            # k is client name
+            # v is the dict with all data
             actual_time = arrow.get()
             # get date to consider as outdated
             outdated_time = actual_time.replace(days=-self.days_outdated)
@@ -47,7 +53,7 @@ class BurpReports:
 
             # Add client to outdated list if not backup
             if client_last.lower() in 'never' or not client_last:
-                outdated_clients.setdefault(k, v)
+                outdated_clients[k] = v
                 outdated_clients[k]['b_status'] = 'never'
                 continue
 
@@ -57,10 +63,21 @@ class BurpReports:
             # Add client to outdated list if outdated
             if not isinstance(client_last, str):
                 if client_last < outdated_time:
-                    outdated_clients.setdefault(k, v)
+                    outdated_clients[k][v]
                     outdated_clients[k]['b_status'] = 'outdated'
 
-        columns = {'Status': 'b_status'}
+        if ping:
+            # Check ping on each outdated client
+            for k in outdated_clients.keys():
+                if is_up(k):
+                    comments = 'ping ok'
+                else:
+                    comments = ' - '
+                # Append ping information to outdated_clients
+                outdated_clients[k]['comments'] = comments
+                # Add the column comments to report
+                columns['comments'] = 'comments'
+
         clients_reports = TxtReports(outdated_clients,
                                      additional_columns=columns,
                                      detail=self.detail)

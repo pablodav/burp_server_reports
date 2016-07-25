@@ -3,7 +3,7 @@ import arrow
 from collections import defaultdict
 from ..lib.is_up import is_up
 from invpy_libs import csv_as_dict
-
+from invpy_libs import save_csv_data
 
 class BurpReports:
 
@@ -163,10 +163,10 @@ class BurpReports:
 
             if client in self.clients:
 
-                if sub_status.lower() in spare_status:
+                if sub_status.lower().strip() in spare_status:
                     burp_status = all_status['spare_in_burp']
 
-                elif status.lower() not in active_status:
+                elif status.lower().strip() not in active_status:
                     burp_status = all_status['inactive_in_burp']
 
                 else:
@@ -176,7 +176,7 @@ class BurpReports:
                         burp_status = outdated_clients[client]['b_status']
 
             # Define the status as ignored for clients spare
-            elif sub_status.lower() in spare_status:
+            elif sub_status.lower().strip() in spare_status:
                 burp_status = all_status['spare_not_in_burp']
 
             else:
@@ -207,7 +207,7 @@ class BurpReports:
                 if self.clients[burp_client].get('server', None):
                     server_name = self.clients[burp_client]['server']
                 else:
-                    server_name = ''
+                    server_name = []
                 sub_status = ''
                 # Generate list row with client's status and other data
                 row = [burp_client, burp_status, server_name, sub_status]
@@ -216,8 +216,15 @@ class BurpReports:
 
         return csv_rows_inventory_status
 
-    def save_compared_inventory(self):
-        rows_inventory_compared = self.compare_inventory()
+    def save_compared_inventory(self, input, output):
+        """
+
+        :param input: csv inventory input
+        :param output: csv filename output
+        :return:
+        """
+        rows_inventory_compared = self.compare_inventory(input)
+        save_csv_data(rows_inventory_compared, output)
 
 
 

@@ -1,4 +1,4 @@
-client; status; Status (detailed)
+device name;status;Status (detailed)
 demo1; active;
 demo2; active; spare
 cli10; active;

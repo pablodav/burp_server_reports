@@ -4,7 +4,7 @@
 
 import sys
 import os
-from argparse import ArgumentParser
+import argparse
 from . lib.configs import parse_config
 from . reports.clients_reports import BurpReports
 from collections import defaultdict
@@ -15,7 +15,7 @@ def parse_args():
     Information extracted from: https://mkaz.com/2014/07/26/python-argparse-cookbook/
     :return:
     """
-    parser = ArgumentParser()
+    parser = argparse.ArgumentParser()
     parser.add_argument('-c', '--reports_conf', dest='reports_conf',
                         const=os.path.join(os.sep, 'etc', 'burp', 'burp-reports.conf'),
                         default=None,
@@ -26,10 +26,14 @@ def parse_args():
     
     # Adding report choices
     parser.add_argument('--report', '-r', dest='report', nargs='?', const='print', default='print',
-                        choices=['print', 'outdated'],
+                        choices=('print', 'outdated', 'inventory'),
                         help='Report choice, options: \n\n'
                              'print: Print txt clients list only \n'
-                             'outdated: will print list of outdated clients')
+                             'outdated: will print list of outdated clients\n'
+                             'inventory: requires -i and -o, check input inventory and generates a comparison\n'
+                             '    Input csv headers required: device name; status; Status (detailed) \n'
+                             '                                demo1; active; \n'
+                             '                                demo2; active; spare \n')
 
     parser.add_argument('--debug', dest='debug', nargs='?', default=None, const=True,
                         help='Activate for debugging purposes')
@@ -39,7 +43,10 @@ def parse_args():
 
     parser.add_argument('--ping', dest='ping', nargs='?', default=None, const=True,
                         help='Adds ping check to outdated report only')
-    
+
+    parser.add_argument('-i', nargs='?', default=None)
+    parser.add_argument('-o', nargs='?', default=None)
+
     # Print help if no arguments where parsed
     if len(sys.argv)==1:
         parser.print_help()
@@ -137,6 +144,10 @@ def main():
     elif options.report in ['outdated', 'o']:
         burp_reports.report_outdated(export_txt=True,
                                      ping=options.ping)
+
+    elif options.report == 'inventory':
+        burp_reports.save_compared_inventory(options.i,
+                                             options.o)
 
 
 if __name__ == "__main__":

@@ -139,17 +139,23 @@ class BurpReports:
             'client_name': 'device name',
             'status': 'status',
             'server': 'server',
-            'sub_status': 'Status (detailed)'
+            'sub_status': 'status (detailed)'
         }
 
         csv_rows_inventory_status = []
+        headers= []
 
-        first_client = next(iter(inventory.keys()))  # Gets first key of dict
-        headers = list(inventory[first_client].keys())  # Get headers from input dict
         headers.insert(0, all_columns['client_name'])  # Change First header column as client
         headers.insert(1, all_columns['status'])  # Change Second header column as status
         headers.insert(2, all_columns['server'])  # Change Third header column as server
         headers.insert(3, all_columns['sub_status'])  # Change Fourth header column as status detailed
+
+        first_client = next(iter(inventory.keys()))  # Gets first key of dict
+
+        for column in inventory[first_client].keys():  # Get headers from input inventory
+            if column.lower() not in all_columns.values():  # Add to the list only if not in the all_columns defined
+                headers.append(column)
+
         # Prepare the header list to return:
         csv_rows_inventory_status.append(headers)  # First row as headers
 

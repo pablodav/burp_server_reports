@@ -104,3 +104,7 @@ Option:
 `--compare --csv_output`
 
 
+Data used by the script
+=======================
+
+Chec it on [Data notes](data/notes.md)

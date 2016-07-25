@@ -67,6 +67,8 @@ Testing with burpui demo server
 ==============================
 
     burp-reports --debug --burpui_apiurl https://admin:admin@demo.ziirish.me/api/ --report outdated --detail
+    burp-reports --debug --burpui_apiurl https://admin:admin@demo.ziirish.me/api/ --detail
+    burp-reports --burpui_apiurl https://admin:admin@demo.ziirish.me/api/
 
 Or with conf:
 

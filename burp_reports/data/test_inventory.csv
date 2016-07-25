@@ -1,0 +1,5 @@
+client; status; Status (detailed)
+demo1; active;
+demo2; active; spare
+cli10; active;
+cli20; active; spare

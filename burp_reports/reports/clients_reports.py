@@ -136,7 +136,7 @@ class BurpReports:
 
         # Set dict of columns
         all_columns = {
-            'client_name': 'client',
+            'client_name': 'device name',
             'status': 'status',
             'server': 'server',
             'sub_status': 'Status (detailed)'
@@ -157,6 +157,7 @@ class BurpReports:
         for k in sorted(inventory):
             client = k
 
+            # Columns required to verify the status
             status = inventory[client].get(all_columns['status'], '')
             sub_status = inventory[client].get(all_columns['sub_status'], '')
 
@@ -200,7 +201,7 @@ class BurpReports:
             csv_rows_inventory_status.append(row)
 
         # Check if there is some client in burp but not in the inventory
-        for burp_client in self.clients.keys():
+        for burp_client in sorted(self.clients):
             if burp_client not in inventory:
                 burp_status = all_status['not_inventory_in_burp']
                 if self.clients[burp_client].get('server', None):
@@ -214,6 +215,9 @@ class BurpReports:
                 csv_rows_inventory_status.append(row)
 
         return csv_rows_inventory_status
+
+    def save_compared_inventory(self):
+        rows_inventory_compared = self.compare_inventory()
 
 
 

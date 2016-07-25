@@ -163,16 +163,16 @@ class BurpReports:
         for k in sorted(inventory):
             client = k
 
-            # Columns required to verify the status
-            status = inventory[client].get(all_columns['status'], '')
-            sub_status = inventory[client].get(all_columns['sub_status'], '')
+            # Columns required to verify the status, lowercase and without spaces at end and beginning
+            status = inventory[client].get(all_columns['status'], '').lower().strip()
+            sub_status = inventory[client].get(all_columns['sub_status'], '').lower().strip()
 
             if client in self.clients:
 
-                if sub_status.lower().strip() in spare_status:
+                if sub_status in spare_status:
                     burp_status = all_status['spare_in_burp']
 
-                elif status.lower().strip() not in active_status:
+                elif status not in active_status:
                     burp_status = all_status['inactive_in_burp']
 
                 else:
@@ -182,7 +182,7 @@ class BurpReports:
                         burp_status = outdated_clients[client]['b_status']
 
             # Define the status as ignored for clients spare
-            elif sub_status.lower().strip() in spare_status:
+            elif sub_status in spare_status:
                 burp_status = all_status['spare_not_in_burp']
 
             else:

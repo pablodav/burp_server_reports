@@ -1,3 +1,5 @@
+import configparser
+
 
 def parse_config(filename, stats=None):
     """
@@ -32,3 +34,19 @@ def parse_config(filename, stats=None):
             options[option] = value
     f.close()
     return options
+
+
+def parse_config2(filename=None):
+    """
+    https://docs.python.org/3.5/library/configparser.html
+
+    :param filename: filename to parse config
+    :return: config_parse result
+    """
+
+    config = configparser.ConfigParser(default_section='general')
+
+    if filename:
+        config.read_file(open(filename))
+
+    return config

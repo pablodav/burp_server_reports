@@ -5,7 +5,7 @@
 import sys
 import os
 import argparse
-from . lib.configs import parse_config
+from . lib.configs import parse_config2
 from . reports.clients_reports import BurpReports
 from collections import defaultdict
 
@@ -96,14 +96,18 @@ def get_main_conf(options):
     :return: dict with options from config file or defaults
     """
     _options = defaultdict(dict)
-    config_options = {}
 
-    if options.reports_conf:
-        config_options = parse_config(options.reports_conf)
+    config_options = parse_config2(options.reports_conf)
+
+    # Use general section for general options:
+    if config_options.has_section('general'):
+        general_config = config_options['general']
+    else:
+        general_config = {}
 
     # Creating default values for our config:
-    _options['days_outdated'] = int(config_options.get('days_outdated', 30))
-    _options['burpui_apiurl'] = config_options.get('burpui_apiurl', None)
+    _options['days_outdated'] = int(general_config.get('days_outdated', 30))
+    _options['burpui_apiurl'] = general_config.get('burpui_apiurl', None)
 
     # burpui_apiurl to defined on command line options
     # Override the burpui_apiurl defined before

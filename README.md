@@ -60,6 +60,7 @@ Example config: `/etc/burp/burp-reports.conf `
 Options to use in the file:
 
 ```
+[general]
 burpui_apiurl = http://admin:burpui@localhost:5000/api/
 days_outdated = 31
 ```

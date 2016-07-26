@@ -23,7 +23,7 @@ class TranslateBurpuiAPI:
         example from clients stats:
 
         {'client_name':
-            { 'b_last'    : 'YYYY-MM-DD HH:mm:ssZZ',
+            { 'b_last'    : 'YYYY-MM-DDTHH:mm:ssZZ',
               'b_state'    : 'working/current',
               'b_phase' : 'phase1/phase2',
               'b_date' : 'date(local)',
@@ -56,7 +56,7 @@ class TranslateBurpuiAPI:
                 if k is 'b_last':
                     last_backup = client_data.get(v, None)
                     if last_backup and last_backup not in 'never':
-                        date_and_time = arrow.get(last_backup, 'YYYY-MM-DD HH:mm:ssZZ')
+                        date_and_time = arrow.get(last_backup)
                         # Convert date_and_time to local time
                         date_and_time = date_and_time.to('local')
                         d_clients[client_name]['b_date'] = date_and_time.format('YYYY-MM-DD')
@@ -77,7 +77,7 @@ class TranslateBurpuiAPI:
 
         :return:
         {'client_name':
-            { 'b_last'    : '2016-06-23 14:33:06-03:00',
+            { 'b_last'    : '2016-06-23T14:33:06-03:00',
               'b_state'    : 'working/current',
               'b_phase' : 'phase1/phase2'
               'b_date' : 'local time date'

@@ -92,7 +92,7 @@ class BurpReports:
                 continue
 
             # Convert client_last to arrow date
-            client_last = arrow.get(v.get('b_last', None), 'YYYY-MM-DD HH:mm:ssZZ')
+            client_last = arrow.get(v.get('b_last', None))
 
             # Ensure client_last is not string now
             if not isinstance(client_last, str):
@@ -103,17 +103,17 @@ class BurpReports:
 
         return outdated_clients
 
-    def compare_inventory(self, csv_inventory, client_column='device name', separator=';'):
+    def compare_inventory(self, csv_inventory, client_column='device name', delimiter=';'):
         """
 
         :param csv_inventory: Input filename to compare from
         :param client_column: reference column to use in csv
-        :param separator: csv separator, like ;
+        :param delimiter: csv separator, like ;
         :return: list csv_rows_inventory_status (status of each client) in nested list one row per client
         """
 
         # Get inventory from CSV file
-        inventory = csv_as_dict(csv_inventory, client_column, separator)
+        inventory = csv_as_dict(csv_inventory, client_column, delimiter=delimiter)
         # Get a list of clients outdated in burp:
         outdated_clients = self._get_outdated()
 

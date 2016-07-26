@@ -23,7 +23,7 @@ class Clients:
         "phase": null,
         "percent": 0,
         "state": "idle",
-        "last": "2016-06-23 14:33:06-03:00",
+        "last": "2016-06-23T14:33:06-03:00",
         "name": "monitor"}]
         """
         actual_time = arrow.get()
@@ -32,10 +32,10 @@ class Clients:
             "phase": 'null',
             "percent": 0,
             "state": "idle",
-            "last": "2016-06-23 14:33:06-03:00",
+            "last": "2016-06-23T14:33:06-03:00",
             "name": "monitor"},
             {
-                "last": "2015-05-17 11:40:02-03:00",
+                "last": "2015-05-17T11:40:02-03:00",
                 "name": "client1",
                 "state": "idle",
                 "phase": "phase1",
@@ -54,7 +54,7 @@ class Clients:
         # Add clients with random last in a range of 100
         for num in range(1, 101):
             client_time = actual_time.replace(days=-random.randrange(5, 200))
-            client_last = client_time.format('YYYY-MM-DD HH:mm:ssZZ')
+            client_last = client_time
             client_name = "client_{:03d}".format(num)
             client_state = random.choice(['idle', 'working'])
             client_phase = 'null'

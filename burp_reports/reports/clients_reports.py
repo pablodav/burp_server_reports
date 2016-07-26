@@ -230,7 +230,7 @@ class BurpReports:
         :return:
         """
         rows_inventory_compared = self.compare_inventory(input)
-        save_csv_data(rows_inventory_compared, output)
+        save_csv_data(rows_inventory_compared, output, csv_delimiter=';')
 
 
 

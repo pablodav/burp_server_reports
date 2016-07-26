@@ -15,7 +15,7 @@ def parse_args():
     Information extracted from: https://mkaz.com/2014/07/26/python-argparse-cookbook/
     :return:
     """
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(formatter_class=argparse.RawTextHelpFormatter)   
     parser.add_argument('-c', '--reports_conf', dest='reports_conf',
                         const=os.path.join(os.sep, 'etc', 'burp', 'burp-reports.conf'),
                         default=None,
@@ -25,15 +25,18 @@ def parse_args():
                         help='full url to burpui api, like http://user:pass@server:port/api/ ')
     
     # Adding report choices
-    parser.add_argument('--report', '-r', dest='report', nargs='?', const='print', default='print',
-                        choices=('print', 'outdated', 'inventory'),
-                        help='Report choice, options: \n\n'
-                             'print: Print txt clients list only \n'
-                             'outdated: will print list of outdated clients\n'
-                             'inventory: requires -i and -o, check input inventory and generates a comparison\n'
+
+    choices_helper = { "print": "Print txt clients list only \n",
+                       "outdated": "will print list of outdated clients ",
+                       "inventory":
+                             'requires -i and -o, check input inventory and generates a comparison\n'
                              '    Input csv headers required: device name; status; Status (detailed) \n'
-                             '                                demo1; active; \n'
-                             '                                demo2; active; spare \n')
+                             '       Example line:            demo1; active; \n'
+                             '                                demo2; active; spare \n'}
+
+    parser.add_argument("--report", '-r', dest='report', nargs='?', default='print', const='print',
+                    choices=choices_helper,
+                    help='\n'.join("{}: {}".format(key, value) for key, value in sorted(choices_helper.items())))
 
     parser.add_argument('--debug', dest='debug', nargs='?', default=None, const=True,
                         help='Activate for debugging purposes')

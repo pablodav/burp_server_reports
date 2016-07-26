@@ -10,7 +10,7 @@ Expected format:
 Usable by reports scripts:
 
         {'client_name':
-            { 'b_last'    : 'YYYY-MM-DDTHH:mm:ssZZ',
+            { 'b_last'    : 'iso8601',
               'b_state'    : 'working/current',
               'b_phase' : 'phase1/phase2',
               'b_date' : 'date',
@@ -19,7 +19,7 @@ Usable by reports scripts:
             }
         }
 
-*b_last:* will use http://crsmithdev.com/arrow/ - As described in https://git.ziirish.me/ziirish/burp-ui/issues/146#note_1306
+*b_last:* will use http://crsmithdev.com/arrow/#arrow.arrow.Arrow.isoformat - As described in https://git.ziirish.me/ziirish/burp-ui/issues/146#note_1306
 *b_date and b_time* will be converted to local time always. (It simplifies the txt module)
 *server:* Is additionally added when found from api backend, it appears when the burpui is in multi-agent mode.
 

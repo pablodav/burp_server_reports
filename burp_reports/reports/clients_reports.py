@@ -7,12 +7,12 @@ from invpy_libs import save_csv_data
 
 class BurpReports:
 
-    def __init__(self, clients_dict, days_outdated=31, detail=None):
+    def __init__(self, clients_dict, days_outdated=31, detail=None, config=None):
         """
 
         :param clients_dict: list of clients in burp_reports format, example:
         {'client_name':
-            { 'b_last'    : 'YYYY-MM-DD HH:mm:ssZZ',
+            { 'b_last'    : 'YYYY-MM-DDTHH:mm:ssZZ',
               'b_state'    : 'working/current',
               'b_phase' : 'phase1/phase2',
               'b_last' : 'date',
@@ -20,12 +20,14 @@ class BurpReports:
         }
         :param days_outdated: number to consider days outdated
         :param detail: Used to print more details or not
+        :param config: configparse formatted config
 
         """
 
         self.clients = clients_dict
         self.days_outdated = days_outdated
         self.detail = detail
+        self.config = config
 
     def print_basic_txt(self):
         clients_reports = TxtReports(self.clients,

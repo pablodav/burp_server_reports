@@ -1,4 +1,5 @@
 import configparser
+from ..defaults.default_config import set_defaults
 
 
 def parse_config(filename, stats=None):
@@ -44,9 +45,36 @@ def parse_config2(filename=None):
     :return: config_parse result
     """
 
-    config = configparser.ConfigParser(default_section='general')
+    config = configparser.ConfigParser(default_section='common')
 
     if filename:
         config.read_file(open(filename))
+
+    return config
+
+
+def get_all_config(filename):
+    """
+    Set default configuration for burp_reports
+
+    :param filename: options config file to read
+    :return: config with default config for missing sections
+    """
+
+    config = parse_config2(filename)
+    default_config = set_defaults()
+
+    # Verify each section in default_config
+    for s in range(len(default_config.sections())):
+        section = default_config.sections()[s]
+
+        # Add the missing section to the config obtained
+        if not config.has_section(section):
+            config.add_section(section)
+
+        # Add missing keys to config obtained
+        for key in default_config[section]:
+            if not key in config[section]:
+                config[section][key] = default_config[section][key]
 
     return config

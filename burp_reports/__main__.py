@@ -6,6 +6,7 @@ import sys
 import os
 import argparse
 from . lib.configs import parse_config2
+from . lib.configs import get_all_config
 from . reports.clients_reports import BurpReports
 from collections import defaultdict
 
@@ -100,8 +101,8 @@ def get_main_conf(options):
     config_options = parse_config2(options.reports_conf)
 
     # Use general section for general options:
-    if config_options.has_section('general'):
-        general_config = config_options['general']
+    if config_options.has_section('common'):
+        general_config = config_options['common']
     else:
         general_config = {}
 
@@ -124,6 +125,9 @@ def main():
     clients_dict = {}
     options = parse_args()
     config_options = get_main_conf(options)
+
+    if options.reports_conf:
+        all_config = get_all_config(options.reports_conf)
 
     debug = options.debug
 

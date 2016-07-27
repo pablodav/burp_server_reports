@@ -60,7 +60,7 @@ Example config: `/etc/burp/burp-reports.conf `
 Options to use in the file:
 
 ```
-[general]
+[common]
 burpui_apiurl = http://admin:burpui@localhost:5000/api/
 days_outdated = 31
 ```
@@ -68,11 +68,9 @@ days_outdated = 31
 TODO:
 
 ```
-burp_automation_folder = /storage/samba/automation
 # csv_file_to compare with external inventory:
 csv_file_data = /storage/samba/automation/inventory.csv
 outdated_notes = This is useful comment that will be added to the foot of emails of outdated clients
-burp_www_reports = /var/www/html
 # burp_www_reports, is output place for example files:
 # /var/www/html/inventory_status.csv /var/www/html/clients_status.txt
 emails_to = emaildest@example.net
@@ -102,7 +100,7 @@ You can use it to compare with your list of clients (useful to see if all your i
 
 Option: 
 
-`--compare --csv_output`
+`--reports inventory -i input.csv -o output.csv
 
 
 Data used by the script

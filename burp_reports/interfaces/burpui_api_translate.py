@@ -56,7 +56,11 @@ class TranslateBurpuiAPI:
                 if k is 'b_last':
                     last_backup = client_data.get(v, None)
                     if last_backup and last_backup not in 'never':
-                        date_and_time = arrow.get(last_backup)
+                        if last_backup == 'now':
+                            date_and_time = arrow.get()
+                            d_clients[client_name]['b_last'] = date_and_time.isoformat(sep='T')
+                        else:
+                            date_and_time = arrow.get(last_backup)
                         # Convert date_and_time to local time
                         date_and_time = date_and_time.to('local')
                         d_clients[client_name]['b_date'] = date_and_time.format('YYYY-MM-DD')

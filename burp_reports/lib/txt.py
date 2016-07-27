@@ -219,6 +219,7 @@ class TxtReports:
             self.print_text(client=None, header=True)
         else:
             text_body += self.print_text(client=None, header=True, print_text=None)
+            text_body += '\n'
         
         for client, v in sorted(self.clients.items()):
             client_data = self.clients[client]
@@ -227,6 +228,7 @@ class TxtReports:
                 self.print_text(client)
             else:
                 text_body += self.print_text(client, print_text=None)
+                text_body += '\n'
             
             if self.detail:
                 total_taken += int(client_data.get('backup_report', {}).get('duration', 0))
@@ -241,7 +243,7 @@ class TxtReports:
                                                               total_taken % 60)
 
             foot_notes += "\n{:>30}  {}".format('total size in backup:',
-                                                            humanize_file_size(totsize))
+                                                humanize_file_size(totsize))
 
             foot_notes += '\n{:>30}  {}'.format('Total clients:',
                                                 total_clients)
@@ -250,6 +252,7 @@ class TxtReports:
                 self.print_text(client=None, footer=foot_notes)
             else:
                 text_body += self.print_text(client=None, footer=foot_notes, print_text=None)
+                text_body += '\n'
         
         if self.file:
             if os.path.isfile(self.file):

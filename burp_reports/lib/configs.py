@@ -45,7 +45,7 @@ def parse_config2(filename=None):
     :return: config_parse result
     """
 
-    config = configparser.ConfigParser(default_section='common')
+    config = configparser.ConfigParser()
 
     if filename:
         config.read_file(open(filename))
@@ -53,9 +53,11 @@ def parse_config2(filename=None):
     return config
 
 
-def get_all_config(filename):
+def get_all_config(filename=None):
     """
     Set default configuration for burp_reports
+    Config with defaults settings if no file will be passed
+    Also with defaults sections and defaults keys for missing options in config
 
     :param filename: options config file to read
     :return: config with default config for missing sections
@@ -74,7 +76,7 @@ def get_all_config(filename):
 
         # Add missing keys to config obtained
         for key in default_config[section]:
-            if not key in config[section]:
+            if not config.has_option(section, key):
                 config[section][key] = default_config[section][key]
 
     return config

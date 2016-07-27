@@ -8,9 +8,9 @@ def set_defaults():
     :return:
     """
 
-    config = configparser.ConfigParser(default_section='general')
+    config = configparser.ConfigParser()
 
-    all_status = {
+    inventory_status = {
         'spare': ['spare'],
         'active': ['active'],
         'inactive_in_burp': 'wrong not active',
@@ -23,7 +23,7 @@ def set_defaults():
     }
 
     # Set dict of columns
-    all_columns = {
+    inventory_columns = {
         'client_name': 'device name',
         'status': 'status',
         'server': 'server',
@@ -31,11 +31,12 @@ def set_defaults():
     }
 
     common = {
-        'days_outdated': '31'
+        'days_outdated': '31',
+        'csv_delimiter': ';'
     }
 
     config['common'] = common
-    config['inventory_columns'] = all_columns
-    config['inventory_status'] = all_status
+    config['inventory_columns'] = inventory_columns
+    config['inventory_status'] = inventory_status
 
     return config

@@ -48,6 +48,9 @@ def parse_args():
     parser.add_argument('--ping', dest='ping', nargs='?', default=None, const=True,
                         help='Adds ping check to outdated report only')
 
+    parser.add_argument('--write_config', dest='write_config', default=None, action='store_true',
+                        help="Write configuration with default values, useful to get a config file to modify")
+
     parser.add_argument('-i', nargs='?', default=None)
     parser.add_argument('-o', nargs='?', default=None)
 
@@ -107,7 +110,6 @@ def get_main_conf(options):
         general_config = {}
 
     # Creating default values for our config:
-    _options['days_outdated'] = int(general_config.get('days_outdated', 30))
     _options['burpui_apiurl'] = general_config.get('burpui_apiurl', None)
 
     # burpui_apiurl to defined on command line options
@@ -125,15 +127,22 @@ def main():
     clients_dict = {}
     options = parse_args()
 
-    # Configs with or without config file
+    # Configs that can be overwritten by command line options
     config_options = get_main_conf(options)
-
-    if options.reports_conf:
-        all_config = get_all_config(options.reports_conf)
-
     debug = options.debug
-
     burpui_apiurl = config_options.get('burpui_apiurl')
+
+    # Config with defaults settings if no file will be passed
+    # Also with defaults sections and defaults keys for missing options in config
+    all_config = get_all_config(options.reports_conf)
+
+    if options.write_config:
+        if not options.reports_conf:
+            raise SystemExit('--write_config requires -c configfile.conf')
+        with open(options.reports_conf, 'w', encoding='utf-8') as f:
+            all_config.write(f, space_around_delimiters=True)
+
+    days_outdated = all_config.getint('common', 'days_outdated')
 
     # If there is an option to for burpui_apiurl, get clients from that apiurl
     if burpui_apiurl:
@@ -144,11 +153,14 @@ def main():
             clients_dict = bui_api_clients_stats(burpui_apiurl,
                                                  debug,
                                                  detail=options.detail)
+    else:
+        raise SystemExit('burpui_apiurl is required in cmd or in config common section')
 
     # Generate burp_reports object to use for reports.
     burp_reports = BurpReports(clients_dict,
-                               days_outdated=config_options.get('days_outdated'),
-                               detail=options.detail)
+                               days_outdated=days_outdated,
+                               detail=options.detail,
+                               config=all_config)
 
     # Add some report option to use, use clients_dict already set
     if options.report == 'print':

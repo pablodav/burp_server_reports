@@ -2,7 +2,7 @@
 helpful reports for burp backup and restore
 
 
-It doesn't use burp -a m, it uses burp-ui api to get data so you need burp-ui up and accessible.
+It doesnt use burp -a m, it uses burp-ui api to get data so you need burp-ui up and accessible.
 
 Requirements
 ===========
@@ -47,6 +47,9 @@ Windows env:
 * `--detail` it adds more detail on list of commands, so it will be possible to use this option on most of the reports.
 * `--report` multile report options.
 * `--report outdated`: will report outdated clients
+* `--report inventory`: Will compare with `-i input.csv` and will export to `-o output.csv`
+* `-c config.conf`: Ini file to use
+* `--write_config`: will write all default settings on config file not ovewrites any existing, requires `-c`
 
 
 
@@ -61,20 +64,41 @@ Options to use in the file:
 
 ```
 [common]
-burpui_apiurl = http://admin:burpui@localhost:5000/api/
+burpui_apiurl = http://user:pass@localhost:5000/api/
 days_outdated = 31
+csv_delimiter = ;
+```
+
+More possible options in config:
+
+```
+[inventory_columns]
+server = servidor
+status = status
+sub_status = status (detailed)
+client_name = device name
+
+[inventory_status]
+not_inventory_in_burp = not in inventory
+active = ['active']
+in_many_servers = duplicated
+in_inventory_updated = ok
+spare_not_in_burp = ignored spare
+in_inventory_not_in_burp = absent
+spare_in_burp = wrong spare in burp
+spare = ['spare']
+inactive_in_burp = wrong not active
 ```
 
 TODO:
 
 ```
-# csv_file_to compare with external inventory:
-csv_file_data = /storage/samba/automation/inventory.csv
+[email_notification]
 outdated_notes = This is useful comment that will be added to the foot of emails of outdated clients
 # burp_www_reports, is output place for example files:
 # /var/www/html/inventory_status.csv /var/www/html/clients_status.txt
-emails_to = emaildest@example.net
-emails_from = sendingfrom@example.net
+email_to = emaildest@example.net
+email_from = sendingfrom@example.net
 smtp_server = addres.or.name
 excluded_clients = list,of,clients,that,will,not,be,added,to,outdated,reports
 ```
@@ -83,22 +107,26 @@ By default it reads burp config from /etc/burp/burp-reports.conf
 
 
 
-## Compare your list of clients with external inventory (TODO)
+## Inventory: Compare your clients with external inventory
 
-If you specify in configuration a list of inventory like:
-`csv_file_data = /storage/samba/automation/inventory.csv`
-It must have: 
+Default columns is described in the configuration section above, you don't need to specify it but you can change if
+required.
 
+An example (you can also add any more columns as you desire, it will be automatically appended on output, like notes):
 ```
-name,status,det_status,whatever,else
-client1,active,,,
-client2,active,spare,,othercomments irrelevant for compare but will not be a problem
+device name;status;Status (detailed);notes
+demo1; active;;should be ok
+demo2; active; spare; should be wrong spare
+cli10; active;;
+cli20; active; spare;
 ```
+
 As the example, it will give you details only on "active" assets and will compare if it is spare or not also. 
 
-You can use it to compare with your list of clients (useful to see if all your inventory is in burp or not). 
+You can use it to compare with your list of clients (useful to see if all your inventory is in burp or not).
+It can also tell you if you have clients not in the inventory
 
-Option: 
+Command line:
 
 `--reports inventory -i input.csv -o output.csv
 

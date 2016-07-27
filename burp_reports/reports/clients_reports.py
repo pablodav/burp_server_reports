@@ -20,7 +20,8 @@ class BurpReports:
         }
         :param days_outdated: number to consider days outdated
         :param detail: Used to print more details or not
-        :param config: configparse formatted config
+        :param config: configparse formatted config, required sections:
+                            inventory_status, inventory_columns
 
         """
 
@@ -28,6 +29,14 @@ class BurpReports:
         self.days_outdated = days_outdated
         self.detail = detail
         self.config = config
+
+        if config:
+            # Set dict for from common section
+            self.common_config = dict(self.config['common'])
+        else:
+            self.common_config = {
+                'csv_delimiter': ';'
+            }
 
     def print_basic_txt(self):
         clients_reports = TxtReports(self.clients,
@@ -105,49 +114,58 @@ class BurpReports:
 
         return outdated_clients
 
-    def compare_inventory(self, csv_inventory, client_column='device name', delimiter=';'):
+    def compare_inventory(self, csv_inventory):
         """
 
         :param csv_inventory: Input filename to compare from
-        :param client_column: reference column to use in csv
-        :param delimiter: csv separator, like ;
         :return: list csv_rows_inventory_status (status of each client) in nested list one row per client
         """
+
+        if self.config:
+            # Set dict of status from config
+            all_status = dict(self.config['inventory_status'])
+        else:
+            # Set dict of status:
+            all_status = {
+                'spare': ['spare'],
+                'active': ['active'],
+                'inactive_in_burp': 'wrong not active',
+                'spare_in_burp': 'wrong spare in burp',
+                'not_inventory_in_burp': 'not in inventory',
+                'in_inventory_updated': 'ok',
+                'spare_not_in_burp': 'ignored spare',
+                'in_inventory_not_in_burp': 'absent',
+                'in_many_servers': 'duplicated'
+            }
+
+        # Set variables of status:
+        spare_status = all_status['spare']
+        active_status = all_status['active']
+
+        if self.config:
+            # Set dict of status from config
+            all_columns = dict(self.config['inventory_columns'])
+        else:
+            # Set dict of columns
+            all_columns = {
+                'client_name': 'device name',
+                'status': 'status',
+                'server': 'server',
+                'sub_status': 'status (detailed)'
+            }
+
+        client_column = all_columns['client_name']
+        delimiter = self.common_config['csv_delimiter']
 
         # Get inventory from CSV file
         inventory = csv_as_dict(csv_inventory, client_column, delimiter=delimiter)
         # Get a list of clients outdated in burp:
         outdated_clients = self._get_outdated()
 
-        # Set dict of status:
-        all_status = {
-            'spare': ['spare'],
-            'active': ['active'],
-            'inactive_in_burp': 'wrong not active',
-            'spare_in_burp': 'wrong spare in burp',
-            'not_inventory_in_burp': 'not in inventory',
-            'in_inventory_updated': 'ok',
-            'spare_not_in_burp': 'ignored spare',
-            'in_inventory_not_in_burp': 'absent',
-            'in_many_servers': 'duplicated'
-        }
-
-        # Set variables of status:
-        spare_status = all_status['spare']
-        active_status = all_status['active']
-
-        # Set dict of columns
-        all_columns = {
-            'client_name': 'device name',
-            'status': 'status',
-            'server': 'server',
-            'sub_status': 'status (detailed)'
-        }
-
         csv_rows_inventory_status = []
         headers= []
 
-        headers.insert(0, all_columns['client_name'])  # Change First header column as client
+        headers.insert(0, client_column)  # Change First header column as client
         headers.insert(1, all_columns['status'])  # Change Second header column as status
         headers.insert(2, all_columns['server'])  # Change Third header column as server
         headers.insert(3, all_columns['sub_status'])  # Change Fourth header column as status detailed
@@ -231,8 +249,10 @@ class BurpReports:
         :param output: csv filename output
         :return:
         """
+        delimiter = self.common_config['csv_delimiter']
+
         rows_inventory_compared = self.compare_inventory(input)
-        save_csv_data(rows_inventory_compared, output, csv_delimiter=';')
+        save_csv_data(rows_inventory_compared, output, csv_delimiter=delimiter)
 
 
 

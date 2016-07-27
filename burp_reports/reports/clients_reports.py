@@ -242,17 +242,17 @@ class BurpReports:
 
         return csv_rows_inventory_status
 
-    def save_compared_inventory(self, input, output):
+    def save_compared_inventory(self, input_file, output_file):
         """
 
-        :param input: csv inventory input
-        :param output: csv filename output
+        :param input_file: csv inventory input
+        :param output_file: csv filename output
         :return:
         """
         delimiter = self.common_config['csv_delimiter']
 
         rows_inventory_compared = self.compare_inventory(input)
-        save_csv_data(rows_inventory_compared, output, csv_delimiter=delimiter)
+        save_csv_data(rows_inventory_compared, output_file, csv_delimiter=delimiter)
 
 
 

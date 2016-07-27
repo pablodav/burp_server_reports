@@ -226,7 +226,7 @@ class TxtReports:
             if print_text:
                 self.print_text(client)
             else:
-                text_body += self.print_text(client)
+                text_body += self.print_text(client, print_text=None)
             
             if self.detail:
                 total_taken += int(client_data.get('backup_report', {}).get('duration', 0))

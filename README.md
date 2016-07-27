@@ -8,7 +8,7 @@ Requirements
 ===========
 
 Python3.4+
-pip install to install requirements listed in setup.py and also in requirements.exe
+pip install to install requirements listed in setup.py and also in requirements.txt
 
 Install
 ======

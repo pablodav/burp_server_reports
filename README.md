@@ -56,9 +56,13 @@ Windows env:
 Optional Configuration file
 ===========================
 
+Configuration is required only to send emails. But allows you to customize the defaults used too.
+
     burp-reports -c /config/file/path.conf
 
 Example config: `/etc/burp/burp-reports.conf `
+
+Autogenerate a basic template: `--write_config`
 
 Options to use in the file:
 
@@ -69,7 +73,13 @@ days_outdated = 31
 csv_delimiter = ;
 ```
 
+* burpui_apiurl is overwritten by cmd if you use --burpui_apiurl
+* csv_delimiter, used for `-i` and `-o`
+
 More possible options in config:
+
+* **inventory_colums** and **inventory_status** is used in `--report inventory`
+* **email_notification**: Config that makes possible send emails
 
 ```
 [inventory_columns]
@@ -80,26 +90,36 @@ client_name = device name
 
 [inventory_status]
 not_inventory_in_burp = not in inventory
-active = ['active']
 in_many_servers = duplicated
 in_inventory_updated = ok
 spare_not_in_burp = ignored spare
 in_inventory_not_in_burp = absent
 spare_in_burp = wrong spare in burp
-spare = ['spare']
 inactive_in_burp = wrong not active
+spare = spare
+active = active
+
+[email_notification]
+email_to = root@localhost
+smtp_password =
+email_from = server@domain.com
+smtp_server = localhost
+smtp_login =
+smtp_mode = normal
+smtp_port = 25
+foot_notes = a sample notes
 ```
+
+* `email_to` you can add a list of comma separated values
+* `smtp_mode` you can use normal/ssl/tls
+* `spare` and `active` you can also specify a list of comma separated values as possible status.
+
+To send email it uses pyzmail, so all options here are valid: http://www.magiksys.net/pyzmail/
 
 TODO:
 
 ```
-[email_notification]
-outdated_notes = This is useful comment that will be added to the foot of emails of outdated clients
-# burp_www_reports, is output place for example files:
-# /var/www/html/inventory_status.csv /var/www/html/clients_status.txt
-email_to = emaildest@example.net
-email_from = sendingfrom@example.net
-smtp_server = addres.or.name
+[common]
 excluded_clients = list,of,clients,that,will,not,be,added,to,outdated,reports
 ```
 

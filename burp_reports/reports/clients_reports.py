@@ -4,6 +4,7 @@ from collections import defaultdict
 from ..lib.is_up import is_up
 from invpy_libs import csv_as_dict
 from invpy_libs import save_csv_data
+from ..lib.email import send_email
 
 class BurpReports:
 
@@ -18,9 +19,9 @@ class BurpReports:
               'b_last' : 'date',
             }
         }
-        :param days_outdated: number to consider days outdated
-        :param detail: Used to print more details or not
-        :param config: configparse formatted config, required sections:
+        :param days_outdated (int): number to consider days outdated
+        :param detail (True/None): Used to print more details or not
+        :param config (configparser): configparser formatted config, required sections:
                             inventory_status, inventory_columns
 
         """
@@ -42,41 +43,6 @@ class BurpReports:
         clients_reports = TxtReports(self.clients,
                                      detail=self.detail)
         clients_reports.report_to_txt()
-
-    def report_outdated(self, export_txt=None, ping=None):
-        """
-
-        :param export_txt: use it if you want to print on screen, used with cli
-        :param ping: Tries to ping the host to check it's availability
-        :return: dict of outdated clients.
-        """
-
-        # Create a list of additional columns to add to the report
-        columns = {'Status': 'b_status'}
-
-        outdated_clients = self._get_outdated()
-
-        if ping:
-            # Check ping on each outdated client
-            for k in outdated_clients.keys():
-                if is_up(k):
-                    comments = 'ping ok'
-                else:
-                    comments = ' - '
-                # Append ping information to outdated_clients
-                outdated_clients[k]['comments'] = comments
-                # Add the column comments to report
-                columns['Comments'] = 'comments'
-
-        # Create the object to export the report
-        clients_reports = TxtReports(outdated_clients,
-                                     additional_columns=columns,
-                                     detail=self.detail)
-
-        if export_txt:
-            clients_reports.report_to_txt()
-
-        return outdated_clients
 
     def _get_outdated(self):
         """
@@ -127,8 +93,8 @@ class BurpReports:
         else:
             # Set dict of status:
             all_status = {
-                'spare': ['spare'],
-                'active': ['active'],
+                'spare': 'spare',
+                'active': 'active',
                 'inactive_in_burp': 'wrong not active',
                 'spare_in_burp': 'wrong spare in burp',
                 'not_inventory_in_burp': 'not in inventory',
@@ -138,9 +104,9 @@ class BurpReports:
                 'in_many_servers': 'duplicated'
             }
 
-        # Set variables of status:
-        spare_status = all_status['spare']
-        active_status = all_status['active']
+        # Set variables of status as lists, also enable possibility to have more than one status:
+        spare_status = all_status['spare'].split(',')
+        active_status = all_status['active'].split(',')
 
         if self.config:
             # Set dict of status from config
@@ -251,8 +217,60 @@ class BurpReports:
         """
         delimiter = self.common_config['csv_delimiter']
 
-        rows_inventory_compared = self.compare_inventory(input)
+        rows_inventory_compared = self.compare_inventory(input_file)
         save_csv_data(rows_inventory_compared, output_file, csv_delimiter=delimiter)
+
+    def report_outdated(self, export_txt=None, ping=None):
+        """
+
+        :param export_txt: use it if you want to print on screen, used with cli
+        :param ping: Tries to ping the host to check it's availability
+        :return: dict of outdated clients.
+        """
+
+        # Create a list of additional columns to add to the report
+        columns = {'Status': 'b_status'}
+
+        outdated_clients = self._get_outdated()
+
+        if ping:
+            # Check ping on each outdated client
+            for k in outdated_clients.keys():
+                if is_up(k):
+                    comments = 'ping ok'
+                else:
+                    comments = ' - '
+                # Append ping information to outdated_clients
+                outdated_clients[k]['comments'] = comments
+                # Add the column comments to report
+                columns['Comments'] = 'comments'
+
+        # Create the object to export the report
+        clients_reports = TxtReports(outdated_clients,
+                                     additional_columns=columns,
+                                     detail=self.detail)
+
+        if export_txt:
+            clients_reports.report_to_txt()
+
+        return outdated_clients
+
+    def email_outdated(self):
+
+        if self.config:
+            email_config = dict(self.config['email_notification'])
+        else:
+            raise SystemExit('email_notification section is required in config')
+
+        outdated_clients = self._get_outdated()
+        clients_reports = TxtReports(outdated_clients)
+        body_str = clients_reports.report_to_txt(print_text=None)
+
+        send_email(email_config, body_str)
+
+
+
+
 
 
 

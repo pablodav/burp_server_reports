@@ -28,6 +28,7 @@ setup(name='burp_reports',
         'invpy_libs',
         'requests',
         'arrow',
-        'requests-cache'
+        'requests-cache',
+        'pyzmail'
     ],
     zip_safe=False)

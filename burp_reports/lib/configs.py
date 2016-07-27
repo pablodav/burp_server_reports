@@ -45,7 +45,7 @@ def parse_config2(filename=None):
     :return: config_parse result
     """
 
-    config = configparser.ConfigParser()
+    config = configparser.ConfigParser(allow_no_value=True)
 
     if filename:
         config.read_file(open(filename))

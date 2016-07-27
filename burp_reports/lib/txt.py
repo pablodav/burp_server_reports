@@ -163,7 +163,7 @@ class TxtReports:
 
         return client_text
 
-    def print_text(self, client=None, header=None, footer=None):
+    def print_text(self, client=None, header=None, footer=None, print_text=True):
         """
         print only header once with client=None, header=True
         header to file:
@@ -172,6 +172,8 @@ class TxtReports:
         :param client:
         :param footer:
         :param header: print header
+        :param print_text: to print or return
+        :return: text line if no print_text
         """
 
         f = None
@@ -184,17 +186,26 @@ class TxtReports:
 
         if header:
             header_text = self.format_client_text(client=None, header=True)
-            print(header_text, file=f)
+            if print_text:
+                print(header_text, file=f)
+            else:
+                return header_text
 
         if client:
             client_text = self.format_client_text(client, header=None)
-            print(client_text, file=f)
+            if print_text:
+                print(client_text, file=f)
+            else:
+                return client_text
 
         if footer:
             footer_text = self.format_client_text(client=None, footer=footer)
-            print(footer_text, file=f)
+            if print_text:
+                print(footer_text, file=f)
+            else:
+                return footer_text
 
-    def report_to_txt(self):
+    def report_to_txt(self, print_text=True):
         """
 
         """
@@ -202,11 +213,20 @@ class TxtReports:
         total_taken = 0
         totsize = 0
         total_clients = 0
-        self.print_text(client=None, header=True)
+        text_body = ''
+
+        if print_text:
+            self.print_text(client=None, header=True)
+        else:
+            text_body += self.print_text(client=None, header=True, print_text=None)
         
         for client, v in sorted(self.clients.items()):
             client_data = self.clients[client]
-            self.print_text(client)
+
+            if print_text:
+                self.print_text(client)
+            else:
+                text_body += self.print_text(client)
             
             if self.detail:
                 total_taken += int(client_data.get('backup_report', {}).get('duration', 0))
@@ -226,8 +246,14 @@ class TxtReports:
             foot_notes += '\n{:>30}  {}'.format('Total clients:',
                                                 total_clients)
 
-            self.print_text(client=None, footer=foot_notes)
+            if print_text:
+                self.print_text(client=None, footer=foot_notes)
+            else:
+                text_body += self.print_text(client=None, footer=foot_notes, print_text=None)
         
         if self.file:
             if os.path.isfile(self.file):
                 print('exported to', self.file)
+
+        if print_text:
+            return text_body

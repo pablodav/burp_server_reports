@@ -1,4 +1,5 @@
 import configparser
+import socket
 
 
 def set_defaults():
@@ -8,11 +9,11 @@ def set_defaults():
     :return:
     """
 
-    config = configparser.ConfigParser()
+    config = configparser.ConfigParser(allow_no_value=True)
 
     inventory_status = {
-        'spare': ['spare'],
-        'active': ['active'],
+        'spare': 'spare',
+        'active': 'active',
         'inactive_in_burp': 'wrong not active',
         'spare_in_burp': 'wrong spare in burp',
         'not_inventory_in_burp': 'not in inventory',
@@ -35,8 +36,21 @@ def set_defaults():
         'csv_delimiter': ';'
     }
 
+    email_notification = {
+        'email_to': 'root@localhost',
+        'email_from': '{}@domain.com'.format(socket.gethostname()),
+        'smtp_server': 'localhost',
+        'smtp_port': '25',
+        'smtp_login': '',
+        'smtp_password': '',
+        'smtp_mode': 'normal',
+        'subject': 'burp report from {}'.format(socket.gethostname()),
+        'foot_notes': 'A sample notes'
+    }
+
     config['common'] = common
     config['inventory_columns'] = inventory_columns
     config['inventory_status'] = inventory_status
+    config['email_notification'] = email_notification
 
     return config

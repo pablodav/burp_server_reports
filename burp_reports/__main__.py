@@ -33,7 +33,8 @@ def parse_args():
                              'requires -i and -o, check input inventory and generates a comparison\n'
                              '    Input csv headers required: device name; status; Status (detailed) \n'
                              '       Example line:            demo1; active; \n'
-                             '                                demo2; active; spare \n'}
+                             '                                demo2; active; spare \n',
+                       "email_outdated": "Will send email to configured recipients on config file"}
 
     parser.add_argument("--report", '-r', dest='report', nargs='?', default='print', const='print',
                     choices=choices_helper,
@@ -173,6 +174,9 @@ def main():
     elif options.report == 'inventory':
         burp_reports.save_compared_inventory(options.i,
                                              options.o)
+
+    elif options.report == 'email_outdated':
+        burp_reports.email_outdated()
 
 
 if __name__ == "__main__":

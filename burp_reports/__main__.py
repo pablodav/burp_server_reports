@@ -124,6 +124,8 @@ def main():
     """
     clients_dict = {}
     options = parse_args()
+
+    # Configs with or without config file
     config_options = get_main_conf(options)
 
     if options.reports_conf:

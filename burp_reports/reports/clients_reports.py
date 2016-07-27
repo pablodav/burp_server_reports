@@ -265,6 +265,7 @@ class BurpReports:
         outdated_clients = self._get_outdated()
         clients_reports = TxtReports(outdated_clients)
         body_str = clients_reports.report_to_txt(print_text=None)
+        import pdb; pdb.set_trace()
 
         send_email(email_config, body_str)
 

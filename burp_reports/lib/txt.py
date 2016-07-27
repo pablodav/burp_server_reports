@@ -241,7 +241,7 @@ class TxtReports:
                                                               total_taken % 60)
 
             foot_notes += "\n{:>30}  {}".format('total size in backup:',
-                                                humanize_file_size(totsize))
+                                                            humanize_file_size(totsize))
 
             foot_notes += '\n{:>30}  {}'.format('Total clients:',
                                                 total_clients)
@@ -255,5 +255,5 @@ class TxtReports:
             if os.path.isfile(self.file):
                 print('exported to', self.file)
 
-        if print_text:
+        if not print_text:
             return text_body

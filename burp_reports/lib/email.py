@@ -53,7 +53,7 @@ def send_email(config, text_msg=None, attachments=None):
 
     sender = fromaddr
     recipients = toaddr
-    subject = 'the subject'
+    subject = config.get('subject', 'the subject')
     text_content = text_msg
     prefered_encoding = 'iso-8859-1'
     text_encoding = 'iso-8859-1'

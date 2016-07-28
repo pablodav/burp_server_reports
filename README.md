@@ -15,6 +15,14 @@ Requirements
 Python3.4+
 pip install to install requirements listed in setup.py and also in requirements.txt
 
+Recomendations
+==============
+
+burpui 0.3.0+ (to be released but with many improvements in api performance and stability)
+burp 2.0.42+ (burp monitor has been improved a lot since this release)
+
+Use protocol = 1  with burp2 server!!!!
+
 Install
 ======
 

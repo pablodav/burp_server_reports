@@ -6,6 +6,7 @@ from invpy_libs import csv_as_dict
 from invpy_libs import save_csv_data
 from burp_reports.lib.email import send_email
 
+
 class BurpReports:
 
     def __init__(self, clients_dict, days_outdated=31, detail=None, config=None):

@@ -140,6 +140,7 @@ def main():
     if options.write_config:
         if not options.reports_conf:
             raise SystemExit('--write_config requires -c configfile.conf')
+
         with open(options.reports_conf, 'w', encoding='utf-8') as f:
             all_config.write(f, space_around_delimiters=True)
 

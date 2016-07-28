@@ -10,7 +10,7 @@
 from setuptools import setup, find_packages
 
 setup(name='burp_reports',
-    version='1.0rc6',
+    version='1.0rc7',
     description='Burp reports package',
     classifiers=[
         'Development Status :: 4 - Beta ',

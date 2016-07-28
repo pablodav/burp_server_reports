@@ -1,6 +1,7 @@
 #! python3
 import configparser
 from burp_reports.defaults.default_config import set_defaults
+import os
 
 
 def parse_config(filename, stats=None):
@@ -49,6 +50,11 @@ def parse_config2(filename=None):
     config = configparser.ConfigParser(allow_no_value=True)
 
     if filename:
+        # ConfigParser does not create a file if it doesn't exist, so I will create an empty one.
+        if not os.path.isfile(filename):
+            with open(filename, 'w', encoding='utf-8') as f:
+                print('', file=f)
+
         config.read_file(open(filename))
 
     return config

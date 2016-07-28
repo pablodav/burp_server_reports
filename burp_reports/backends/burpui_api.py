@@ -1,5 +1,5 @@
 # -*- coding: utf8 -*-
-from ..lib.urlget import get_url_data
+from burp_reports.lib.urlget import get_url_data
 from collections import defaultdict
 
 

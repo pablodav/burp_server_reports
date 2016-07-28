@@ -1,5 +1,5 @@
 import configparser
-from ..defaults.default_config import set_defaults
+from burp_reports.defaults.default_config import set_defaults
 
 
 def parse_config(filename, stats=None):

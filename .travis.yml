@@ -1,13 +1,11 @@
-sudo: required
-dist: trusty
 language: python
 python:
   - "3.4"
   - "3.5"
 # command to install dependencies
 install:
-  - sudo pip install -r requirements.txt
-  - sudo python setup.py develop
+  - pip install -r requirements.txt
+  - pip install .
 # command to run tests
 script:
-  - burp-reports --burpui_api dummy --report outdated
+  - ~/.local/bin/burp-reports --burpui_api dummy --report outdated

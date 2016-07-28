@@ -5,9 +5,9 @@
 import sys
 import os
 import argparse
-from . lib.configs import parse_config2
-from . lib.configs import get_all_config
-from . reports.clients_reports import BurpReports
+from burp_reports.lib.configs import parse_config2
+from burp_reports.lib.configs import get_all_config
+from burp_reports.reports.clients_reports import BurpReports
 from collections import defaultdict
 
 

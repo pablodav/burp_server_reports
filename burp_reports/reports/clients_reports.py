@@ -1,10 +1,10 @@
-from ..lib.txt import TxtReports
+from burp_reports.lib.txt import TxtReports
 import arrow
 from collections import defaultdict
-from ..lib.is_up import is_up
+from burp_reports.lib.is_up import is_up
 from invpy_libs import csv_as_dict
 from invpy_libs import save_csv_data
-from ..lib.email import send_email
+from burp_reports.lib.email import send_email
 
 class BurpReports:
 

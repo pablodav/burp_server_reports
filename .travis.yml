@@ -1,11 +1,12 @@
 sudo: required
+dist: trusty
 language: python
 python:
   - "3.4"
   - "3.5"
 # command to install dependencies
 install:
-  - sudo pip --user install .
+  - sudo pip install .
 # command to run tests
 script:
   - burp-reports --burpui_api dummy --report outdated

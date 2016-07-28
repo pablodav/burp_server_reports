@@ -26,11 +26,11 @@ Use protocol = 1  with burp2 server!!!!
 Install
 ======
 
-    pip3 install burp_reports --upgrade
+    sudo pip3 install burp_reports --upgrade
 
 Also is possible to use:
 
-    python3 -m pip install burp_reports --upgrade
+    sudo python3 -m pip install burp_reports --upgrade
 
 On windows with python3.4:
 

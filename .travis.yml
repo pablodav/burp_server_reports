@@ -9,4 +9,4 @@ install:
   - pip install dist/burp_reports-1.0rc1-py3-none-any.whl
 # command to run tests
 script:
-  - ~/.local/bin/burp-reports --burpui_api dummy --report outdated
+  - burp-reports --burpui_api dummy --report outdated

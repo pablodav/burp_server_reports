@@ -1,10 +1,12 @@
 language: python
+dist: trusty
 python:
   - "3.4"
   - "3.5"
 # command to install dependencies
 install:
-  - pip install --user .
+  - pip install .
+  - pip install dist/burp_reports-1.0rc1-py3-none-any.whl
 # command to run tests
 script:
   - ~/.local/bin/burp-reports --burpui_api dummy --report outdated

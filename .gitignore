@@ -1,3 +1,14 @@
+# Compiled python modules.
+*.pyc
+
+# Setuptools distribution folder.
+/dist/
+
+# Python egg metadata, regenerated from source files by setuptools.
+/*.egg-info
+
+# Pycharm dir
+.idea
 # Windows image file caches
 Thumbs.db
 ehthumbs.db
@@ -42,14 +53,6 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
-# Compiled python modules.
-*.pyc
+# Eric6 files
+.e4p
 
-# Setuptools distribution folder.
-/dist/
-
-# Python egg metadata, regenerated from source files by setuptools.
-/*.egg-info
-
-# Pycharm dir
-.idea

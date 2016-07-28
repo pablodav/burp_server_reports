@@ -1,121 +1,172 @@
-# burp_server_reports
+burp_server_reports
+===================
+
 helpful reports for burp backup and restore
 
-Version 1 of burp only supported for now.
+The new refactor doesnt use burp -a m, it uses burp-ui api to get data so you need burp-ui up and accessible.
 
-It doesn't use burp -a S, it looks into directory structure of burp 1 and also uses files:
-log, timestamp and backup_stats.
+The previous version is on tag 0.1 https://github.com/pablodav/burp_server_reports/tree/0.1 and it will not be maintained.
 
-Code is more detailed about how it uses the files, like working funcion: 
+Version 1.0rc1
+
+Requirements
+===========
+
+Python3.4+
+pip install to install requirements listed in setup.py and also in requirements.txt
+
+Recomendations
+==============
+
+burpui 0.3.0+ (to be released but with many improvements in api performance and stability)
+burp 2.0.42+ (burp monitor has been improved a lot since this release)
+
+Use protocol = 1  with burp2 server!!!!
+
+Install
+======
+
+    pip3 install burp_reports --upgrade
+
+Also is possible to use:
+
+    python3 -m pip install burp_reports --upgrade
+
+On windows with python3.4:
+
+    \python34\scripts\pip install burp_reports --upgrade
+
+For proxies add:
+
+    --proxy='http://user:passw@server:port'
+
+To keep in mind
+==============
+
+It caches the data of burp-ui for 1h , if you need to refresh the data just remove /tmp/burp_reports_cache.sqlite
+
+Usage
+====
+
+Use the command line:
+
+    burp-reports --help
+
+Windows env:
+
+    \python34\scripts\burp-reports.exe --help
+
+
+* `--detail` it adds more detail on list of commands, so it will be possible to use this option on most of the reports.
+* `--report` multile report options.
+* `--report outdated`: will report outdated clients
+* `--report inventory`: Will compare with `-i input.csv` and will export to `-o output.csv`
+* `-c config.conf`: Ini file to use
+* `--write_config`: will write all default settings on config file not ovewrites any existing, requires `-c`
+* `--report email_outdated`: Will send email with outdated clients, requires config.
+
+
+
+Optional Configuration file
+===========================
+
+Configuration is required only to send emails. But allows you to customize the defaults used too.
+
+    burp-reports -c /config/file/path.conf
+
+Example config: `/etc/burp/burp-reports.conf `
+
+Autogenerate a basic template: `--write_config`
+
+Options to use in the file:
 
 ```
-get_client_working_status(client_path):
-    """
-    #  https://github.com/grke/burp/blob/master/docs/working_dir.txt
-    #  http://burp.grke.org/docs/shuffling.html
-
-    During backup phases 1 (file system scan) and 2 (send actual data), there will
-    be a symlink pointing to the directory called 'working':
-
-    /var/spool/burp/<client>/working -> 0000027 2015-04-12 01:24:29
-
-    burp_phase_dict = {
-    }
+[common]
+burpui_apiurl = http://user:pass@localhost:5000/api/
+days_outdated = 31
+csv_delimiter = ;
 ```
 
-But I will not explain all these details here, because most of them are already commented in the code. 
+* burpui_apiurl is overwritten by cmd if you use --burpui_apiurl
+* csv_delimiter, used for `-i` and `-o`
 
-# Prepare the script for daily usage
+More possible options in config:
 
-python3 is required to be installed
-
-clone the repo or copy the file. 
-
-I would recommend to copy to something like: /usr/local/share/burp-custom
-Then create a symbolik link to that with something like: 
-
-`ln -s /usr/local/share/burp-custom/burp-reports.py /usr/local/bin/burp-server-reports`
-
-With this done you will be able to call burp-server-reports command anywhere
-
-Create a file with config desired for most of the functions: `/etc/burp/burp-reports.conf `
-You will be able to use `--reports_conf /file/path` if you want to use different place for this file.
-
-File must contain: 
+* **inventory_colums** and **inventory_status** is used in `--report inventory`
+* **email_notification**: Config that makes possible send emails
 
 ```
-burp_automation_folder = /storage/samba/automation
-# csv_file_to compare with external inventory:
-csv_file_data = /storage/samba/automation/inventory.csv
-days_outdated = 10
-outdated_notes = This is useful comment that will be added to the foot of emails of outdated clients
-burp_www_reports = /var/www/html
-# burp_www_reports, is output place for example files:
-# /var/www/html/inventory_status.csv /var/www/html/clients_status.txt
-json_clients_file = /var/spool/burp/clients_status.json
-emails_to = emaildest@example.net
-emails_from = sendingfrom@example.net
-smtp_server = addres.or.name
+[inventory_columns]
+server = servidor
+status = status
+sub_status = status (detailed)
+client_name = device name
+
+[inventory_status]
+not_inventory_in_burp = not in inventory
+in_many_servers = duplicated
+in_inventory_updated = ok
+spare_not_in_burp = ignored spare
+in_inventory_not_in_burp = absent
+spare_in_burp = wrong spare in burp
+inactive_in_burp = wrong not active
+spare = spare
+active = active
+
+[email_notification]
+email_to = root@localhost
+smtp_password =
+email_from = server@domain.com
+smtp_server = localhost
+smtp_login =
+smtp_mode = normal
+smtp_port = 25
+foot_notes = a sample notes
+```
+
+* `email_to` you can add a list of comma separated values
+* `smtp_mode` you can use normal/ssl/tls
+* `spare` and `active` you can also specify a list of comma separated values as possible status.
+
+To send email it uses pyzmail, so all options here are valid: http://www.magiksys.net/pyzmail/
+I have successfully tested with smtp relay with no authentication and with gmail account, in my case I had to generate an "application password" in my account, logon of google.
+
+TODO:
+
+```
+[common]
 excluded_clients = list,of,clients,that,will,not,be,added,to,outdated,reports
 ```
 
-By default it reads burp config from /etc/burp/burp-server.conf to locate the clients dir.
-You can use `--burp_conf /path/file` to specify which config to use
+By default it reads burp config from /etc/burp/burp-reports.conf
 
-# Usage of burp-reports.py
 
-## The script has bultin help, so I would recommend to use those options first:
 
-(Every option should precedes with burp-server-reports command first, example: burp-server-reports --help)
+## Inventory: Compare your clients with external inventory
+
+Default columns is described in the configuration section above, you don't need to specify it but you can change if
+required.
+
+An example (you can also add any more columns as you desire, it will be automatically appended on output, like notes):
 ```
---help
---print_usage
+device name;status;Status (detailed);notes
+demo1; active;;should be ok
+demo2; active; spare; should be wrong spare
+cli10; active;;
+cli20; active; spare;
 ```
 
-## Print list text of clients
-
-`--text`
-
-You can also use `--detail`
-
-`--text --detail`
-
-And also specify output file:
-
-`--text /path/to/file --detail` or without --detail 
-
-## --detail 
-
-As previous example, it adds more detail on list of commands, so it will be possible to use this option on most of the reports.
-You can use it combined with --text, --outdated (or -o), --email
-
-## Report outdated
-
-Use: 
-
-`-o --text` or `--outdated --text`
-
-You can also use `-o --email`
-
-Also output to a file `-o /path/to/file`
-
-## Compare your list of clients with external inventory
-
-If you specify in configuration a list of inventory like:
-`csv_file_data = /storage/samba/automation/inventory.csv`
-It must have: 
-
-```
-name,status,det_status,whatever,else
-client1,active,,,
-client2,active,spare,,othercomments irrelevant for compare but will not be a problem
-```
 As the example, it will give you details only on "active" assets and will compare if it is spare or not also. 
 
-You can use it to compare with your list of clients (useful to see if all your inventory is in burp or not). 
+You can use it to compare with your list of clients (useful to see if all your inventory is in burp or not).
+It can also tell you if you have clients not in the inventory
 
-Option: 
+Command line:
 
-`--compare --csv_output`
+    --reports inventory -i input.csv -o output.csv
 
 
+Data used by the script
+=======================
+
+Chec it on [Data notes](data/notes.md)

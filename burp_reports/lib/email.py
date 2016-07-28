@@ -46,25 +46,29 @@ def send_email(config, text_msg=None, attachments=None):
     smtp_login = config.get('smtp_login')
     smtp_password = config.get('smtp_password')
 
-    if not smtp_port: smtp_port = 25
-    if not smtp_mode: smtp_mode = None
-    if not smtp_login: smtp_login = None
-    if not smtp_password: smtp_password = None
+    if not smtp_port:
+        smtp_port = 25
+    if not smtp_mode:
+        smtp_mode = None
+    if not smtp_login:
+        smtp_login = None
+    if not smtp_password:
+        smtp_password = None
 
     sender = fromaddr
     recipients = toaddr
     subject = config.get('subject', 'the subject')
     text_content = text_msg
-    prefered_encoding = 'iso-8859-1'
+    preferred_encoding = 'iso-8859-1'
     text_encoding = 'iso-8859-1'
-    date = email.utils.formatdate(time.time(), localtime=True)
+    # date = email.utils.formatdate(time.time(), localtime=True)
 
     # Compose the email in payload, mail_from, rcpt_to, msg_id
     payload, mail_from, rcpt_to, msg_id = pyzmail.compose_mail(
         sender,
         recipients,
         subject,
-        prefered_encoding,
+        preferred_encoding,
         (text_content, text_encoding),
         html=None,
         attachments=attachments)

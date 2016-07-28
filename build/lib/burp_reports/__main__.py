@@ -16,29 +16,29 @@ def parse_args():
     Information extracted from: https://mkaz.com/2014/07/26/python-argparse-cookbook/
     :return:
     """
-    parser = argparse.ArgumentParser(formatter_class=argparse.RawTextHelpFormatter)   
+    parser = argparse.ArgumentParser(formatter_class=argparse.RawTextHelpFormatter)
     parser.add_argument('-c', '--reports_conf', dest='reports_conf',
                         const=os.path.join(os.sep, 'etc', 'burp', 'burp-reports.conf'),
                         default=None,
                         nargs='?', help='burp-reports.conf configuration file')
-    
+
     parser.add_argument('-ui', '--burpui_apiurl', dest='burpui_apiurl', nargs='?', default=None, const=None,
                         help='full url to burpui api, like http://user:pass@server:port/api/ ')
-    
+
     # Adding report choices
 
-    choices_helper = { "print": "Print txt clients list only \n",
-                       "outdated": "will print list of outdated clients ",
-                       "inventory":
-                             'requires -i and -o, check input inventory and generates a comparison\n'
-                             '    Input csv headers required: device name; status; Status (detailed) \n'
-                             '       Example line:            demo1; active; \n'
-                             '                                demo2; active; spare \n',
-                       "email_outdated": "Will send email to configured recipients on config file"}
+    choices_helper = {"print": "Print txt clients list only \n",
+                      "outdated": "will print list of outdated clients ",
+                      "inventory":
+                          'requires -i and -o, check input inventory and generates a comparison\n'
+                          '    Input csv headers required: device name; status; Status (detailed) \n'
+                          '       Example line:            demo1; active; \n'
+                          '                                demo2; active; spare \n',
+                      "email_outdated": "Will send email to configured recipients on config file"}
 
     parser.add_argument("--report", '-r', dest='report', nargs='?', default='print', const='print',
-                    choices=choices_helper,
-                    help='\n'.join("{}: {}".format(key, value) for key, value in sorted(choices_helper.items())))
+                        choices=choices_helper,
+                        help='\n'.join("{}: {}".format(key, value) for key, value in sorted(choices_helper.items())))
 
     parser.add_argument('--debug', dest='debug', nargs='?', default=None, const=True,
                         help='Activate for debugging purposes')
@@ -56,7 +56,7 @@ def parse_args():
     parser.add_argument('-o', nargs='?', default=None, help='Output csv file to use on --report inventory')
 
     # Print help if no arguments where parsed
-    if len(sys.argv)==1:
+    if len(sys.argv) == 1:
         parser.print_help()
         sys.exit(1)
 

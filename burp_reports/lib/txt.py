@@ -218,7 +218,7 @@ class TxtReports:
         if print_text:
             self.print_text(client=None, header=True)
         else:
-            text_body += self.print_text(client=None, header=True, print_text=None)
+            text_body += self.print_text(client=None, header=True, print_text=False)
             text_body += '\n'
         
         for client, v in sorted(self.clients.items()):
@@ -227,7 +227,7 @@ class TxtReports:
             if print_text:
                 self.print_text(client)
             else:
-                text_body += self.print_text(client, print_text=None)
+                text_body += self.print_text(client, print_text=False)
                 text_body += '\n'
             
             if self.detail:
@@ -251,7 +251,7 @@ class TxtReports:
             if print_text:
                 self.print_text(client=None, footer=foot_notes)
             else:
-                text_body += self.print_text(client=None, footer=foot_notes, print_text=None)
+                text_body += self.print_text(client=None, footer=foot_notes, print_text=False)
                 text_body += '\n'
         
         if self.file:

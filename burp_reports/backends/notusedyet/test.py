@@ -1,7 +1,0 @@
-from burp_reports.backends.notusedyet.burpui_clients import Clients
-clientes = Clients(burp_version=2, conf='/etc/burp/burp-ui.cfg')
-
-clientes.get_clients()
-clientes.get_client(client='monitor')
-
-clientes.get_b_logs(client='monitor', number=1)

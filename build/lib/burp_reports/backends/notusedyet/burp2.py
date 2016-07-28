@@ -2,6 +2,7 @@
 
 g_burpbin = u'/usr/sbin/burp'
 
+
 class Clients:
     """
     Get clients information.

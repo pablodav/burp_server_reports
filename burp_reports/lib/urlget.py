@@ -10,6 +10,7 @@ from datetime import timedelta
 
 cache_file = 'burp_reports_cache'
 expire_after = timedelta(hours=1)
+cache_path = 'file_cache.sqlite'
 
 if platform in ['linux', 'darwin', 'linux2']:
     # linux/osx

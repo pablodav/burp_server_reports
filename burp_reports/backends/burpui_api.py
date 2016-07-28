@@ -115,7 +115,8 @@ class Clients:
         if server:
             serviceurl = self.apiurl + 'client/{}/report/{}/{}'.format(server, client, number)
 
-        if self.debug: print('apiurl: {}'.format(serviceurl))
+        if self.debug:
+            print('apiurl: {}'.format(serviceurl))
 
         backup_report = get_url_data(serviceurl)
 
@@ -145,7 +146,8 @@ class Clients:
         if server:
             serviceurl = self.apiurl + 'client/{}/stats/{}'.format(server, client)
 
-        if self.debug: print('apiurl: {}'.format(serviceurl))
+        if self.debug:
+            print('apiurl: {}'.format(serviceurl))
 
         client_report = get_url_data(serviceurl)
 
@@ -198,7 +200,8 @@ class Clients:
         # Get a list of clients to use
         clients_stats = self.get_clients_stats()
 
-        if self.debug: print('clients_stats: {}'.format(clients_stats))
+        if self.debug:
+            print('clients_stats: {}'.format(clients_stats))
 
         # Create a new list to return
         clients_report = []
@@ -207,7 +210,8 @@ class Clients:
 
             # Server, client is required to fetch report_stats
             server = clients_stats[cli].get('server', None)
-            if self.debug: print('server: {}'.format(server))
+            if self.debug:
+                print('server: {}'.format(server))
             client = clients_stats[cli].get('name', None)
 
             # Create dict with all data of the client's dict
@@ -216,7 +220,8 @@ class Clients:
             # Create new list to use a list of numbers of backups only
             backups = []
 
-            if not client: continue
+            if not client:
+                continue
 
             if clients_stats[cli].get('last', 'None') not in ['None', 'never']:
 
@@ -225,7 +230,8 @@ class Clients:
                 # https://git.ziirish.me/ziirish/burp-ui/issues/148
                 cr_stats = self._get_client_report_stats(client, server=server)
                 # and create a list of backups numbers only
-                for n in range(len(cr_stats)): backups.append(cr_stats[n].get('number'))
+                for n in range(len(cr_stats)):
+                    backups.append(cr_stats[n].get('number'))
                 # Get the maximum number of backup to use
                 number = max(backups)
 
@@ -239,8 +245,3 @@ class Clients:
             clients_report.append(client_report_dict)
 
         return clients_report
-
-
-
-
-

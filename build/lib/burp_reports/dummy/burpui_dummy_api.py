@@ -62,7 +62,8 @@ class Clients:
             if client_state == 'working':
                 client_phase = 'phase2'
                 client_percent = random.randrange(30, 90)
-            if num > 50: server = 'server2'
+            if num > 50:
+                server = 'server2'
 
             clients_stats.append({
                 "last": client_last,

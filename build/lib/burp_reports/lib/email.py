@@ -46,10 +46,14 @@ def send_email(config, text_msg=None, attachments=None):
     smtp_login = config.get('smtp_login')
     smtp_password = config.get('smtp_password')
 
-    if not smtp_port: smtp_port = 25
-    if not smtp_mode: smtp_mode = None
-    if not smtp_login: smtp_login = None
-    if not smtp_password: smtp_password = None
+    if not smtp_port:
+        smtp_port = 25
+    if not smtp_mode:
+        smtp_mode = None
+    if not smtp_login:
+        smtp_login = None
+    if not smtp_password:
+        smtp_password = None
 
     sender = fromaddr
     recipients = toaddr

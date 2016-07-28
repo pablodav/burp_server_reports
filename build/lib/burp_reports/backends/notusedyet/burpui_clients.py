@@ -1,5 +1,6 @@
 # -*- coding: utf8 -*-
 
+
 class Clients:
     """
     Get clients information.
@@ -30,7 +31,8 @@ class Clients:
         """
 
         :param client: Name of the client to retrieve data.
-        :return: [{'received': 326753806, 'end': 1466714070, 'encrypted': False, 'number': 1, 'deletable': True, 'date': 1466713986, 'size': 572911431}]
+        :return: [{'received': 326753806, 'end': 1466714070, 'encrypted': False, 'number': 1,
+        'deletable': True, 'date': 1466713986, 'size': 572911431}]
         """
         
         client_data = self.backend.get_client(name=client)

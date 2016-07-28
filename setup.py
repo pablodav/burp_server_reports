@@ -10,34 +10,34 @@
 from setuptools import setup, find_packages
 
 setup(name='burp_reports',
-    version='1.0rc7',
-    description='Burp reports package',
-    classifiers=[
-        'Development Status :: 4 - Beta ',
-        'License :: OSI Approved :: MIT License',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3 :: Only',
-        'Topic :: System :: Archiving :: Backup',
-    ],
-    url='https://github.com/pablodav/burp_server_reports',
-    author='Pablo Estigarribia',
-    author_email='pablodav@gmail.com',
-    license='MIT',
-    packages=find_packages(),
-    include_package_data=True,
-    package_data={
-        'data': 'burp_reports/data/*',
-    },
-    entry_points={
-      'console_scripts': [
-          'burp-reports = burp_reports.__main__:main'
-      ]
-    },
-    install_requires=[
-        'invpy_libs',
-        'requests',
-        'arrow',
-        'requests-cache',
-        'pyzmail'
-    ],
-    zip_safe=False)
+      version='1.0rc7',
+      description='Burp reports package',
+      classifiers=[
+          'Development Status :: 4 - Beta ',
+          'License :: OSI Approved :: MIT License',
+          'Programming Language :: Python :: 3',
+          'Programming Language :: Python :: 3 :: Only',
+          'Topic :: System :: Archiving :: Backup',
+      ],
+      url='https://github.com/pablodav/burp_server_reports',
+      author='Pablo Estigarribia',
+      author_email='pablodav@gmail.com',
+      license='MIT',
+      packages=find_packages(),
+      include_package_data=True,
+      package_data={
+          'data': 'burp_reports/data/*',
+      },
+      entry_points={
+          'console_scripts': [
+              'burp-reports = burp_reports.__main__:main'
+          ]
+      },
+      install_requires=[
+          'invpy_libs',
+          'requests',
+          'arrow',
+          'requests-cache',
+          'pyzmail'
+      ],
+      zip_safe=False)

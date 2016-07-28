@@ -8,7 +8,6 @@ from burp_reports.lib.email import send_email
 
 
 class BurpReports:
-
     def __init__(self, clients_dict, days_outdated=31, detail=None, config=None):
         """
 
@@ -130,7 +129,7 @@ class BurpReports:
         outdated_clients = self._get_outdated()
 
         csv_rows_inventory_status = []
-        headers= []
+        headers = []
 
         headers.insert(0, client_column)  # Change First header column as client
         headers.insert(1, all_columns['status'])  # Change Second header column as status
@@ -269,10 +268,3 @@ class BurpReports:
         body_str = clients_reports.report_to_txt(print_text=None)
 
         send_email(email_config, body_str)
-
-
-
-
-
-
-

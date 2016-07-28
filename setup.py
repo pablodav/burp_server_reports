@@ -1,15 +1,16 @@
 #! python3
 # Help from: http://www.scotttorborg.com/python-packaging/minimal.html
 # https://docs.python.org/3/distutils/commandref.html#sdist-cmd
+# https://docs.python.org/3.4/distutils/setupscript.html#installing-additional-files
 # https://docs.python.org/3.4/tutorial/modules.html
 # Install it with python setup.py install
 # Or use: python setup.py develop (changes to the source files will be immediately available)
 # https://pypi.python.org/pypi?%3Aaction=list_classifiers
 
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(name='burp_reports',
-    version='1.0rc2',
+    version='1.0rc6',
     description='Burp reports package',
     classifiers=[
         'Development Status :: 4 - Beta ',
@@ -22,7 +23,11 @@ setup(name='burp_reports',
     author='Pablo Estigarribia',
     author_email='pablodav@gmail.com',
     license='MIT',
-    packages=['burp_reports'],
+    packages=find_packages(),
+    include_package_data=True,
+    package_data={
+        'data': 'burp_reports/data/*',
+    },
     entry_points={
       'console_scripts': [
           'burp-reports = burp_reports.__main__:main'

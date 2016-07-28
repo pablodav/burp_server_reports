@@ -10,7 +10,7 @@ setup(name='burp_reports',
     version='1.0rc1',
     description='Burp reports package',
     classifiers=[
-      'Development Status :: 1 - release candidate 1',
+      'Development Status :: 4 - Beta ',
       'License :: OSI Approved :: MIT License',
       'Programming Language :: Python :: 3.4',
     ],

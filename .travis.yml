@@ -6,7 +6,7 @@ python:
   - "3.5"
 # command to install dependencies
 install:
-  - sudo pip install .
+  - sudo pip3 install .
 # command to run tests
 script:
   - burp-reports --burpui_api dummy --report outdated

@@ -22,7 +22,7 @@ class BurpReports:
         :param days_outdated (int): number to consider days outdated
         :param detail (True/None): Used to print more details or not
         :param config (configparser): configparser formatted config, required sections:
-                            inventory_status, inventory_columns
+                            inventory_status, inventory_columns, common
 
         """
 
@@ -38,6 +38,8 @@ class BurpReports:
             self.common_config = {
                 'csv_delimiter': ';'
             }
+
+        self.excluded_clients = self.common_config.get('excluded_clients', '').split(',')
 
     def print_basic_txt(self):
         clients_reports = TxtReports(self.clients,
@@ -56,6 +58,11 @@ class BurpReports:
             # Get actual time with arrow module
             # k is client name
             # v is the dict with all data
+
+            # Do not verify excluded clients
+            if k in self.excluded_clients:
+                continue
+
             actual_time = arrow.get()
             # get date to consider as outdated
             outdated_time = actual_time.replace(days=-self.days_outdated)
@@ -149,6 +156,10 @@ class BurpReports:
         for k in sorted(inventory):
             client = k
 
+            # Do not check excluded clients
+            if client in self.excluded_clients:
+                continue
+
             # Columns required to verify the status, lowercase and without spaces at end and beginning
             status = inventory[client].get(all_columns['status'], '').lower().strip()
             sub_status = inventory[client].get(all_columns['sub_status'], '').lower().strip()
@@ -194,6 +205,10 @@ class BurpReports:
 
         # Check if there is some client in burp but not in the inventory
         for burp_client in sorted(self.clients):
+            # Do not check excluded clients
+            if burp_client in self.excluded_clients:
+                continue
+
             if burp_client not in inventory:
                 burp_status = all_status['not_inventory_in_burp']
                 if self.clients[burp_client].get('server', None):

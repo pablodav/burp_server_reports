@@ -87,6 +87,7 @@ Options to use in the file:
 burpui_apiurl = http://user:pass@localhost:5000/api/
 days_outdated = 31
 csv_delimiter = ;
+excluded_clients = list,of,clients,that,will,not,be,added,to,outdated,reports
 ```
 
 * burpui_apiurl is overwritten by cmd if you use --burpui_apiurl
@@ -126,19 +127,13 @@ smtp_port = 25
 foot_notes = a sample notes
 ```
 
-* `email_to` you can add a list of comma separated values
+* `email_to` you can add a list of comma separated values without spaces.
 * `smtp_mode` you can use normal/ssl/tls
-* `spare` and `active` you can also specify a list of comma separated values as possible status.
+* `spare` and `active` you can also specify a list of comma separated values without spaces as possible status.
 
 To send email it uses pyzmail, so all options here are valid: http://www.magiksys.net/pyzmail/
-I have successfully tested with smtp relay with no authentication and with gmail account, in my case I had to generate an "application password" in my account, logon of google.
-
-TODO:
-
-```
-[common]
-excluded_clients = list,of,clients,that,will,not,be,added,to,outdated,reports
-```
+I have successfully tested with smtp relay with no authentication and with gmail account,
+in my case I had to generate an "application password" in my account, logon of google.
 
 By default it reads burp config from /etc/burp/burp-reports.conf
 

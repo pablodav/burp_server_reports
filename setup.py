@@ -1,5 +1,6 @@
 #! python3
 # Help from: http://www.scotttorborg.com/python-packaging/minimal.html
+# https://docs.python.org/3/distutils/commandref.html#sdist-cmd
 # https://docs.python.org/3.4/tutorial/modules.html
 # Install it with python setup.py install
 # Or use: python setup.py develop (changes to the source files will be immediately available)

@@ -9,7 +9,7 @@ The new refactor doesnt use burp -a m, it uses burp-ui api to get data so you ne
 
 The previous version is on tag 0.1 https://github.com/pablodav/burp_server_reports/tree/0.1 and it will not be maintained.
 
-Version 1.0rc6
+Version 1.0rc7
 
 Requirements
 ===========
@@ -166,4 +166,4 @@ Command line:
 Data used by the script
 =======================
 
-Chec it on [Data notes](data/notes.md)
+Chec it on [Data notes](burp_reports/data/notes.md)

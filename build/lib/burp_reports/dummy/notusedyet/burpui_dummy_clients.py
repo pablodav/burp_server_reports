@@ -7,15 +7,12 @@ class Clients:
 
     """
 
-    def __init__(self, burp_version=1, conf=None):
+    def __init__(self, conf=None):
         """
 
-        :param burp_version: version of burp backend to work with 1/2
         :param conf: burp_ui configuration to use.
-        :param dummy: if true all functions will return only examples outputs.
         """
 
-        self.version = burp_version
         self.buiconf = conf
 
     @staticmethod

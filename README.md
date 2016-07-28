@@ -17,7 +17,7 @@ Requirements
 Python3.4+
 pip install to install requirements listed in setup.py and also in requirements.txt
 
-Recomendations
+Recommendations
 ==============
 
 burpui 0.3.0+ (to be released but with many improvements in api performance and stability)
@@ -60,11 +60,11 @@ Windows env:
 
 
 * `--detail` it adds more detail on list of commands, so it will be possible to use this option on most of the reports.
-* `--report` multile report options.
+* `--report` multiple report options.
 * `--report outdated`: will report outdated clients
 * `--report inventory`: Will compare with `-i input.csv` and will export to `-o output.csv`
 * `-c config.conf`: Ini file to use
-* `--write_config`: will write all default settings on config file not ovewrites any existing, requires `-c`
+* `--write_config`: will write all default settings on config file not overwrites any existing, requires `-c`
 * `--report email_outdated`: Will send email with outdated clients, requires config.
 
 
@@ -78,7 +78,7 @@ Configuration is required only to send emails. But allows you to customize the d
 
 Example config: `/etc/burp/burp-reports.conf `
 
-Autogenerate a basic template: `--write_config`
+Auto generate a basic template: `--write_config`
 
 Options to use in the file:
 
@@ -94,7 +94,7 @@ csv_delimiter = ;
 
 More possible options in config:
 
-* **inventory_colums** and **inventory_status** is used in `--report inventory`
+* **inventory_columns** and **inventory_status** is used in `--report inventory`
 * **email_notification**: Config that makes possible send emails
 
 ```

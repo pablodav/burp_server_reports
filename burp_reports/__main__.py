@@ -97,7 +97,7 @@ def bui_dummy_clients_stats():
 def get_main_conf(options):
     """
 
-    :param options: options from argparse
+    :param options: options from argparser
     :return: dict with options from config file or defaults
     """
     _options = defaultdict(dict)

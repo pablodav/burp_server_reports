@@ -2,8 +2,8 @@
 # http://www.magiksys.net/pyzmail/
 
 import pyzmail
-import email
-import time
+# import email
+# import time
 
 
 def send_email(config, text_msg=None, attachments=None):

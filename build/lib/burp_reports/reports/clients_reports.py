@@ -130,7 +130,7 @@ class BurpReports:
         outdated_clients = self._get_outdated()
 
         csv_rows_inventory_status = []
-        headers= []
+        headers = []
 
         headers.insert(0, client_column)  # Change First header column as client
         headers.insert(1, all_columns['status'])  # Change Second header column as status

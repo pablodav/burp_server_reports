@@ -4,8 +4,8 @@ python:
   - "3.5"
 # command to install dependencies
 install:
-  - pip install -r requirements.txt
-  - pip install .
+  - pip install --user --upgrade -r requirements.txt
+  - pip install --user .
 # command to run tests
 script:
   - ~/.local/bin/burp-reports --burpui_api dummy --report outdated

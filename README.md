@@ -1,8 +1,11 @@
-# burp_server_reports
+burp_server_reports
+===================
+
 helpful reports for burp backup and restore
 
+The new refactor doesnt use burp -a m, it uses burp-ui api to get data so you need burp-ui up and accessible.
 
-It doesnt use burp -a m, it uses burp-ui api to get data so you need burp-ui up and accessible.
+The previous version is on tag 0.1 https://github.com/pablodav/burp_server_reports/tree/0.1 and it will not be maintained.
 
 Requirements
 ===========
@@ -50,6 +53,7 @@ Windows env:
 * `--report inventory`: Will compare with `-i input.csv` and will export to `-o output.csv`
 * `-c config.conf`: Ini file to use
 * `--write_config`: will write all default settings on config file not ovewrites any existing, requires `-c`
+* `--report email_outdated`: Will send email with outdated clients, requires config.
 
 
 
@@ -148,7 +152,7 @@ It can also tell you if you have clients not in the inventory
 
 Command line:
 
-`--reports inventory -i input.csv -o output.csv
+    --reports inventory -i input.csv -o output.csv
 
 
 Data used by the script

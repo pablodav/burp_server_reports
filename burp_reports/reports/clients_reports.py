@@ -263,7 +263,8 @@ class BurpReports:
             raise SystemExit('email_notification section is required in config')
 
         outdated_clients = self._get_outdated()
-        clients_reports = TxtReports(outdated_clients)
+        clients_reports = TxtReports(outdated_clients,
+                                     detail=self.detail)
         body_str = clients_reports.report_to_txt(print_text=None)
 
         send_email(email_config, body_str)

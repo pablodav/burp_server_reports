@@ -7,10 +7,10 @@
 from setuptools import setup
 
 setup(name='burp_reports',
-    version='0.0.1',
+    version='1.0rc1',
     description='Burp reports package',
     classifiers=[
-      'Development Status :: 1 - Not usable yet',
+      'Development Status :: 1 - release candidate 1',
       'License :: OSI Approved :: MIT License',
       'Programming Language :: Python :: 3.4',
     ],

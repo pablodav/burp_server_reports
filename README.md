@@ -7,6 +7,8 @@ The new refactor doesnt use burp -a m, it uses burp-ui api to get data so you ne
 
 The previous version is on tag 0.1 https://github.com/pablodav/burp_server_reports/tree/0.1 and it will not be maintained.
 
+Version 1.0rc1
+
 Requirements
 ===========
 
@@ -119,6 +121,7 @@ foot_notes = a sample notes
 * `spare` and `active` you can also specify a list of comma separated values as possible status.
 
 To send email it uses pyzmail, so all options here are valid: http://www.magiksys.net/pyzmail/
+I have successfully tested with smtp relay with no authentication and with gmail account, in my case I had to generate an "application password" in my account, logon of google.
 
 TODO:
 

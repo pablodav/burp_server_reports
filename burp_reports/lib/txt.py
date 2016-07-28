@@ -56,10 +56,10 @@ class TxtReports:
         if self.additional_columns:
             client_details.append(self.additional_columns)
 
-        if self.detail:
+        # if self.detail:
             # Extend more data to client_details list
             # Will be appended to both: header and data on report
-            client_details.append({'exclude': 'exclude'})
+            # client_details.append({'exclude': 'exclude'})
 
         # Format basic header
         if header:
@@ -98,10 +98,10 @@ class TxtReports:
                 detail_dict = client_details[n]
                 for key, value in detail_dict.items():
                     # Add client data to the string client_text using client_details list to fetch keys
-                    item_value = client_data.get(value, '')
+                    item_value = client_data.get(value, ' --- ')
                     # Check if item value is valid to be a string, if not add empty str value.
                     if not item_value or item_value in empty_values:
-                        item_value = ''
+                        item_value = ' --- '
                     # Add the value of the item from client dictionary to client_text
                     # :Will put left , .Will truncate
                     client_text += ' {:{}.{}} '.format(item_value, jt, jt)

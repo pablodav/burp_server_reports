@@ -1,10 +1,15 @@
+.gitignore
+.travis.yml
 MANIFEST.in
 README.md
 __init__.py
+license
 main.py
+requirements.txt
 setup.cfg
 setup.py
-test.csv
+upload.sh
+.codenvy/project.json
 burp_reports/__init__.py
 burp_reports/__main__.py
 burp_reports.egg-info/PKG-INFO
@@ -16,9 +21,6 @@ burp_reports.egg-info/requires.txt
 burp_reports.egg-info/top_level.txt
 burp_reports/backends/__init__.py
 burp_reports/backends/burpui_api.py
-burp_reports/backends/notusedyet/burp2.py
-burp_reports/backends/notusedyet/burpui_clients.py
-burp_reports/backends/notusedyet/test.py
 burp_reports/data/notes.md
 burp_reports/data/test_inventory.csv
 burp_reports/defaults/__init__.py
@@ -40,3 +42,4 @@ burp_reports/lib/urlget.py
 burp_reports/reports/__init__.py
 burp_reports/reports/clients_reports.py
 burp_reports/test/__init__.py
+dist/burp_reports-1.0rc7-py3-none-any.whl

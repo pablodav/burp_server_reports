@@ -207,7 +207,6 @@ class TxtReports:
 
     def report_to_txt(self, print_text=True):
         """
-        :param print_text: Will be used with None to return the body formatted instead of directly using print()
 
         """
 

@@ -8,9 +8,17 @@
 # https://pypi.python.org/pypi?%3Aaction=list_classifiers
 
 from setuptools import setup, find_packages
+import os
 
+# Get the version from VERSION file
+mypackage_root_dir = 'burp_reports'
+
+with open(os.path.join(mypackage_root_dir, 'VERSION')) as version_file:
+    version = version_file.read().strip()
+
+# Define setuptools specifications
 setup(name='burp_reports',
-      version='1.0rc7',
+      version=version,
       description='Burp reports package',
       classifiers=[
           'Development Status :: 4 - Beta ',
@@ -28,6 +36,7 @@ setup(name='burp_reports',
       package_data={
           'data': 'burp_reports/data/*',
       },
+      data_files=[('VERSION', ['burp_reports/VERSION'])],
       entry_points={
           'console_scripts': [
               'burp-reports = burp_reports.__main__:main'

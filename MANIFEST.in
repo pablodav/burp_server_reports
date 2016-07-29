@@ -1,3 +1,4 @@
 global-include *.py
 global-include *.md
 global-include *.csv
+include VERSION

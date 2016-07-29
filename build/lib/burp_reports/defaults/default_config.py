@@ -33,7 +33,8 @@ def set_defaults():
 
     common = {
         'days_outdated': '31',
-        'csv_delimiter': ';'
+        'csv_delimiter': ';',
+        'excluded_clients': 'monitor,agent'
     }
 
     email_notification = {

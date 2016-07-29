@@ -10,7 +10,7 @@ install:
 script:
   - burp-reports --burpui_apiurl dummy --report outdated
   - burp-reports --burpui_apiurl dummy --report outdated --detail
-  - burp-reports --burpui_apiurl dummy --report inventory -i burp_reports/data/test_inventory.csv -o test.csv
+  - time burp-reports --burpui_apiurl dummy --report inventory -i burp_reports/data/test_inventory.csv -o test.csv
   - burp-reports --burpui_apiurl dummy -c test1.conf --write_config
   - burp-reports --burpui_apiurl https://admin:admin@demo.ziirish.me/api/ --report outdated --detail
   - burp-reports --burpui_apiurl https://admin:admin@demo.ziirish.me/api/ --debug --detail

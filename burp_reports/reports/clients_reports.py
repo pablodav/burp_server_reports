@@ -2,10 +2,11 @@ from burp_reports.lib.txt import TxtReports
 import arrow
 from collections import defaultdict
 from burp_reports.lib.is_up import is_up
-from invpy_libs import csv_as_dict
-from invpy_libs import save_csv_data
+from invpy_libs import csv_as_dict, save_csv_data, get_csv_from_url
 from burp_reports.lib.email import send_email
-
+import validators
+from sys import platform
+import os
 
 class BurpReports:
     def __init__(self, clients_dict, days_outdated=31, detail=None, config=None):
@@ -30,6 +31,14 @@ class BurpReports:
         self.days_outdated = days_outdated
         self.detail = detail
         self.config = config
+
+        if platform in ['linux', 'darwin', 'linux2']:
+            # linux/osx
+            self.tempdir = os.path.join(os.sep, 'tmp')
+        elif platform == "win32":
+            self.tempdir = os.path.join(os.sep, 'temp')
+
+        self.tempfile = os.path.join(self.tempdir, 'burp_reports_temp.csv')
 
         if config:
             # Set dict for from common section
@@ -90,7 +99,7 @@ class BurpReports:
     def compare_inventory(self, csv_inventory):
         """
 
-        :param csv_inventory: Input filename to compare from
+        :param csv_inventory: Input filename to compare from (also can be an url to download it)
         :return: list csv_rows_inventory_status (status of each client) in nested list one row per client
         """
 
@@ -129,6 +138,11 @@ class BurpReports:
 
         client_column = all_columns['client_name']
         delimiter = self.common_config['csv_delimiter']
+
+        # Download the csv if it is in a url
+        if validators.url(csv_inventory):
+            get_csv_from_url(csv_inventory, csv_output=self.tempfile, delimiter=delimiter)
+            csv_inventory = self.tempfile
 
         # Get inventory from CSV file
         inventory = csv_as_dict(csv_inventory, client_column, delimiter=delimiter)

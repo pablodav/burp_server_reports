@@ -67,6 +67,7 @@ Windows env:
 * `--write_config`: will write all default settings on config file not overwrites any existing, requires `-c`
 * `--report email_outdated`: Will send email with outdated clients, requires config.
 
+* `-i` (also can be an url to download it)
 
 
 Optional Configuration file

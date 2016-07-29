@@ -47,6 +47,7 @@ setup(name='burp_reports',
           'requests',
           'arrow',
           'requests-cache',
-          'pyzmail'
+          'pyzmail',
+          'validators'
       ],
       zip_safe=False)

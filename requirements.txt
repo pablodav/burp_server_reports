@@ -3,3 +3,4 @@ requests
 arrow
 requests-cache
 pyzmail
+validators

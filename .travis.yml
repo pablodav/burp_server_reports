@@ -14,5 +14,6 @@ script:
   - burp-reports --burpui_apiurl dummy -c test1.conf --write_config
   - burp-reports --burpui_apiurl https://admin:admin@demo.ziirish.me/api/ --report outdated --detail
   - burp-reports --burpui_apiurl https://admin:admin@demo.ziirish.me/api/ --debug --detail
+  - time burp-reports -ui dummy --report inventory -i https://raw.githubusercontent.com/pablodav/burp_server_reports/master/burp_reports/data/test_inventory.csv -o test_from_url.csv
   - burp-reports --burpui_apiurl https://admin:admin@demo.ziirish.me/api/ --report inventory -i burp_reports/data/test_inventory.csv -o test_ui.csv
   - cat test_ui.csv

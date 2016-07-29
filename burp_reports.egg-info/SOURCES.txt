@@ -10,6 +10,7 @@ setup.cfg
 setup.py
 upload.sh
 .codenvy/project.json
+burp_reports/VERSION
 burp_reports/__init__.py
 burp_reports/__main__.py
 burp_reports.egg-info/PKG-INFO
@@ -42,4 +43,3 @@ burp_reports/lib/urlget.py
 burp_reports/reports/__init__.py
 burp_reports/reports/clients_reports.py
 burp_reports/test/__init__.py
-dist/burp_reports-1.0rc7-py3-none-any.whl

@@ -52,7 +52,8 @@ def parse_args():
     parser.add_argument('--write_config', dest='write_config', default=None, action='store_true',
                         help="Write configuration with default values, useful to get a config file to modify")
 
-    parser.add_argument('-i', nargs='?', default=None, help='Input csv file to use on --report inventory')
+    parser.add_argument('-i', nargs='?', default=None, help='Input csv file to use on --report inventory \n'
+                                                            '(also can be an url to download it)\n')
     parser.add_argument('-o', nargs='?', default=None, help='Output csv file to use on --report inventory')
 
     # Print help if no arguments where parsed

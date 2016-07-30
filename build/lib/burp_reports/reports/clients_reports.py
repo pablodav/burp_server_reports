@@ -3,7 +3,7 @@ import arrow
 from collections import defaultdict
 from burp_reports.lib.is_up import is_up
 from invpy_libs import csv_as_dict, save_csv_data, get_csv_from_url
-from burp_reports.lib.email import send_email
+from burp_reports.lib.email import EmailNotifications
 import validators
 from sys import platform
 import os
@@ -286,15 +286,38 @@ class BurpReports:
         return outdated_clients
 
     def email_outdated(self):
+        """
+        Sends email based on its configuration file
+        :return:
+        """
 
-        if self.config:
+        email = self._compose_email(report='outdated')
+        email.send_email()
+
+    def _compose_email(self, report):
+        """
+        Composes emails
+
+        :param report: (str): outdated to get a list of outdated clients
+        :return: EmailNotifications class object
+        """
+        if self.config.has_section('email_notification'):
             email_config = dict(self.config['email_notification'])
         else:
             raise SystemExit('email_notification section is required in config')
 
-        outdated_clients = self._get_outdated()
-        clients_reports = TxtReports(outdated_clients,
-                                     detail=self.detail)
+        if report == 'outdated':
+            clients = self._get_outdated()
+
+        else:
+            clients = self.clients
+
+        clients_reports = TxtReports(clients,
+                                     detail=self.detail,
+                                     foot_notes=email_config.get('foot_notes', ''))
+
         body_str = clients_reports.report_to_txt(print_text=None)
 
-        send_email(email_config, body_str)
+        email = EmailNotifications(email_config, body_str)
+
+        return email

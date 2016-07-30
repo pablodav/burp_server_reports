@@ -42,4 +42,6 @@ burp_reports/lib/txt.py
 burp_reports/lib/urlget.py
 burp_reports/reports/__init__.py
 burp_reports/reports/clients_reports.py
-burp_reports/test/__init__.py
+burp_reports/tests/__init__.py
+burp_reports/tests/test_clients_dummy.py
+burp_reports/tests/test_email.py

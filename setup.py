@@ -50,4 +50,5 @@ setup(name='burp_reports',
           'pyzmail',
           'validators'
       ],
+      tests_require=['pytest'],
       zip_safe=False)

@@ -10,7 +10,7 @@ class TxtReports:
     """
   
     def __init__(self, clients, file=None, detail=None, debug=None,
-                 additional_columns=None):
+                 additional_columns=None, foot_notes=''):
         """
         
         :param clients: dict of clients formatted for burp reports.
@@ -19,14 +19,16 @@ class TxtReports:
         :param debug: Used to active more debug info if required.
         :param additional_columns: Add more column in format: {'Column name': 'key'}
                 Where 'key' is the key to search in, example: clients['key']
+        :param foot_notes: str with more notes in the foot of the text
         """
         self.clients = clients
         self.file = file
         self.detail = detail
         self.debug = debug
         self.additional_columns = additional_columns
+        self.foot_notes = foot_notes
 
-    def format_client_text(self, client=None, header=None, footer=None):
+    def format_client_text(self, client=None, header=None):
         """
         print only header once with client=None, header=True
         header to file:
@@ -34,15 +36,13 @@ class TxtReports:
         Recommended doc: https://pyformat.info/
 
         :param client: client_name to report
-        :param footer: True/None to report footer information
         :param header: True/None to report header formatted
-        :return: client/footer/header str depending on the option chosen
+        :return: client/header str depending on the option chosen
         """
 
         jt = 11
         headers_text = ''
         client_text = ''
-        footer_text = ''
 
         # List with dict {header: report_key to use from reports dict}
         client_details = [{'Date(local)': 'b_date'},
@@ -110,19 +110,28 @@ class TxtReports:
             if self.detail:
                 client_text += self._txt_client_details(client_data, jt)
 
-        if footer:
-            if self.detail:
-                footer_text = '\n\n{}\n'.format(footer)
-            else:
-                footer_text = '\n\n{}\n'.format(footer)
-
         # Return formatted text
         if header:
             return headers_text
         if client:
             return client_text
-        if footer:
-            return footer_text
+
+    def _foot_notes(self, footer):
+        """
+
+        :param footer: (str) to add in foot notes
+        :return: str formatted to be in foot_notes
+        """
+        footer_text = ''
+
+        if self.detail:
+            footer_text = '\n\n{}\n'.format(footer)
+
+        if self.foot_notes:
+            footer_text += '\n\n{}\n'.format(self.foot_notes)
+
+        return footer_text
+
 
     @staticmethod
     def _txt_header_details(jt):
@@ -199,7 +208,7 @@ class TxtReports:
                 return client_text
 
         if footer:
-            footer_text = self.format_client_text(client=None, footer=footer)
+            footer_text = self._foot_notes(footer=footer)
             if print_text:
                 print(footer_text, file=f)
             else:
@@ -214,6 +223,7 @@ class TxtReports:
         totsize = 0
         total_clients = 0
         text_body = ''
+        foot_notes = ''
 
         if print_text:
             self.print_text(client=None, header=True)
@@ -247,6 +257,8 @@ class TxtReports:
 
             foot_notes += '\n{:>30}  {}'.format('Total clients:',
                                                 total_clients)
+
+        if foot_notes:
 
             if print_text:
                 self.print_text(client=None, footer=foot_notes)

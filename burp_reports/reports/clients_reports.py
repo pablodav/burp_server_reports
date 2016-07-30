@@ -3,10 +3,11 @@ import arrow
 from collections import defaultdict
 from burp_reports.lib.is_up import is_up
 from invpy_libs import csv_as_dict, save_csv_data, get_csv_from_url
-from burp_reports.lib.email import send_email
+from burp_reports.lib.email import EmailNotifications
 import validators
 from sys import platform
 import os
+
 
 class BurpReports:
     def __init__(self, clients_dict, days_outdated=31, detail=None, config=None):
@@ -296,4 +297,5 @@ class BurpReports:
                                      detail=self.detail)
         body_str = clients_reports.report_to_txt(print_text=None)
 
-        send_email(email_config, body_str)
+        email = EmailNotifications(email_config, body_str)
+        email.send_email()

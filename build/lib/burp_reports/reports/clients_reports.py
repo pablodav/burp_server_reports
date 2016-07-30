@@ -8,6 +8,7 @@ import validators
 from sys import platform
 import os
 
+
 class BurpReports:
     def __init__(self, clients_dict, days_outdated=31, detail=None, config=None):
         """

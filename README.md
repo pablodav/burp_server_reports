@@ -14,14 +14,14 @@ The previous version is on tag 0.1 https://github.com/pablodav/burp_server_repor
 Requirements
 ===========
 
-Python3.4+
-pip install to install requirements listed in setup.py and also in requirements.txt
+Python3.4+    
+pip install to install requirements listed in setup.py and also in requirements.txt    
 
 Recommendations
 ==============
 
-burpui 0.3.0+ (to be released but with many improvements in api performance and stability)
-burp 2.0.42+ (burp monitor has been improved a lot since this release)
+burpui 0.3.0+ (to be released but with many improvements in api performance and stability)    
+burp 2.0.42+ (burp monitor has been improved a lot since this release)    
 
 Use protocol = 1  with burp2 server!!!!
 
@@ -42,13 +42,13 @@ For proxies add:
 
     --proxy='http://user:passw@server:port'
 
-To keep in mind
-==============
+Consideration
+=============
 
 It caches the data of burp-ui for 1h , if you need to refresh the data just remove /tmp/burp_reports_cache.sqlite
 
 Usage
-====
+=====
 
 Use the command line:
 
@@ -125,7 +125,7 @@ smtp_server = localhost
 smtp_login =
 smtp_mode = normal
 smtp_port = 25
-foot_notes = a sample notes
+foot_notes = a sample notes in the end of your email
 ```
 
 * `email_to` you can add a list of comma separated values without spaces.
@@ -136,7 +136,7 @@ To send email it uses pyzmail, so all options here are valid: http://www.magiksy
 I have successfully tested with smtp relay with no authentication and with gmail account,
 in my case I had to generate an "application password" in my account, logon of google.
 
-By default it reads burp config from /etc/burp/burp-reports.conf
+By default it does not reads any config file and tries to use the defaults in the program. (the easiest way to see the defaults is to write a config with --write_config)
 
 
 
@@ -145,7 +145,8 @@ By default it reads burp config from /etc/burp/burp-reports.conf
 Default columns is described in the configuration section above, you don't need to specify it but you can change if
 required.
 
-An example (you can also add any more columns as you desire, it will be automatically appended on output, like notes):
+An example (you can also add many more columns as you desire, it will be automatically appended on output, like notes):
+
 ```
 device name;status;Status (detailed);notes
 demo1; active;;should be ok
@@ -156,7 +157,7 @@ cli20; active; spare;
 
 As the example, it will give you details only on "active" assets and will compare if it is spare or not also. 
 
-You can use it to compare with your list of clients (useful to see if all your inventory is in burp or not).
+You can use it to compare with your list of clients (useful to see if all your inventory is in burp or not).    
 It can also tell you if you have clients not in the inventory
 
 Command line:
@@ -167,4 +168,9 @@ Command line:
 Data used by the script
 =======================
 
-Chec it on [Data notes](burp_reports/data/notes.md)
+Check it on [Data notes](burp_reports/data/notes.md)
+
+Bugs and requests
+=================
+
+Just report on github issues: https://github.com/pablodav/burp_server_reports/issues 

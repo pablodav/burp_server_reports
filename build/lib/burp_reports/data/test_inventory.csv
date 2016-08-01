@@ -1,5 +1,0 @@
-device name;status;Status (detailed);notes
-demo1; active;;should be ok
-demo2; active; spare; should be wrong spare
-cli10; active;;
-cli20; active; spare;

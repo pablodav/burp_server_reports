@@ -1,4 +1,5 @@
-[![Build Status](https://travis-ci.org/pablodav/burp_server_reports.svg?branch=master)](https://travis-ci.org/pablodav/burp_server_reports)
+.. image:: https://travis-ci.org/pablodav/burp_server_reports.svg?branch=master
+    :target: https://travis-ci.org/pablodav/burp_server_reports
 
 burp_server_reports
 ===================

@@ -84,13 +84,13 @@ Auto generate a basic template: `--write_config`
 
 Options to use in the file:
 
-```
-[common]
-burpui_apiurl = http://user:pass@localhost:5000/api/
-days_outdated = 31
-csv_delimiter = ;
-excluded_clients = list,of,clients,that,will,not,be,added,to,outdated,reports
-```
+
+    [common]
+    burpui_apiurl = http://user:pass@localhost:5000/api/
+    days_outdated = 31
+    csv_delimiter = ;
+    excluded_clients = list,of,clients,that,will,not,be,added,to,outdated,reports
+
 
 * burpui_apiurl is overwritten by cmd if you use --burpui_apiurl
 * csv_delimiter, used for `-i` and `-o`
@@ -100,34 +100,34 @@ More possible options in config:
 * **inventory_columns** and **inventory_status** is used in `--report inventory`
 * **email_notification**: Config that makes possible send emails
 
-```
-[inventory_columns]
-server = servidor
-status = status
-sub_status = status (detailed)
-client_name = device name
 
-[inventory_status]
-not_inventory_in_burp = not in inventory
-in_many_servers = duplicated
-in_inventory_updated = ok
-spare_not_in_burp = ignored spare
-in_inventory_not_in_burp = absent
-spare_in_burp = wrong spare in burp
-inactive_in_burp = wrong not active
-spare = spare
-active = active
+        [inventory_columns]
+        server = servidor
+        status = status
+        sub_status = status (detailed)
+        client_name = device name
+        
+        [inventory_status]
+        not_inventory_in_burp = not in inventory
+        in_many_servers = duplicated
+        in_inventory_updated = ok
+        spare_not_in_burp = ignored spare
+        in_inventory_not_in_burp = absent
+        spare_in_burp = wrong spare in burp
+        inactive_in_burp = wrong not active
+        spare = spare
+        active = active
+        
+        [email_notification]
+        email_to = root@localhost
+        smtp_password =
+        email_from = server@domain.com
+        smtp_server = localhost
+        smtp_login =
+        smtp_mode = normal
+        smtp_port = 25
+        foot_notes = a sample notes in the end of your email
 
-[email_notification]
-email_to = root@localhost
-smtp_password =
-email_from = server@domain.com
-smtp_server = localhost
-smtp_login =
-smtp_mode = normal
-smtp_port = 25
-foot_notes = a sample notes in the end of your email
-```
 
 * `email_to` you can add a list of comma separated values without spaces.
 * `smtp_mode` you can use normal/ssl/tls
@@ -148,13 +148,12 @@ required.
 
 An example (you can also add many more columns as you desire, it will be automatically appended on output, like notes):
 
-```
-device name;status;Status (detailed);notes
-demo1; active;;should be ok
-demo2; active; spare; should be wrong spare
-cli10; active;;
-cli20; active; spare;
-```
+
+        device name;status;Status (detailed);notes
+        demo1; active;;should be ok
+        demo2; active; spare; should be wrong spare
+        cli10; active;;
+        cli20; active; spare;
 
 As the example, it will give you details only on "active" assets and will compare if it is spare or not also. 
 

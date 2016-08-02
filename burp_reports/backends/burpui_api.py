@@ -41,7 +41,6 @@ class Clients:
         # It returns an empty list ([]) when there are no agents and then switch back to
         # the "standalone" mode.
         # Now if the list is not empty, you'll have something like:
-
         # [
         # {
         #   'alive': true,
@@ -106,8 +105,7 @@ class Clients:
         """
         GET /api/client/(server)/report/(name)/(int: backup)
         GET /api/client/report/(name)/(int: backup)
-
-        will be used: totsize, received, duration. 
+        will be used: totsize, received, duration.
         """
 
         serviceurl = self.apiurl + 'client/report/{}/{}'.format(client, number)

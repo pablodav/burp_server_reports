@@ -38,7 +38,4 @@ class BUIClients:
         clients_list_api = TranslateBurpuiAPI(clients=clients)
         # Translate with method translate_clients()
         clients_reports = clients_list_api.translate_clients()
-
         return clients_reports
-
-

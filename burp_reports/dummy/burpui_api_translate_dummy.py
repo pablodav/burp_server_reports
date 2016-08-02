@@ -31,4 +31,3 @@ class BUIClients:
 
         return clients_reports
 
-

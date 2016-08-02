@@ -1,4 +1,3 @@
-
 from datetime import datetime
 from .humanize import humanize_file_size
 import os
@@ -8,11 +7,10 @@ class TxtReports:
     """
     Formats a dict of clients and prints to stdout or exports to file
     """
-  
+
     def __init__(self, clients, file=None, detail=None, debug=None,
                  additional_columns=None, foot_notes=''):
         """
-        
         :param clients: dict of clients formatted for burp reports.
         :param file: file to export the printed text
         :param detail: Use True when more detailed information is required
@@ -56,7 +54,7 @@ class TxtReports:
         if self.additional_columns:
             client_details.append(self.additional_columns)
 
-        # if self.detail:
+            # if self.detail:
             # Extend more data to client_details list
             # Will be appended to both: header and data on report
             # client_details.append({'exclude': 'exclude'})
@@ -69,7 +67,7 @@ class TxtReports:
             if self.detail:
                 headers_text += ' {:>{}.{}} '.format('Name   ', jt, jt)
             else:
-                headers_text += ' {:>{}.{}} '.format('Name   ', jt*3, jt)
+                headers_text += ' {:>{}.{}} '.format('Name   ', jt * 3, jt)
 
             # Look on each item on client_details list
             for n in range(len(client_details)):
@@ -91,7 +89,7 @@ class TxtReports:
             if self.detail:
                 client_text = ' {:>{}.{}} '.format(client, jt, jt)
             else:
-                client_text = ' {:>{}.{}} '.format(client, jt*3, jt)
+                client_text = ' {:>{}.{}} '.format(client, jt * 3, jt)
 
             # Look on each item on client_details list
             for n in range(len(client_details)):
@@ -131,7 +129,6 @@ class TxtReports:
             footer_text += '\n\n{}\n'.format(self.foot_notes)
 
         return footer_text
-
 
     @staticmethod
     def _txt_header_details(jt):
@@ -230,7 +227,7 @@ class TxtReports:
         else:
             text_body += self.print_text(client=None, header=True, print_text=False)
             text_body += '\n'
-        
+
         for client, v in sorted(self.clients.items()):
             client_data = self.clients[client]
 
@@ -239,14 +236,13 @@ class TxtReports:
             else:
                 text_body += self.print_text(client, print_text=False)
                 text_body += '\n'
-            
+
             if self.detail:
                 total_taken += int(client_data.get('backup_report', {}).get('duration', 0))
                 totsize += int((client_data.get('backup_report', {}).get('totsize', 0)))
                 total_clients += 1
-                
-        if self.detail:
 
+        if self.detail:
             foot_notes = '\n{:>30}  {:02}:{:02}:{:02}'.format('total duration backups taken:',
                                                               total_taken // 3600,
                                                               total_taken % 3600 // 60,
@@ -265,7 +261,7 @@ class TxtReports:
             else:
                 text_body += self.print_text(client=None, footer=foot_notes, print_text=False)
                 text_body += '\n'
-        
+
         if self.file:
             if os.path.isfile(self.file):
                 print('exported to', self.file)

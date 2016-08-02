@@ -12,7 +12,6 @@ class Clients:
 
         :param burp_version: version of burp backend to work with 1/2
         :param conf: burp_ui configuration to use.
-        :param dummy: if true all functions will return only examples outputs.
         """
 
         self.version = burp_version

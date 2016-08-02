@@ -22,5 +22,3 @@ class TestClass:
         email = burp_reports._compose_email('outdated')
 
         assert isinstance(email, EmailNotifications)
-
-

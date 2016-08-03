@@ -1,4 +1,4 @@
-import restructuredtext_lint as rst_lint
+import rstcheck
 
 
 def check_readme(file='README.rst'):
@@ -7,7 +7,11 @@ def check_readme(file='README.rst'):
     :param file:
     :return:
     """
-    errors = rst_lint.lint_file(file)
+    # Get the long description from the relevant file
+    with open(file, encoding='utf-8') as f:
+        long_description = f.read()
+
+    errors = list(rstcheck.check(long_description))
     if errors:
         msg = 'There are errors in {}, errors \n {}'.format(file, errors[0].message)
         raise SystemExit(msg)

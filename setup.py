@@ -77,7 +77,8 @@ setup(name='burp_reports',
           'arrow',
           'requests-cache',
           'pyzmail',
-          'validators'
+          'validators',
+          'restructuredtext_lint'
       ],
       tests_require=['pytest', 'restructuredtext_lint'],
       zip_safe=False)

@@ -9,19 +9,27 @@
 
 from setuptools import setup, find_packages
 import os
+from os import path
+
+here = path.abspath(path.dirname(__file__))
 
 # Get the version from VERSION file
 mypackage_root_dir = 'burp_reports'
-
 with open(os.path.join(mypackage_root_dir, 'VERSION')) as version_file:
     version = version_file.read().strip()
+
+# Get the long description from the relevant file
+with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
+    long_description = f.read()
 
 # Define setuptools specifications
 setup(name='burp_reports',
       version=version,
       description='Burp reports package',
+      long_description=long_description,  # this is the file README.rst
       classifiers=[
-          'Development Status :: 4 - Beta ',
+          'Development Status :: 5 - Production/Stable',
+          'Intended Audience :: System Administrators',
           'License :: OSI Approved :: MIT License',
           'Programming Language :: Python :: 3',
           'Programming Language :: Python :: 3 :: Only',
@@ -30,7 +38,7 @@ setup(name='burp_reports',
       url='https://github.com/pablodav/burp_server_reports',
       author='Pablo Estigarribia',
       author_email='pablodav@gmail.com',
-      license='MIT',
+      license='GPLv3',
       packages=find_packages(),
       include_package_data=True,
       package_data={

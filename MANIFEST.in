@@ -2,3 +2,5 @@ global-include *.py
 global-include *.md
 global-include *.csv
 include burp_reports/VERSION
+include README.rst
+iclude license

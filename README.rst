@@ -14,13 +14,13 @@ The previous version is on tag 0.1 https://github.com/pablodav/burp_server_repor
 
 
 Requirements
-===========
+============
 
 Python3.4+    
 pip install to install requirements listed in setup.py and also in requirements.txt    
 
 Recommendations
-==============
+===============
 
 burpui 0.3.0+ (to be released but with many improvements in api performance and stability)    
 burp 2.0.42+ (burp monitor has been improved a lot since this release)    
@@ -28,7 +28,7 @@ burp 2.0.42+ (burp monitor has been improved a lot since this release)
 Use protocol = 1  with burp2 server!!!!
 
 Install
-======
+=======
 
 Linux::
 
@@ -147,7 +147,7 @@ By default it does not reads any config file and tries to use the defaults in th
 
 
 Inventory: Compare your clients with external inventory
----------
+-------------------------------------------------------
 
 Default columns is described in the configuration section above, you don't need to specify it but you can change if
 required.

@@ -1,16 +1,11 @@
 language: python
 dist: trusty
-sudo: required
 python:
   - "3.4"
   - "3.5"
 # command to install dependencies
-before_install:
-  - sudo apt-get install -y python-pygments
-  - sudo apt-get install -y python3-pygments
 install:
-  - sudo python -m pip install restructuredtext_lint
-  - sudo python -m pip install .
+  - pip install .
 # command to run tests
 script:
   - burp-reports --burpui_apiurl dummy --report outdated

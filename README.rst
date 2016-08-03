@@ -140,11 +140,12 @@ To send email it uses pyzmail, so all options here are valid: http://www.magiksy
 I have successfully tested with smtp relay with no authentication and with gmail account,
 in my case I had to generate an "application password" in my account, logon of google.
 
-By default it does not reads any config file and tries to use the defaults in the program. (the easiest way to see the defaults is to write a config with --write_config)
+By default it does not reads any config file and tries to use the defaults in the program. (the easiest way to see the defaults is to write a config with ``--write_config``)
 
 
 
-## Inventory: Compare your clients with external inventory
+Inventory: Compare your clients with external inventory
+---------
 
 Default columns is described in the configuration section above, you don't need to specify it but you can change if
 required.

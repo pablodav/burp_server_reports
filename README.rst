@@ -30,17 +30,19 @@ Use protocol = 1  with burp2 server!!!!
 Install
 ======
 
+Linux::
+
     sudo pip3 install burp_reports --upgrade
 
-Also is possible to use:
+Also is possible to use::
 
     sudo python3 -m pip install burp_reports --upgrade
 
-On windows with python3.4:
+On windows with python3.4::
 
     \python34\scripts\pip install burp_reports --upgrade
 
-For proxies add:
+For proxies add::
 
     --proxy='http://user:passw@server:port'
 
@@ -52,11 +54,11 @@ It caches the data of burp-ui for 1h , if you need to refresh the data just remo
 Usage
 =====
 
-Use the command line:
+Use the command line::
 
     burp-reports --help
 
-Windows env:
+Windows env::
 
     \python34\scripts\burp-reports.exe --help
 
@@ -75,13 +77,13 @@ Windows env:
 Optional Configuration file
 ===========================
 
-Configuration is required only to send emails. But allows you to customize the defaults used too.
+Configuration is required only to send emails. But allows you to customize the defaults used too::
 
     burp-reports -c /config/file/path.conf
 
-Example config: `/etc/burp/burp-reports.conf `
+Recommended location: ``/etc/burp/burp-reports.conf``
 
-Auto generate a basic template: `--write_config`
+Auto generate a basic template: ``--write_config``
 
 Options to use in the file:
 
@@ -165,7 +167,7 @@ As the example, it will give you details only on "active" assets and will compar
 You can use it to compare with your list of clients (useful to see if all your inventory is in burp or not).    
 It can also tell you if you have clients not in the inventory
 
-Command line:
+Command line::
 
     ``--reports inventory -i input.csv -o output.csv``
 

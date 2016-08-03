@@ -10,16 +10,37 @@
 from setuptools import setup, find_packages
 import os
 from os import path
+import restructuredtext_lint as rst_lint
+
+
+def check_readme(file='README.rst'):
+    """
+    Checks readme rst file, to ensure it will upload to pypi and be formatted correctly.
+    :param file:
+    :return:
+    """
+    errors = rst_lint.lint_file(file)
+    if errors:
+        msg = 'There are errors in {}, errors \n {}'.format(file, errors[0].message)
+        raise SystemExit(msg)
+    else:
+        msg = 'No errors in {}'.format(file)
+        print(msg)
+
 
 here = path.abspath(path.dirname(__file__))
+readme_file = path.join(here, 'README.rst')
 
 # Get the version from VERSION file
 mypackage_root_dir = 'burp_reports'
 with open(os.path.join(mypackage_root_dir, 'VERSION')) as version_file:
     version = version_file.read().strip()
 
+# Check Readme file for pypi
+check_readme(readme_file)
+
 # Get the long description from the relevant file
-with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
+with open(readme_file, encoding='utf-8') as f:
     long_description = f.read()
 
 # Define setuptools specifications
@@ -58,5 +79,5 @@ setup(name='burp_reports',
           'pyzmail',
           'validators'
       ],
-      tests_require=['pytest'],
+      tests_require=['pytest', 'restructuredtext_lint'],
       zip_safe=False)

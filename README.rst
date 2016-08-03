@@ -60,15 +60,15 @@ Windows env:
     \python34\scripts\burp-reports.exe --help
 
 
-* `--detail` it adds more detail on list of commands, so it will be possible to use this option on most of the reports.
-* `--report` multiple report options.
-* `--report outdated`: will report outdated clients
-* `--report inventory`: Will compare with `-i input.csv` and will export to `-o output.csv`
-* `-c config.conf`: Ini file to use
-* `--write_config`: will write all default settings on config file not overwrites any existing, requires `-c`
-* `--report email_outdated`: Will send email with outdated clients, requires config.
+* ``--detail`` it adds more detail on list of commands, so it will be possible to use this option on most of the reports.
+* ``--report`` multiple report options.
+* ``--report outdated``: will report outdated clients
+* ``--report inventory``: Will compare with `-i input.csv` and will export to `-o output.csv`
+* ``-c config.conf``: Ini file to use
+* ``--write_config``: will write all default settings on config file not overwrites any existing, requires `-c`
+* ``--report email_outdated``: Will send email with outdated clients, requires config.
 
-* `-i` (also can be an url, the program will recognize the url and download the file from it)
+* ``-i`` (also can be an url, the program will recognize the url and download the file from it)
 
 
 Optional Configuration file
@@ -84,6 +84,7 @@ Auto generate a basic template: `--write_config`
 
 Options to use in the file:
 
+.. code-block:: ini
 
     [common]
     burpui_apiurl = http://user:pass@localhost:5000/api/
@@ -92,14 +93,15 @@ Options to use in the file:
     excluded_clients = list,of,clients,that,will,not,be,added,to,outdated,reports
 
 
-* burpui_apiurl is overwritten by cmd if you use --burpui_apiurl
-* csv_delimiter, used for `-i` and `-o`
+* burpui_apiurl is overwritten by cmd if you use ``--burpui_apiurl``
+* csv_delimiter, used for ``-i`` and ``-o``
 
 More possible options in config:
 
-* **inventory_columns** and **inventory_status** is used in `--report inventory`
+* **inventory_columns** and **inventory_status** is used in ``--report inventory``
 * **email_notification**: Config that makes possible send emails
 
+.. code-block:: ini
 
         [inventory_columns]
         server = servidor
@@ -129,9 +131,9 @@ More possible options in config:
         foot_notes = a sample notes in the end of your email
 
 
-* `email_to` you can add a list of comma separated values without spaces.
-* `smtp_mode` you can use normal/ssl/tls
-* `spare` and `active` you can also specify a list of comma separated values without spaces as possible status.
+* ``email_to`` you can add a list of comma separated values without spaces.
+* ``smtp_mode`` you can use normal/ssl/tls
+* ``spare`` and ``active`` you can also specify a list of comma separated values without spaces as possible status.
 
 To send email it uses pyzmail, so all options here are valid: http://www.magiksys.net/pyzmail/
 I have successfully tested with smtp relay with no authentication and with gmail account,
@@ -148,8 +150,9 @@ required.
 
 An example (you can also add many more columns as you desire, it will be automatically appended on output, like notes):
 
+.. code-block::
 
-        device name;status;Status (detailed);notes
+        device name;statsu;Status (detailed);notes
         demo1; active;;should be ok
         demo2; active; spare; should be wrong spare
         cli10; active;;
@@ -162,7 +165,7 @@ It can also tell you if you have clients not in the inventory
 
 Command line:
 
-    --reports inventory -i input.csv -o output.csv
+    ``--reports inventory -i input.csv -o output.csv``
 
 
 Data used by the script

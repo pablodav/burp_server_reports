@@ -10,7 +10,7 @@
 from setuptools import setup, find_packages
 import os
 from os import path
-
+import rstcheck
 
 here = path.abspath(path.dirname(__file__))
 readme_file = path.join(here, 'README.rst')
@@ -23,6 +23,8 @@ with open(os.path.join(mypackage_root_dir, 'VERSION')) as version_file:
 # Get the long description from the relevant file
 with open(readme_file, encoding='utf-8') as f:
     long_description = f.read()
+
+rstcheck.check(long_description)
 
 # Define setuptools specifications
 setup(name='burp_reports',
@@ -59,6 +61,7 @@ setup(name='burp_reports',
           'requests-cache',
           'pyzmail',
           'validators',
+          'rstcheck'
       ],
       tests_require=['pytest', 'restructuredtext_lint'],
       zip_safe=False)

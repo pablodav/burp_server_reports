@@ -4,8 +4,9 @@ python:
   - "3.4"
   - "3.5"
 # command to install dependencies
+before_install:
+  - sudo apt-get install -y python3-pygments
 install:
-  - pip install restructuredtext_lint
   - pip install .
 # command to run tests
 script:

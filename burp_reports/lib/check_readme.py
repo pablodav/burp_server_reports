@@ -9,9 +9,9 @@ def check_readme(file='README.rst'):
     """
     # Get the long description from the relevant file
     with open(file, encoding='utf-8') as f:
-        long_description = f.read()
+        readme_content = f.read()
 
-    errors = list(rstcheck.check(long_description))
+    errors = list(rstcheck.check(readme_content))
     if errors:
         msg = 'There are errors in {}, errors \n {}'.format(file, errors[0].message)
         raise SystemExit(msg)

@@ -154,7 +154,7 @@ required.
 
 An example (you can also add many more columns as you desire, it will be automatically appended on output, like notes):
 
-.. code-block::
+::
 
         device name;statsu;Status (detailed);notes
         demo1; active;;should be ok

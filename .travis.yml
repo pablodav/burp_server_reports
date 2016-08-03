@@ -5,7 +5,7 @@ python:
   - "3.5"
 # command to install dependencies
 before_install:
-  - sudo apt-get install -y python3-pygments
+  - sudo apt-get install -y python-pygments
 install:
   - pip install restructuredtext_lint
   - pip install .

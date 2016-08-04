@@ -13,6 +13,21 @@ The previous version is on tag 0.1 https://github.com/pablodav/burp_server_repor
 `VERSION  <burp_reports/VERSION>`__
 
 
+Intro
+=====
+
+I'm trying to create some extra feature to the burp and burp-ui ecosystem, with burp you have everything that's required
+to backup/restore your systems, but like burp-ui is created by a sysadmin that loves Burp and would like to help Burp
+adoption with it's nice interface, I'm a sysadmin that loves burp and burp-ui and would like to help Burp adoption
+by providing nice reports.
+
+I have started with those reports that I think are more critical in large deployments, but also are good for every
+deployment.
+
+I have also create lot of flexibility in the configuration of those reports, so you will notice that you could change
+almost every behaviour of them from the config file.
+
+
 Requirements
 ============
 
@@ -192,3 +207,15 @@ TODO:
 * Add cron examples
 * Add more introduction
 * Add features section?
+
+Thanks
+======
+
+Thanks you for your feedbacks and bug reports.
+
+Thanks to Graham Keeling for making `Burp <http://burp.grke.org/>`__, it's a great backup software system.
+
+Thanks to Benjamin Sans (ziirish) for making `Burp-ui <https://git.ziirish.me/ziirish/burp-ui>`__
+
+Thanks to all those that collaborate in those projects (sorry for those that I didn't mention here).
+

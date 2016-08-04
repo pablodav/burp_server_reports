@@ -186,3 +186,9 @@ Bugs and requests
 =================
 
 Just report on github issues: https://github.com/pablodav/burp_server_reports/issues 
+
+TODO:
+
+* Add cron examples
+* Add more introduction
+* Add features section?

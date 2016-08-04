@@ -46,6 +46,11 @@ For proxies add::
 
     --proxy='http://user:passw@server:port'
 
+*IMPORTANT NOTE FOR UBUNTU 14.04 and maybe others*
+I have problems on the first try, it said `No distributions matching  the version`, and fixed it with::
+
+    pip3 install pip --upgrade
+
 Consideration
 =============
 

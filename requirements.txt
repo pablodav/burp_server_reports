@@ -4,4 +4,4 @@ arrow
 requests-cache
 pyzmail
 validators
-restructuredtext_lint
+rstcheck

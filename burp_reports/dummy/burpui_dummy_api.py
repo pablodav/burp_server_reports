@@ -45,7 +45,21 @@ class Clients:
             "name": "client2",
             "state": "idle",
             "phase": "phase2",
-            "percent": 42}
+            "percent": 42},
+            {
+                "last": 'now',
+                "name": "cli30",
+                "state": "idle",
+                "phase": "null",
+                "percent": 42,
+                "server": 'server1'},
+            {
+                "last": actual_time.isoformat('T'),
+                "name": "cli30",
+                "state": "idle",
+                "phase": "phase2",
+                "percent": 0,
+                "server": 'server2'}
         ]
 
         server = 'server1'

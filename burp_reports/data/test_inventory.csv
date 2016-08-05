@@ -1,5 +1,9 @@
 device name;status;Status (detailed);notes
-demo1; active;;should be ok
-demo2; active; spare; should be wrong spare
-cli10; active;;
-cli20; active; spare;
+demo1; active;;should be ok with burpui
+demo2; active; spare; should be wrong spare with burpui
+cli10; active;; should be absent
+cli20; active; spare; should be ignored spare always
+cli30; active; ; should be duplicated
+client_001; active;; should be ok or outdated in dummy
+client_002; active; spare; should be wrong spare in dummy
+client_003; inactive;; should be wrong not active in burp

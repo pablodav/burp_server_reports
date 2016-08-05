@@ -190,6 +190,8 @@ Command line::
 
 *Status explained:*
 
+::
+
         not_inventory_in_burp: A client that's in burp but is not in input inventory
         in_many_servers:       A client that's active in inventory and in more than one burp server (only possible with multiagent burp-ui server)
         in_inventory_updated:  A client that's active in inventory, also in burp and is updated.
@@ -199,6 +201,7 @@ Command line::
         inactive_in_burp:      A client that's is not active in the inventory but it's in burp
         spare = spare  # Just the status used to identify an spare client in ``sub_status`` column
         active = active # The status used to identify an active client in ``status`` column
+
 
 CRON - Schedule reports
 =======================

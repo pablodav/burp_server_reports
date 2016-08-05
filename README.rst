@@ -186,7 +186,7 @@ It can also tell you if you have clients not in the inventory
 
 Command line::
 
-    ``--reports inventory -i input.csv -o output.csv``
+    --report inventory -i input.csv -o output.csv
 
 *Status explained:*
 

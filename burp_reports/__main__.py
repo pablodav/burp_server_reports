@@ -9,6 +9,7 @@ from burp_reports.lib.configs import parse_config2
 from burp_reports.lib.configs import get_all_config
 from burp_reports.reports.clients_reports import BurpReports
 from collections import defaultdict
+from . import __version__
 
 
 def parse_args():
@@ -42,6 +43,9 @@ def parse_args():
 
     parser.add_argument('--debug', dest='debug', nargs='?', default=None, const=True,
                         help='Activate for debugging purposes')
+
+    parser.add_argument('--version', dest='version', nargs='?', default=None, const=True,
+                        help='Print version and exit')
 
     parser.add_argument('--detail', dest='detail', nargs='?', default=None, const=True,
                         help='Adds more details to reports')
@@ -128,6 +132,10 @@ def main():
     """
     clients_dict = {}
     options = parse_args()
+
+    # Print version and exit with --version option
+    if options.version:
+        raise SystemExit('{}'.format(__version__))
 
     # Configs that can be overwritten by command line options
     config_options = get_main_conf(options)

@@ -16,15 +16,14 @@ The previous version is on tag 0.1 https://github.com/pablodav/burp_server_repor
 Intro
 =====
 
-I'm trying to create some extra feature to the burp and burp-ui ecosystem, with burp you have everything that's required
-to backup/restore your systems, but like burp-ui is created by a sysadmin that loves Burp and would like to help Burp
+Like burp-ui is created by a sysadmin that loves Burp and would like to help Burp
 adoption with it's nice interface, I'm a sysadmin that loves burp and burp-ui and would like to help Burp adoption
 by providing nice reports.
 
-I have started with those reports that I think are more critical in large deployments, but also are good for every
+I have started with those reports that I think are more critical in large deployments, but also are helpful for every
 deployment.
 
-I have also create lot of flexibility in the configuration of those reports, so you will notice that you could change
+I have also created a lot of flexibility in the configuration of those reports, so you will notice that you could change
 almost every behaviour of them from the config file.
 
 
@@ -82,9 +81,7 @@ Windows env::
 
     \python34\scripts\burp-reports.exe --help
 
-
-* ``--detail`` it adds more detail on list of commands, so it will be possible to use this option on most of the reports.
-* ``--report`` multiple report options.
+* ``--report`` report choices report options.
 * ``--report outdated``: will report outdated clients
 * ``--report inventory``: Will compare with `-i input.csv` and will export to `-o output.csv`
 * ``-c config.conf``: Ini file to use
@@ -92,7 +89,7 @@ Windows env::
 * ``--report email_outdated``: Will send email with outdated clients, requires config.
 
 * ``-i`` (also can be an url, the program will recognize the url and download the file from it)
-
+* ``--detail`` it adds more info like duration, size, received to the list printed. Can be used with ``--report outdated``
 
 Optional Configuration file
 ===========================
@@ -172,11 +169,11 @@ Inventory: Compare your clients with external inventory
 Default columns is described in the configuration section above, you don't need to specify it but you can change if
 required.
 
-An example (you can also add many more columns as you desire, it will be automatically appended on output, like notes):
+An example in input csv (you can also add many more columns as you desire, it will be automatically appended on output, like notes):
 
 ::
 
-        device name;statsu;Status (detailed);notes
+        device name;status;Status (detailed);notes
         demo1; active;;should be ok
         demo2; active; spare; should be wrong spare
         cli10; active;;
@@ -191,6 +188,55 @@ Command line::
 
     ``--reports inventory -i input.csv -o output.csv``
 
+*Status explained:*
+
+        not_inventory_in_burp: A client that's in burp but is not in input inventory
+        in_many_servers:       A client that's active in inventory and in more than one burp server (only possible with multiagent burp-ui server)
+        in_inventory_updated:  A client that's active in inventory, also in burp and is updated.
+        spare_not_in_burp:     A client that's is Active - spare in the inventory and is not in burp (normally is ignored)
+        in_inventory_not_in_burp: A client that's active in input inventory but not in any burp server
+        spare_in_burp:         A client that's is active spare and also is in burp.
+        inactive_in_burp:      A client that's is not active in the inventory but it's in burp
+        spare = spare  # Just the status used to identify an spare client in ``sub_status`` column
+        active = active # The status used to identify an active client in ``status`` column
+
+CRON - Schedule reports
+=======================
+
+burp-reports actually it's only a command line, but you can use it in cron jobs to schedule it's execution
+
+Information:
+https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/System_Administrators_Guide/ch-Automating_System_Tasks.html#s2-configuring-cron-jobs
+
+Resume:
+
+I would recommend to create a file  in ``/etc/cron.d/burp_reports``
+
+Cron file must be configured with lines in this way:
+
+    minute   hour   day   month   dayofweek   user   command
+
+A template file example::
+
+    SHELL=/bin/bash
+    PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin
+    MAILTO=root
+    HOME=/
+    # For details see man 4 crontabs
+    # Example of job definition:
+    # .---------------- minute (0 - 59)
+    # | .------------- hour (0 - 23)
+    # | | .---------- day of month (1 - 31)
+    # | | | .------- month (1 - 12) OR jan,feb,mar,apr ...
+    # | | | | .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
+    # | | | | |
+    # * * * * * user-name command to be executed
+      0 9  * * 1 root     burp-reports -c /etc/burp/burp-reports.conf --report email_outdated
+      0 10 * * 1 root     burp-reports -c /etc/burp/burp-reports.conf --report inventory -i url/or/path -o /var/www/html/inventory_status.csv
+
+
+``/usr/local/bin`` could be the most critical part in this template, as pip installs the executable there.
+You can also specify the full path for executable like: ``/usr/local/bin/burp-reports`` and then will not need PATH
 
 Data used by the script
 =======================
@@ -204,8 +250,6 @@ Just report on github issues: https://github.com/pablodav/burp_server_reports/is
 
 TODO:
 
-* Add cron examples
-* Add more introduction
 * Add features section?
 
 Thanks

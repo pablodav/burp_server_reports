@@ -43,13 +43,13 @@ class TestInventory:
         status_dict = dict(config['inventory_status'])
         status = config['inventory_columns']['status']
 
-        assert (report['cli10'][status], status_dict['in_inventory_not_in_burp'])
-        assert (report['cli10'][status], not status_dict['in_many_servers'])
-        assert (report['cli20'][status], status_dict['spare_not_in_burp'])
-        assert (report['cli30'][status], status_dict['in_many_servers'])
-        assert (report['client_001'][status], status_dict['in_inventory_updated'] or 'outdated')
-        assert (report['client_002'][status], status_dict['spare_in_burp'])
-        assert (report['client_003'][status], status_dict['inactive_in_burp'])
+        assert report['cli10'][status] == status_dict['in_inventory_not_in_burp']
+        assert report['cli10'][status] not in status_dict['in_many_servers']
+        assert report['cli20'][status] == status_dict['spare_not_in_burp']
+        assert report['cli30'][status] == status_dict['in_many_servers']
+        assert report['client_001'][status] == status_dict['in_inventory_updated'] or 'outdated'
+        assert report['client_002'][status] == status_dict['spare_in_burp']
+        assert report['client_003'][status] == status_dict['inactive_in_burp']
 
 
 

@@ -7,6 +7,7 @@ from burp_reports.lib.email import EmailNotifications
 import validators
 from sys import platform
 import os
+from burp_reports.lib.files import temp_file
 
 
 class BurpReports:
@@ -33,13 +34,7 @@ class BurpReports:
         self.detail = detail
         self.config = config
 
-        if platform in ['linux', 'darwin', 'linux2']:
-            # linux/osx
-            self.tempdir = os.path.join(os.sep, 'tmp')
-        elif platform == "win32":
-            self.tempdir = os.path.join(os.sep, 'temp')
-
-        self.tempfile = os.path.join(self.tempdir, 'burp_reports_temp.csv')
+        self.tempfile = temp_file('burp_reports_temp.csv')
 
         if config:
             # Set dict for from common section

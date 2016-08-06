@@ -4,19 +4,12 @@ import requests
 import socket
 # https://requests-cache.readthedocs.io/en/latest/user_guide.html#usage
 import requests_cache
-import os
-from sys import platform
 from datetime import timedelta
+from . files import temp_file
 
 cache_file = 'burp_reports_cache'
 expire_after = timedelta(hours=1)
-cache_path = 'file_cache.sqlite'
-
-if platform in ['linux', 'darwin', 'linux2']:
-    # linux/osx
-    cache_path = os.path.join(os.sep, 'tmp', cache_file)
-elif platform == "win32":
-    cache_path = os.path.join(os.sep, 'temp', cache_file)
+cache_path = temp_file(cache_file)
 
 # timeout in seconds
 timeout = 60

@@ -99,6 +99,7 @@ Windows env::
 
 * ``-i`` (also can be an url, the program will recognize the url and download the file from it)
 * ``--detail`` it adds more info like duration, size, received to the list printed. Can be used with ``--report outdated``
+* ``--ping`` it adds ping check to ``--report outdated`` only, so you can fast-check which outdated client is pinging.
 
 Optional Configuration file
 ===========================

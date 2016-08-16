@@ -12,6 +12,9 @@ The previous version is on tag 0.1 https://github.com/pablodav/burp_server_repor
 
 `VERSION  <burp_reports/VERSION>`__
 
+1.0 version was created with the objetive to have a flexible programming to allow new features to be easily added on
+next releases, also all features on this version have unit tests to ensure no break on next release.
+
 
 Intro
 =====

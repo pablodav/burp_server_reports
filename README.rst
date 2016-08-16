@@ -91,6 +91,7 @@ Windows env::
     \python34\scripts\burp-reports.exe --help
 
 * ``--report`` report choices report options.
+* ``--report print`` (By default if no --report is given) - Print txt clients list only
 * ``--report outdated``: will report outdated clients
 * ``--report inventory``: Will compare with `-i input.csv` and will export to `-o output.csv`
 * ``-c config.conf``: Ini file to use

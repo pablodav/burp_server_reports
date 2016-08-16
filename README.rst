@@ -284,10 +284,13 @@ Packaging:
 ----------
 
 http://www.scotttorborg.com/python-packaging/minimal.html  
+
 https://docs.python.org/3/distutils/commandref.html#sdist-cmd  
+
 https://docs.python.org/3.4/distutils/setupscript.html#installing-additional-files  
 
 https://docs.python.org/3.4/tutorial/modules.html  
+
 https://pypi.python.org/pypi?%3Aaction=list_classifiers  
 
 

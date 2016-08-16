@@ -20,3 +20,6 @@ script:
   - burp-reports --burpui_apiurl https://admin:admin@demo.ziirish.me/api/ --report inventory -i burp_reports/data/test_inventory.csv -o test_ui.csv
   - cat test_ui.csv
   - py.test
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)

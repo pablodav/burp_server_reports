@@ -276,17 +276,18 @@ Thanks to Benjamin Sans (ziirish) for making `Burp-ui <https://git.ziirish.me/zi
 Thanks to all those that collaborate in those projects (sorry for those that I didn't mention here).
 
 Other helpful docs used for this project:
-----------------------------------------
+-----------------------------------------
 
 http://tjelvarolsson.com/blog/five-steps-to-add-the-bling-factor-to-your-python-package/
 
-### Packaging: 
+Packaging: 
+----------
 
-http://www.scotttorborg.com/python-packaging/minimal.html
-https://docs.python.org/3/distutils/commandref.html#sdist-cmd
-https://docs.python.org/3.4/distutils/setupscript.html#installing-additional-files
+http://www.scotttorborg.com/python-packaging/minimal.html  
+https://docs.python.org/3/distutils/commandref.html#sdist-cmd  
+https://docs.python.org/3.4/distutils/setupscript.html#installing-additional-files  
 
-https://docs.python.org/3.4/tutorial/modules.html
-https://pypi.python.org/pypi?%3Aaction=list_classifiers
+https://docs.python.org/3.4/tutorial/modules.html  
+https://pypi.python.org/pypi?%3Aaction=list_classifiers  
 
 

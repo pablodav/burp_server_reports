@@ -12,7 +12,7 @@ from collections import defaultdict
 from . import __version__
 
 
-def parse_args():
+def create_parser():
     """
     Information extracted from: https://mkaz.com/2014/07/26/python-argparse-cookbook/
     :return:
@@ -60,13 +60,7 @@ def parse_args():
                                                             '(also can be an url to download it)\n')
     parser.add_argument('-o', nargs='?', default=None, help='Output csv file to use on --report inventory')
 
-    # Print help if no arguments where parsed
-    if len(sys.argv) == 1:
-        parser.print_help()
-        sys.exit(1)
-
-    options = parser.parse_args()
-    return options
+    return parser
 
 
 def bui_api_clients_stats(burpui_apiurl, debug=None, detail=None):
@@ -131,7 +125,8 @@ def main():
     Main function
     """
     clients_dict = {}
-    options = parse_args()
+    parser = create_parser()
+    options = parser.parse_args(sys.argv[1:])
 
     # Print version and exit with --version option
     if options.version:

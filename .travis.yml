@@ -24,3 +24,4 @@ script:
 after_success:
   - pip install pytest-cov
   - py.test --cov=burp_reports
+  - bash <(curl -s https://codecov.io/bash)

@@ -17,7 +17,7 @@ __output__ = temp_file('inventory_test.csv')
 class TestInventory:
 
     def test_file(self):
-        assert (__inventory__, os.path.isfile(__inventory__))
+        assert os.path.isfile(__inventory__)
 
     def test_inventory(self):
         clients_dict = test_dummy()

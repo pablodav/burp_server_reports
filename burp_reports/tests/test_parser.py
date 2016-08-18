@@ -14,6 +14,7 @@ class TestParser:
     def test_ui_dummy(self):
         """
         -ui dummy must be tested
+
         :return argparse dict with options and burpui_apiurl = dummy
         """
         options = parse_args(['-ui', 'dummy'])

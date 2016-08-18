@@ -12,7 +12,7 @@ from collections import defaultdict
 from . import __version__
 
 
-def create_parser():
+def parse_args(args):
     """
     Information extracted from: https://mkaz.com/2014/07/26/python-argparse-cookbook/
     :return:
@@ -24,18 +24,19 @@ def create_parser():
                         nargs='?', help='burp-reports.conf configuration file')
 
     parser.add_argument('-ui', '--burpui_apiurl', dest='burpui_apiurl', nargs='?', default=None, const=None,
-                        help='full url to burpui api, like http://user:pass@server:port/api/ ')
+                        help='full url to burpui api, like http://user:pass@server:port/api/ \n'
+                             'It is required on cli line or in config file\n\n')
 
     # Adding report choices
 
-    choices_helper = {"print": "Print txt clients list only \n",
-                      "outdated": "will print list of outdated clients ",
+    choices_helper = {"print": "Print txt clients list only \n\n",
+                      "outdated": "will print list of outdated clients \n",
                       "inventory":
                           'requires -i and -o, check input inventory and generates a comparison\n'
                           '    Input csv headers required: device name; status; Status (detailed) \n'
                           '       Example line:            demo1; active; \n'
                           '                                demo2; active; spare \n',
-                      "email_outdated": "Will send email to configured recipients on config file"}
+                      "email_outdated": "Will send email to configured recipients on config file\n"}
 
     parser.add_argument("--report", '-r', dest='report', nargs='?', default='print', const='print',
                         choices=choices_helper,
@@ -60,7 +61,10 @@ def create_parser():
                                                             '(also can be an url to download it)\n')
     parser.add_argument('-o', nargs='?', default=None, help='Output csv file to use on --report inventory')
 
-    return parser
+    if not args:
+        raise SystemExit(parser.print_help())
+
+    return parser.parse_args(args)
 
 
 def bui_api_clients_stats(burpui_apiurl, debug=None, detail=None):
@@ -120,13 +124,14 @@ def get_main_conf(options):
     return _options
 
 
-def main():
+def cli_execution(options):
     """
-    Main function
+    Manage command line options for cli usage
+
+    :param options:
+    :return:
     """
     clients_dict = {}
-    parser = create_parser()
-    options = parser.parse_args(sys.argv[1:])
 
     # Print version and exit with --version option
     if options.version:
@@ -136,20 +141,16 @@ def main():
     config_options = get_main_conf(options)
     debug = options.debug
     burpui_apiurl = config_options.get('burpui_apiurl')
-
     # Config with defaults settings if no file will be passed
     # Also with defaults sections and defaults keys for missing options in config
     all_config = get_all_config(options.reports_conf)
-
     if options.write_config:
         if not options.reports_conf:
             raise SystemExit('--write_config requires -c configfile.conf')
 
         with open(options.reports_conf, 'w', encoding='utf-8') as f:
             all_config.write(f, space_around_delimiters=True)
-
     days_outdated = all_config.getint('common', 'days_outdated')
-
     # If there is an option to for burpui_apiurl, get clients from that apiurl
     if burpui_apiurl:
         if burpui_apiurl.lower() == 'dummy':
@@ -182,6 +183,15 @@ def main():
 
     elif options.report == 'email_outdated':
         burp_reports.email_outdated()
+
+
+def main():
+    """
+    Main function
+    """
+    options = parse_args(sys.argv[1:])
+
+    cli_execution(options)
 
 
 if __name__ == "__main__":

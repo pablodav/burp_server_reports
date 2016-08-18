@@ -1,4 +1,4 @@
-from burp_reports.__main__ import create_parser
+from ..__main__ import parse_args
 import pytest
 
 
@@ -8,10 +8,14 @@ class TestParser:
         """
         User passes no args, should fail with SystemExit
         """
-        parser = create_parser()
-        parser.parse_args([])
+        with pytest.raises(SystemExit):
+            options = parse_args([])
 
     def test_ui_dummy(self):
-        parser = create_parser()
-        args = parser.parse_args(['-ui', 'dummy'])
+        """
+        -ui dummy must be tested
+        :return argparse dict with options and burpui_apiurl = dummy
+        """
+        options = parse_args(['-ui', 'dummy'])
+        assert options.burpui_apiurl == 'dummy'
 

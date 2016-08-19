@@ -1,6 +1,6 @@
 #! python3
 import configparser
-from burp_reports.defaults.default_config import set_defaults
+from ..defaults.default_config import set_defaults
 import os
 
 

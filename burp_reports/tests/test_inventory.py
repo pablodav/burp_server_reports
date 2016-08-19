@@ -1,8 +1,8 @@
 #!python3
 
 from .test_clients_dummy import test_dummy
-from burp_reports.lib.configs import get_all_config
-from burp_reports.reports.clients_reports import BurpReports
+from ..lib.configs import get_all_config
+from ..reports.clients_reports import BurpReports
 import os
 from ..lib.files import temp_file
 from invpy_libs import csv_as_dict
@@ -25,11 +25,11 @@ class TestInventory:
         config = get_all_config()
 
         # Generate burp_reports object to use for reports.
-        burp_reports = BurpReports(clients_dict,
+        reports = BurpReports(clients_dict,
                                    days_outdated=int(config['common']['days_outdated']),
                                    config=config)
 
-        burp_reports.save_compared_inventory(__inventory__, __output__)
+        reports.save_compared_inventory(__inventory__, __output__)
         compared_clients = csv_as_dict(__output__, config['inventory_columns']['client_name'],
                                        delimiter=config['common']['csv_delimiter'])
 

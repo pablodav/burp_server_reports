@@ -1,6 +1,6 @@
 #!python3
 
-from burp_reports.dummy.burpui_api_translate_dummy import BUIClients
+from ..dummy.burpui_api_translate_dummy import BUIClients
 
 
 def test_dummy():

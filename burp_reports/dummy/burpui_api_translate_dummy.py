@@ -1,7 +1,7 @@
 # -*- coding: utf8 -*-
 
-from burp_reports.interfaces.burpui_api_translate import TranslateBurpuiAPI
-from burp_reports.dummy.burpui_dummy_api import Clients
+from ..interfaces.burpui_api_translate import TranslateBurpuiAPI
+from ..dummy.burpui_dummy_api import Clients
 
 
 class BUIClients:

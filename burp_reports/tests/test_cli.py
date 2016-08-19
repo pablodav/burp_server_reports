@@ -54,6 +54,25 @@ class TestCli:
 
         cli_execution(options)
 
+    def test_demo_ui_outdated_debug(self):
+        """
+        """
+        options = parse_args(['-ui', 'https://admin:admin@demo.ziirish.me/api/',
+                              '--report', 'outdated',
+                              '--detail',
+                              '--debug'])
+
+        cli_execution(options)
+
+    def test_demo_ui_debug(self):
+        """
+        """
+        options = parse_args(['-ui', 'https://admin:admin@demo.ziirish.me/api/',
+                              '--detail',
+                              '--debug'])
+
+        cli_execution(options)
+
 
 
 

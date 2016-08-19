@@ -15,7 +15,6 @@ __output__ = temp_file('inventory_test.csv')
 
 
 class TestInventory:
-
     def test_file(self):
         assert os.path.isfile(__inventory__)
 
@@ -26,8 +25,8 @@ class TestInventory:
 
         # Generate burp_reports object to use for reports.
         reports = BurpReports(clients_dict,
-                                   days_outdated=int(config['common']['days_outdated']),
-                                   config=config)
+                              days_outdated=int(config['common']['days_outdated']),
+                              config=config)
 
         reports.save_compared_inventory(__inventory__, __output__)
         compared_clients = csv_as_dict(__output__, config['inventory_columns']['client_name'],
@@ -36,7 +35,6 @@ class TestInventory:
         return compared_clients
 
     def test_inventory_result(self):
-
         report = self.test_inventory()
         config = get_all_config()
 
@@ -50,8 +48,3 @@ class TestInventory:
         assert report['client_001'][status] == status_dict['in_inventory_updated'] or 'outdated'
         assert report['client_002'][status] == status_dict['spare_in_burp']
         assert report['client_003'][status] == status_dict['inactive_in_burp']
-
-
-
-
-

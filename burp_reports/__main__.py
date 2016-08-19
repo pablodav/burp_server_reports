@@ -5,9 +5,9 @@
 import sys
 import os
 import argparse
-from burp_reports.lib.configs import parse_config2
-from burp_reports.lib.configs import get_all_config
-from burp_reports.reports.clients_reports import BurpReports
+from .lib.configs import parse_config2
+from .lib.configs import get_all_config
+from .reports.clients_reports import BurpReports
 from collections import defaultdict
 from . import __version__
 
@@ -164,25 +164,25 @@ def cli_execution(options):
         raise SystemExit('burpui_apiurl is required in cmd or in config common section')
 
     # Generate burp_reports object to use for reports.
-    burp_reports = BurpReports(clients_dict,
-                               days_outdated=days_outdated,
-                               detail=options.detail,
-                               config=all_config)
+    reports = BurpReports(clients_dict,
+                          days_outdated=days_outdated,
+                          detail=options.detail,
+                          config=all_config)
 
     # Add some report option to use, use clients_dict already set
     if options.report == 'print':
-        burp_reports.print_basic_txt()
+        reports.print_basic_txt()
 
     elif options.report in ['outdated', 'o']:
-        burp_reports.report_outdated(export_txt=True,
-                                     ping=options.ping)
+        reports.report_outdated(export_txt=True,
+                                ping=options.ping)
 
     elif options.report == 'inventory':
-        burp_reports.save_compared_inventory(options.i,
-                                             options.o)
+        reports.save_compared_inventory(options.i,
+                                        options.o)
 
     elif options.report == 'email_outdated':
-        burp_reports.email_outdated()
+        reports.email_outdated()
 
 
 def main():

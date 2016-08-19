@@ -3,12 +3,11 @@
 from .test_clients_dummy import test_dummy
 from ..lib.configs import get_all_config
 from ..reports.clients_reports import BurpReports
-from ..lib.email import EmailNotifications
 
 
 class TestEmail:
 
-    def test_compose(self):
+    def test_burpreports(self):
         clients_dict = test_dummy()
 
         config = get_all_config()
@@ -18,6 +17,14 @@ class TestEmail:
                                    days_outdated=int(config['common']['days_outdated']),
                                    config=config)
 
-        email = burp_reports._compose_email('outdated')
+        return burp_reports
 
-        assert isinstance(email, EmailNotifications)
+    def test_basic_txt(self):
+        reports = self.test_burpreports()
+        reports.print_basic_txt()
+
+    def test_get_outdated(self):
+        reports = self.test_burpreports()
+        outdated = reports._get_outdated()
+
+        assert isinstance(outdated, dict)

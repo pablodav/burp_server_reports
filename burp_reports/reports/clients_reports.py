@@ -1,13 +1,13 @@
-from burp_reports.lib.txt import TxtReports
+from ..lib.txt import TxtReports
 import arrow
 from collections import defaultdict
-from burp_reports.lib.is_up import is_up
+from ..lib.is_up import is_up
 from invpy_libs import csv_as_dict, save_csv_data, get_csv_from_url
-from burp_reports.lib.email import EmailNotifications
+from ..lib.email import EmailNotifications
 import validators
 from sys import platform
 import os
-from burp_reports.lib.files import temp_file
+from ..lib.files import temp_file
 
 
 class BurpReports:

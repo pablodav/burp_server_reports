@@ -1,0 +1,2 @@
+1.0.1:
+        * fix bug when no complete backup is reported to a client but it has date that seems to be the last backup running

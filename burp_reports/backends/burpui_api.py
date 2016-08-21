@@ -230,11 +230,17 @@ class Clients:
                 # and create a list of backups numbers only
                 for n in range(len(cr_stats)):
                     backups.append(cr_stats[n].get('number'))
-                # Get the maximum number of backup to use
-                number = max(backups)
 
-                # Add the backup_report to the dict of the client
-                client_report_dict['backup_report'] = self._get_backup_report_stats(client, number, server=server)
+                if backups:
+                    # Get the maximum number of backup to use
+                    # The first backup could have date but not being reported with number, so no statistics.
+                    # For that reason I add this if backups:
+                    number = max(backups)
+
+                    # Add the backup_report to the dict of the client
+                    client_report_dict['backup_report'] = self._get_backup_report_stats(client, number, server=server)
+                else:
+                    client_report_dict['backup_report'] = {}
             else:
                 client_report_dict['backup_report'] = {}
 

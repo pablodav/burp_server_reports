@@ -15,6 +15,7 @@ def set_defaults():
         'spare': 'spare',
         'active': 'active',
         'inactive_in_burp': 'wrong not active',
+        'inactive_not_in_burp': 'ignored inactive',
         'spare_in_burp': 'wrong spare in burp',
         'not_inventory_in_burp': 'not in inventory',
         'in_inventory_updated': 'ok',

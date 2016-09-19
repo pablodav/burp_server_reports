@@ -108,6 +108,7 @@ class BurpReports:
                 'spare': 'spare',
                 'active': 'active',
                 'inactive_in_burp': 'wrong not active',
+                'inactive_not_in_burp': 'ignored inactive',
                 'spare_in_burp': 'wrong spare in burp',
                 'not_inventory_in_burp': 'not in inventory',
                 'in_inventory_updated': 'ok',
@@ -174,6 +175,7 @@ class BurpReports:
             status = inventory[client].get(all_columns['status'], '').lower().strip()
             sub_status = inventory[client].get(all_columns['sub_status'], '').lower().strip()
 
+            # If the client is in burp servers
             if client in self.clients:
 
                 if sub_status in spare_status:
@@ -188,11 +190,17 @@ class BurpReports:
                     if client in outdated_clients:
                         burp_status = outdated_clients[client]['b_status']
 
+            # If the client is not in burp servers: ---
             # Define the status as ignored for clients spare
             elif sub_status in spare_status:
                 burp_status = all_status['spare_not_in_burp']
 
+            # Define ignored to client not active:
+            elif status not in active_status:
+                burp_status = all_status['inactive_not_in_burp']
+
             else:
+                # Define absent in burp
                 burp_status = all_status['in_inventory_not_in_burp']
 
             # Add server_name information

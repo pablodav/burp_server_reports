@@ -4,6 +4,7 @@ demo2; active; spare; should be wrong spare with burpui
 cli10; active;; should be absent
 cli20; active; spare; should be ignored spare always
 cli30; active; ; should be duplicated in dummy
+cli40; wfs; ; should be ignored inactive
 client_001; active;; should be ok or outdated in dummy
 client_002; active; spare; should be wrong spare in dummy
 client_003; inactive;; should be wrong not active in burp in dummy

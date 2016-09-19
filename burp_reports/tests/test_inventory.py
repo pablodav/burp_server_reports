@@ -45,6 +45,7 @@ class TestInventory:
         assert report['cli10'][status] not in status_dict['in_many_servers']
         assert report['cli20'][status] == status_dict['spare_not_in_burp']
         assert report['cli30'][status] == status_dict['in_many_servers']
+        assert report['cli40'][status] == status_dict['inactive_not_in_burp']
         assert report['client_001'][status] == status_dict['in_inventory_updated'] or 'outdated'
         assert report['client_002'][status] == status_dict['spare_in_burp']
         assert report['client_003'][status] == status_dict['inactive_in_burp']

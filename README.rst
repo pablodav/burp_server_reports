@@ -145,6 +145,7 @@ More possible options in config:
         in_many_servers = duplicated
         in_inventory_updated = ok
         inactive_in_burp: wrong not active
+        inactive_not_in_burp: ignored inactive
         spare_not_in_burp = ignored spare
         in_inventory_not_in_burp = absent
         spare_in_burp = wrong spare in burp
@@ -208,6 +209,7 @@ Command line::
         in_many_servers:       A client that's active in inventory and in more than one burp server (only possible with multiagent burp-ui server)
         in_inventory_updated:  A client that's active in inventory, also in burp and is updated.
         inactive_in_burp:      A client that is not active but it's in burp.
+        inactive_not_in_burp:  A client that's in inventory but his status is not in active status list.
         spare_not_in_burp:     A client that's is Active - spare in the inventory and is not in burp (normally is ignored)
         in_inventory_not_in_burp: A client that's active in input inventory but not in any burp server
         spare_in_burp:         A client that's is active spare and also is in burp.

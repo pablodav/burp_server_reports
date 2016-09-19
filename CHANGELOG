@@ -2,3 +2,5 @@
         * fix bug when no complete backup is reported to a client but it has date that seems to be the last backup running
 1.0.2:
         * Added retry 3 times to urlget lib
+1.0.3:
+        * fix #2 missing status for inactive client not in burp

@@ -5,3 +5,4 @@ requests-cache
 pyzmail
 validators
 rstcheck
+deco

@@ -1,7 +1,4 @@
 language: python
-dist: trusty
-sudo: true
-group: beta
 python:
   - "3.4"
   - "3.5"

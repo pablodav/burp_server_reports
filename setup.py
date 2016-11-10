@@ -81,7 +81,8 @@ setup(name='burp_reports',
           'pyzmail',
           'validators',
           'rstcheck',
-          'deco'
+          'deco',
+          'urllib3'
       ],
       tests_require=['pytest'],
       zip_safe=False)

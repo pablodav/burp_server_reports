@@ -6,3 +6,4 @@ pyzmail
 validators
 rstcheck
 deco
+urllib3

@@ -8,6 +8,7 @@ from datetime import timedelta
 from . files import temp_file
 # http://stackoverflow.com/questions/27062099/python-requests-retrying-until-a-valid-response-is-received
 import time
+from urllib3.util import parse_url
 
 cache_file = 'burp_reports_cache'
 expire_after = timedelta(hours=1)
@@ -34,9 +35,21 @@ def get_url_data(serviceurl, params=None):
 
     cnt = 0
     max_retry = 3
+    purl = parse_url(serviceurl)
+    username = purl.auth.split(':')[0]
+    password = purl.auth.split(':')[1]
+    # Add url like http://host
+    burl = '{}://{}'.format(purl.scheme, purl.host)
+    if purl.port:
+        # Add port like: http://host:8080
+        burl += '/{}'.format(purl.port)
+    if purl.request_uri:
+        # Add path and query like: http://host:8080/path/uri?query
+        burl += '/{}'.format(purl.request_uri)
+
     while cnt < max_retry:
         try:
-            req = requests.get(serviceurl, verify=False, params=params)
+            req = requests.get(burl, verify=False, params=params, auth=(username, password))
             if req.json():
                 return req.json()
             else:

@@ -4,6 +4,9 @@
 .. image:: https://travis-ci.org/pablodav/burp_server_reports.svg?branch=master
     :target: https://travis-ci.org/pablodav/burp_server_reports
 
+.. image:: https://circleci.com/gh/pablodav/burp_server_reports.svg?style=svg
+    :target: https://circleci.com/gh/pablodav/burp_server_reports
+
 .. image:: https://codecov.io/gh/pablodav/burp_server_reports/branch/master/graph/badge.svg
   :target: https://codecov.io/gh/pablodav/burp_server_reports
 

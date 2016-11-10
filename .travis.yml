@@ -4,8 +4,9 @@ python:
   - "3.5"
 # command to install dependencies
 install:
-  - sudo pip install rstcheck
-  - sudo pip install .
+  - pip install rstcheck
+  - pip install requirements.txt
+  - pip install .
 # command to run tests
 script:
   - burp-reports --burpui_apiurl dummy --report outdated
@@ -21,6 +22,6 @@ script:
   - py.test
 
 after_success:
-  - sudo pip install pytest-cov
+  - pip install pytest-cov
   - py.test --cov=burp_reports
   - bash <(curl -s https://codecov.io/bash)

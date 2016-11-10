@@ -42,10 +42,10 @@ def get_url_data(serviceurl, params=None):
     burl = '{}://{}'.format(purl.scheme, purl.host)
     if purl.port:
         # Add port like: http://host:8080
-        burl += '/{}'.format(purl.port)
+        burl += ':{}'.format(purl.port)
     if purl.request_uri:
         # Add path and query like: http://host:8080/path/uri?query
-        burl += '/{}'.format(purl.request_uri)
+        burl += '{}'.format(purl.request_uri)
 
     while cnt < max_retry:
         try:

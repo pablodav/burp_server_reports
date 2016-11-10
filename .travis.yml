@@ -1,16 +1,16 @@
 language: python
 dist: trusty
-sudo: false
+sudo: true
 group: beta
 python:
   - "3.4"
   - "3.5"
 # command to install dependencies
 install:
-  - pip install --upgrade pip
-  - pip install --upgrade setuptools
-  - pip install rstcheck
-  - pip install .
+  - sudo pip install --upgrade pip
+  - sudo pip install --upgrade setuptools
+  - sudo pip install rstcheck
+  - sudo pip install .
 # command to run tests
 script:
   - burp-reports --burpui_apiurl dummy --report outdated
@@ -26,6 +26,6 @@ script:
   - py.test
 
 after_success:
-  - pip install pytest-cov
+  - sudo pip install pytest-cov
   - py.test --cov=burp_reports
   - bash <(curl -s https://codecov.io/bash)

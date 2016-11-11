@@ -40,17 +40,9 @@ class EmailNotifications:
         self.toaddr = config['email_to'].split(',')
         self.smtp_host = config['smtp_server']
         self.smtp_port = int(config.get('smtp_port', 25))
-        self.smtp_mode = config.get('smtp_mode')
-        self.smtp_login = config.get('smtp_login')
-        self.smtp_password = config.get('smtp_password')
-        if not self.smtp_port:
-            self.smtp_port = 25
-        if not self.smtp_mode:
-            self.smtp_mode = None
-        if not self.smtp_login:
-            self.smtp_login = None
-        if not self.smtp_password:
-            self.smtp_password = None
+        self.smtp_mode = config.get('smtp_mode', None)
+        self.smtp_login = config.get('smtp_login', None)
+        self.smtp_password = config.get('smtp_password', None)
 
         self.sender = self.fromaddr
         self.recipients = self.toaddr
@@ -60,6 +52,10 @@ class EmailNotifications:
         self.msg = msg
 
     def send_email(self):
+        """
+
+        :return: tuple, True/False, details
+        """
 
         payload, mail_from, rcpt_to, msg_id = self.compose_email()
 
@@ -73,11 +69,11 @@ class EmailNotifications:
 
         if isinstance(ret, dict):
             if ret:
-                print('failed recipients:', ', '.join(ret.keys()))
+                return False, 'failed recipients:', ', '.join(ret.keys())
             else:
-                print('success')
+                return True, 'success'
         else:
-            print('error:', ret)
+            return False, 'error:', ret
 
     def compose_email(self):
         # Define variables to use

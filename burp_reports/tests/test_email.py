@@ -21,3 +21,16 @@ class TestEmail:
         email = burp_reports._compose_email('outdated')
 
         assert isinstance(email, EmailNotifications)
+
+    def send_email(self):
+        clients_dict = test_dummy()
+        config = get_all_config()
+
+        # Generate burp_reports object to use for reports.
+        burp_reports = BurpReports(clients_dict,
+                                   days_outdated=int(config['common']['days_outdated']),
+                                   config=config)
+
+        send_email = burp_reports.email_outdated()
+
+        assert send_email[0] == False

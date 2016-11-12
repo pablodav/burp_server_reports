@@ -1,9 +1,6 @@
 .. image:: https://badge.fury.io/py/burp_reports.svg
     :target: https://badge.fury.io/py/burp_reports
 
-.. image:: https://travis-ci.org/pablodav/burp_server_reports.svg?branch=master
-    :target: https://travis-ci.org/pablodav/burp_server_reports
-
 .. image:: https://circleci.com/gh/pablodav/burp_server_reports.svg?style=svg
     :target: https://circleci.com/gh/pablodav/burp_server_reports
 

@@ -4,3 +4,7 @@
         * Added retry 3 times to urlget lib
 1.0.3:
         * fix #2 missing status for inactive client not in burp
+1.1.0:
+        * More unittests
+        * Parallel ping (deco concurrent)
+        * Small fixes

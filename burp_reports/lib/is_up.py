@@ -2,13 +2,13 @@ import os
 import platform
 
 
-def is_up(hostname):
+def is_up(hostname, give_feedback=False):
     """
 
     :param hostname: hostname/ip to ping
     :return: True/False
     """
-    give_feedback = False
+    
 
     if platform.system() == "Windows":
         response = os.system("ping " + hostname + " -n 1")

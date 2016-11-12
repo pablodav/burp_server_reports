@@ -22,7 +22,7 @@ class TestEmail:
 
         assert isinstance(email, EmailNotifications)
 
-    def send_email(self):
+    def test_send_email(self):
         clients_dict = test_dummy()
         config = get_all_config()
 
@@ -33,4 +33,4 @@ class TestEmail:
 
         send_email = burp_reports.email_outdated()
 
-        assert send_email[0] == False
+        assert send_email[0]

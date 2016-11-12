@@ -320,7 +320,7 @@ class BurpReports:
         """
 
         email = self._compose_email(report='outdated')
-        email.send_email()
+        return email.send_email()
 
     def _compose_email(self, report):
         """

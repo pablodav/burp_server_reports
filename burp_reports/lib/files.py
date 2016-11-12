@@ -1,14 +1,13 @@
-from sys import platform
+import tempfile
 import os
 
-
 def temp_file(file='temporal'):
+    """
+    return: str with tempfilename
+    """
 
-    if platform in ['linux', 'darwin', 'linux2']:
-        # linux/osx
-        cache_path = os.path.join(os.sep, 'tmp', file)
-    elif platform == "win32":
-        cache_path = os.path.join(os.sep, 'temp', file)
+    # Simplified and reutilized core funtionally from python
+    cache_path = os.path.join(tempfile.gettempdir(), file)
 
     return cache_path
 

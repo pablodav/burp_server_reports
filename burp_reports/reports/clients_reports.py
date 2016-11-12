@@ -5,9 +5,40 @@ from ..lib.is_up import is_up
 from invpy_libs import csv_as_dict, save_csv_data, get_csv_from_url
 from ..lib.email import EmailNotifications
 import validators
-from sys import platform
-import os
 from ..lib.files import temp_file
+from deco import concurrent, synchronized
+
+
+# Functions to add parallel ping:
+@concurrent
+def check_isup(k):
+    """
+    Checks ping and returns status
+    Used with concurrent decorator for parallel checks
+
+    :param k: name to ping
+    :return(str): ping ok / -
+    """
+    if is_up(k):
+        comments = 'ping ok'
+    else:
+        comments = ' - '
+    return comments
+
+
+@synchronized
+def outdated_pings(outdated):
+    """
+    Appends comments to clients if pings or not.
+    Used with syncrhonized decorator for parallel checks (required def with concurrent decorator)
+
+    :param outdated: dict formatted with clients as keys
+    :return: dict with appended comments
+    """
+    for k in outdated.keys():
+        # Append ping information to outdated_clients
+        outdated[k]['comments'] = check_isup(k)
+    return outdated
 
 
 class BurpReports:
@@ -268,15 +299,9 @@ class BurpReports:
 
         if ping:
             # Check ping on each outdated client
-            for k in outdated_clients.keys():
-                if is_up(k):
-                    comments = 'ping ok'
-                else:
-                    comments = ' - '
-                # Append ping information to outdated_clients
-                outdated_clients[k]['comments'] = comments
-                # Add the column comments to report
-                columns['Comments'] = 'comments'
+            outdated_clients = outdated_pings(outdated_clients)
+            # Add the column comments to report
+            columns['Comments'] = 'comments'
 
         # Create the object to export the report
         clients_reports = TxtReports(outdated_clients,
@@ -295,7 +320,7 @@ class BurpReports:
         """
 
         email = self._compose_email(report='outdated')
-        email.send_email()
+        return email.send_email()
 
     def _compose_email(self, report):
         """

@@ -1,0 +1,11 @@
+language: python
+python:
+  - 3.4
+  - 3.5
+# command to install dependencies
+build:
+  ci:
+    - pip install --upgrade pip
+    - pip install rstcheck
+    - pip install .
+# command to run tests

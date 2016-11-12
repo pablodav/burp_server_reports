@@ -1,10 +1,11 @@
+# This is not used anymore, now I'm using circleci
 language: python
-dist: trusty
 python:
   - "3.5"
 # command to install dependencies
 install:
   - pip install rstcheck
+  - pip install requirements.txt
   - pip install .
 # command to run tests
 script:

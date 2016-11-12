@@ -80,7 +80,9 @@ setup(name='burp_reports',
           'requests-cache',
           'pyzmail',
           'validators',
-          'rstcheck'
+          'rstcheck',
+          'deco',
+          'urllib3'
       ],
       tests_require=['pytest'],
       zip_safe=False)

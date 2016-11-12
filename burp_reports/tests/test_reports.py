@@ -28,3 +28,8 @@ class TestEmail:
         outdated = reports._get_outdated()
 
         assert isinstance(outdated, dict)
+
+    def test_outdated_ping(self):
+        reports = self.test_burpreports()
+        reports.report_outdated(ping=True)
+

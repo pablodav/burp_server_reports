@@ -1,6 +1,7 @@
 from ..__main__ import parse_args, cli_execution
 import pytest
 import os
+from ..lib.files import temp_file
 
 
 class TestCli:
@@ -26,6 +27,13 @@ class TestCli:
 
         assert os.path.isfile(options.reports_conf)
 
+    def test_report_outdated_withconfig(self):
+        """
+        """
+        options = parse_args(['-ui', 'dummy', '-c', 'test_write_config.conf', '--report', 'outdated'])
+
+        cli_execution(options)
+
     def test_report_outdated(self):
         """
         """
@@ -44,6 +52,24 @@ class TestCli:
         """
         """
         options = parse_args(['-ui', 'dummy', '--report', 'outdated', '--detail', '--ping'])
+
+        cli_execution(options)
+
+    def test_report_email_outdated(self):
+        """
+        """
+        options = parse_args(['-ui', 'dummy', '--report', 'email_outdated'])
+
+        cli_execution(options)
+
+    def test_report_inventory(self):
+        """
+        """
+        # Read inventory file from data dir
+        inventory = os.path.normpath(os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'data', 'test_inventory.csv'))
+        output = temp_file('inventory_test.csv')
+
+        options = parse_args(['-ui', 'dummy', '--report', 'inventory', '-i', inventory, '-o', output])
 
         cli_execution(options)
 
@@ -73,8 +99,20 @@ class TestCli:
 
         cli_execution(options)
 
+    def test_version(self):
+        """
+        """
+        options = parse_args(['--version'])
 
+        with pytest.raises(SystemExit):
+            cli_execution(options)
 
+    def test_noapi(self):
+        """
+        Raise SystemExit when no burpui_apiurl option is given
+        """
+        options = parse_args(['--report', 'print'])
 
-
+        with pytest.raises(SystemExit):
+            cli_execution(options)
 

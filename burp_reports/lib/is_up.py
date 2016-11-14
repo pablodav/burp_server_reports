@@ -1,24 +1,20 @@
-import os
-import platform
+import pyping
 
 
 def is_up(hostname, give_feedback=False):
     """
 
     :param hostname: hostname/ip to ping
+    :param give_feedback: just print if it is up or down
     :return: True/False
     """
-    
 
-    if platform.system() == "Windows":
-        response = os.system("ping " + hostname + " -n 1")
-    else:
-        response = os.system("ping -c 1 " + hostname)
+    response = pyping.ping(hostname)
 
     is_up_bool = False
 
     # If ping responds
-    if response == 0:
+    if response.ret_code == 0:
         if give_feedback:
             print(hostname, 'is up!')
         is_up_bool = True

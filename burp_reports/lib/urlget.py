@@ -36,8 +36,12 @@ def get_url_data(serviceurl, params=None):
     cnt = 0
     max_retry = 3
     purl = parse_url(serviceurl)
-    username = purl.auth.split(':')[0]
-    password = purl.auth.split(':')[1]
+    if purl.auth:
+        username = purl.auth.split(':')[0]
+        password = purl.auth.split(':')[1]
+    else:
+        username = None
+        password = None
     # Add url like http://host
     burl = '{}://{}'.format(purl.scheme, purl.host)
     if purl.port:

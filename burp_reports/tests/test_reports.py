@@ -5,7 +5,7 @@ from ..lib.configs import get_all_config
 from ..reports.clients_reports import BurpReports
 
 
-class TestEmail:
+class TestReports:
 
     def test_burpreports(self):
         clients_dict = test_dummy()

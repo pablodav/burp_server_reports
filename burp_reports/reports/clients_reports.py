@@ -97,39 +97,15 @@ class BurpReports:
         :return: list csv_rows_inventory_status (status of each client) in nested list one row per client
         """
 
-        if self.config:
-            # Set dict of status from config
-            all_status = dict(self.config['inventory_status'])
-        else:
-            # Set dict of status:
-            all_status = {
-                'spare': 'spare',
-                'active': 'active',
-                'inactive_in_burp': 'wrong not active',
-                'inactive_not_in_burp': 'ignored inactive',
-                'spare_in_burp': 'wrong spare in burp',
-                'not_inventory_in_burp': 'not in inventory',
-                'in_inventory_updated': 'ok',
-                'spare_not_in_burp': 'ignored spare',
-                'in_inventory_not_in_burp': 'absent',
-                'in_many_servers': 'duplicated'
-            }
+        # Set dict of status from config
+        all_status = dict(self.config['inventory_status'])
 
         # Set variables of status as lists, also enable possibility to have more than one status:
         spare_status = all_status['spare'].split(',')
         active_status = all_status['active'].split(',')
 
-        if self.config:
-            # Set dict of status from config
-            all_columns = dict(self.config['inventory_columns'])
-        else:
-            # Set dict of columns
-            all_columns = {
-                'client_name': 'device name',
-                'status': 'status',
-                'server': 'server',
-                'sub_status': 'status (detailed)'
-            }
+        # Set dict of status from config
+        all_columns = dict(self.config['inventory_columns'])
 
         client_column = all_columns['client_name']
         delimiter = self.common_config['csv_delimiter']

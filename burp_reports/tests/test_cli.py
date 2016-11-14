@@ -66,7 +66,20 @@ class TestCli:
         """
         """
         # Read inventory file from data dir
-        inventory = os.path.normpath(os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'data', 'test_inventory.csv'))
+        inventory = os.path.normpath(os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'data',
+                                                  'test_inventory.csv'))
+
+        output = temp_file('inventory_test.csv')
+
+        options = parse_args(['-ui', 'dummy', '--report', 'inventory', '-i', inventory, '-o', output])
+
+        cli_execution(options)
+
+    def test_report_inventoryurl(self):
+        """
+        """
+        # Read inventory file from data dir
+        inventory = 'https://raw.githubusercontent.com/pablodav/burp_server_reports/master/burp_reports/data/test_inventory.csv'
         output = temp_file('inventory_test.csv')
 
         options = parse_args(['-ui', 'dummy', '--report', 'inventory', '-i', inventory, '-o', output])

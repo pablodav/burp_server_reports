@@ -88,20 +88,19 @@ class Clients:
 
         return clients_stats
 
-    @staticmethod
-    def get_backup_report():
-        """
-        dummy data example
-        GET /api/client/(server)/report/(name)/(int: backup)
-        GET /api/client/report/(name)/(int: backup)
-
-        :return:
-        """
-
-        backup_report = [
-            {"received": 326753806,
-             "number": 1,
-             "totsize": 572911431,
-             "duration": 84
-             }]
-
+    # @staticmethod
+    # def get_backup_report():
+    #     """
+    #     dummy data example
+    #     GET /api/client/(server)/report/(name)/(int: backup)
+    #     GET /api/client/report/(name)/(int: backup)
+    #
+    #     :return:
+    #     """
+    #
+    #     backup_report = [
+    #         {"received": 326753806,
+    #          "number": 1,
+    #          "totsize": 572911431,
+    #          "duration": 84
+    #          }]

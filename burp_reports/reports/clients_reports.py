@@ -187,7 +187,7 @@ class BurpReports:
 
         first_client = next(iter(inventory.keys()))  # Gets first key of dict
 
-        for column in inventory[first_client].keys():  # Get headers from input inventory
+        for column in sorted(inventory[first_client].keys()):  # Get headers from input inventory sorted
             if column.lower() not in all_columns.values():  # Add to the list only if not in the all_columns defined
                 headers.append(column)
 
@@ -197,6 +197,7 @@ class BurpReports:
         # Verify inventory and compare with clients in burp
         for k in sorted(inventory):
             client = k
+            server_name = ''
 
             # Do not check excluded clients
             if client in self.excluded_clients:
@@ -240,8 +241,6 @@ class BurpReports:
                 # Mark the status of the client as duplicated if there is more than one server on it.
                 if len(server_name) > 1:
                     burp_status = all_status['in_many_servers']
-            else:
-                server_name = ''
 
             # Generate list row with client's status and other data
             row = [client, burp_status, server_name, sub_status]

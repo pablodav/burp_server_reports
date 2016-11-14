@@ -13,7 +13,7 @@ def check_readme(file='README.rst'):
 
     errors = list(rstcheck.check(readme_content))
     if errors:
-        msg = 'There are errors in {}, errors \n {}'.format(file, errors[0].message)
+        msg = 'There are errors in {}, errors \n {}'.format(file, str(errors[0]))
         raise SystemExit(msg)
     else:
         msg = 'No errors in {}'.format(file)

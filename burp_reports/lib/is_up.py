@@ -6,6 +6,7 @@ def is_up(hostname, give_feedback=False):
     """
 
     :param hostname: hostname/ip to ping
+    :param give_feedback: just print up or down to stdout
     :return: True/False
     """
     

@@ -1,44 +1,11 @@
 from ..lib.txt import TxtReports
 import arrow
 from collections import defaultdict
-from ..lib.is_up import is_up
+from ..lib.is_up import outdated_pings
 from invpy_libs import csv_as_dict, save_csv_data, get_csv_from_url
 from ..lib.email import EmailNotifications
 import validators
 from ..lib.files import temp_file
-from deco import concurrent, synchronized
-
-
-# Functions to add parallel ping:
-@concurrent
-def check_isup(k):
-    """
-    Checks ping and returns status
-    Used with concurrent decorator for parallel checks
-
-    :param k: name to ping
-    :return(str): ping ok / -
-    """
-    if is_up(k):
-        comments = 'ping ok'
-    else:
-        comments = ' - '
-    return comments
-
-
-@synchronized
-def outdated_pings(outdated):
-    """
-    Appends comments to clients if pings or not.
-    Used with syncrhonized decorator for parallel checks (required def with concurrent decorator)
-
-    :param outdated: dict formatted with clients as keys
-    :return: dict with appended comments
-    """
-    for k in outdated.keys():
-        # Append ping information to outdated_clients
-        outdated[k]['comments'] = check_isup(k)
-    return outdated
 
 
 class BurpReports:

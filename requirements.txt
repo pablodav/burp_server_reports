@@ -7,4 +7,3 @@ validators
 rstcheck
 deco
 urllib3
-pyping

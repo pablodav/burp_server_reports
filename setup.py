@@ -82,8 +82,7 @@ setup(name='burp_reports',
           'validators',
           'rstcheck',
           'deco',
-          'urllib3',
-          'pyping'
+          'urllib3'
       ],
       tests_require=['pytest'],
       zip_safe=False)

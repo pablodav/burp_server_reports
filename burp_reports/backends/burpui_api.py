@@ -55,11 +55,12 @@ class Clients:
         #  ]
         serviceurl = self.apiurl + 'servers/stats'
         burpui_servers = get_url_data(serviceurl)
+        return_bool = None
 
         if burpui_servers:
-            return True
-        else:
-            return None
+            return_bool = True
+
+        return return_bool
 
     def _get_clients_stats_multi(self):
         """

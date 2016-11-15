@@ -2,6 +2,7 @@ import os
 import platform
 from deco import concurrent, synchronized
 
+
 def is_up(hostname, give_feedback=False):
     """
 

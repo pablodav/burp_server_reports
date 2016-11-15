@@ -17,3 +17,10 @@ def test_wrongurl2():
     """
 
     get_url_data('https://github.com/pablodav/cl')
+
+def test_wrongurl3():
+    """
+    Raise SystemExit
+    """
+
+    get_url_data('https://github.com:443/pablodav/cl')

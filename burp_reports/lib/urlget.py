@@ -11,11 +11,11 @@ import time
 from urllib3.util import parse_url
 
 cache_file = 'burp_reports_cache'
-expire_after = timedelta(hours=1)
+expire_after = timedelta(minutes=30)
 cache_path = temp_file(cache_file)
 
 # timeout in seconds
-timeout = 60
+timeout = 90
 socket.setdefaulttimeout(timeout)
 
 requests_cache.install_cache(cache_path, backend='sqlite', expire_after=expire_after)
@@ -53,9 +53,15 @@ def get_url_data(serviceurl, params=None):
 
     while cnt < max_retry:
         try:
-            req = requests.get(burl, verify=False, params=params, auth=(username, password))
+            req = requests.get(burl, verify=False, params=params, timeout=timeout, auth=(username, password))
             if req.json():
                 return req.json()
+            elif req.from_cache:
+                # Clear cache to retry again
+                requests_cache.clear()
+                req = requests.get(burl, verify=False, params=params, timeout=timeout, auth=(username, password))
+                if req.json():
+                    return req.json()
             else:
                 # Raise a custom exception
                 raise ValueError('No data from response')

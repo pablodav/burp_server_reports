@@ -271,8 +271,9 @@ class BurpReports:
         :param report: (str): outdated to get a list of outdated clients
         :return: EmailNotifications class object
         """
-        if self.config.has_section('email_notification'):
-            email_config = dict(self.config['email_notification'])
+        if self.config:
+            if self.config.has_section('email_notification'):
+                email_config = dict(self.config['email_notification'])
         else:
             raise SystemExit('email_notification section is required in config')
 

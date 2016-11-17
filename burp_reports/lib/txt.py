@@ -169,7 +169,7 @@ class TxtReports:
 
         return client_text
 
-    def print_text(self, client=None, header=None, footer=None, print_text=True):
+    def __print_text__(self, client=None, header=None, footer=None, print_text=True):
         """
         print only header once with client=None, header=True
         header to file:
@@ -223,18 +223,18 @@ class TxtReports:
         foot_notes = ''
 
         if print_text:
-            self.print_text(client=None, header=True)
+            self.__print_text__(client=None, header=True)
         else:
-            text_body += self.print_text(client=None, header=True, print_text=False)
+            text_body += self.__print_text__(client=None, header=True, print_text=False)
             text_body += '\n'
 
         for client, v in sorted(self.clients.items()):
             client_data = self.clients[client]
 
             if print_text:
-                self.print_text(client)
+                self.__print_text__(client)
             else:
-                text_body += self.print_text(client, print_text=False)
+                text_body += self.__print_text__(client, print_text=False)
                 text_body += '\n'
 
             if self.detail:
@@ -257,9 +257,9 @@ class TxtReports:
         if foot_notes:
 
             if print_text:
-                self.print_text(client=None, footer=foot_notes)
+                self.__print_text__(client=None, footer=foot_notes)
             else:
-                text_body += self.print_text(client=None, footer=foot_notes, print_text=False)
+                text_body += self.__print_text__(client=None, footer=foot_notes, print_text=False)
                 text_body += '\n'
 
         if self.file:

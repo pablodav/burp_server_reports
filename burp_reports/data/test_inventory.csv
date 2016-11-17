@@ -1,5 +1,6 @@
 device name;status;Status (detailed);notes
 localhost; active;;should be never
+monitor; active;;should not be checked because is in excluded
 demo1; active;;should be ok with burpui
 demo2; active; spare; should be wrong spare with burpui
 cli10; active;; should be absent

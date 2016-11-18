@@ -8,3 +8,6 @@
         * More unittests
         * Parallel ping (deco concurrent)
         * Small fixes
+1.1.1: 
+        * Small changes to get more tests done
+        * Enhanced behaviour when burpui returns [] in the api

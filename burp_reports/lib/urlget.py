@@ -58,6 +58,8 @@ def get_url_data(serviceurl, params=None):
                 return req.json()
             elif req.from_cache:
                 # Clear cache to retry again
+                # Added in urlget module test if it's [] retry n times due to issue:
+                # https://git.ziirish.me/ziirish/burp-ui/issues/148
                 requests_cache.clear()
                 req = requests.get(burl, verify=False, params=params, timeout=timeout, auth=(username, password))
                 if req.json():

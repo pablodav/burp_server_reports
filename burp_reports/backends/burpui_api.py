@@ -84,7 +84,26 @@ class Clients:
 
             server = burpui_servers[i]['name']
             # Not used now: burpui_api_params = {'server': server}
-
+            # Use http://burp-ui.readthedocs.io/en/latest/api.html#get--api-clients-(server)-stats
+            # The JSON returned is:
+            # {
+            #   [
+            #     {
+            #       "last": "2015-05-17 11:40:02",
+            #       "name": "client1",
+            #       "state": "idle",
+            #       "phase": "phase1",
+            #       "percent": 12,
+            #     },
+            #     {
+            #       "last": "never",
+            #       "name": "client2",
+            #       "state": "idle",
+            #       "phase": "phase2",
+            #       "percent": 42,
+            #     }
+            #   ]
+            # }
             serviceurl = self.apiurl + 'clients/{}/stats'.format(server)
 
             if self.debug:
@@ -127,7 +146,7 @@ class Clients:
         GET  /api/client/stats/(name)
         GET /api/client/(server)/stats/(name)
 
-        :return:
+        :return list:
         [
           {
             "date": "2015-01-25 13:32:00",
@@ -156,7 +175,7 @@ class Clients:
         """
         #  server.get_all_clients()
         #
-        :return example: [{
+        :return list: example: [{
             "phase": 'null',
             "percent": 0,
             "state": "idle",
@@ -193,7 +212,30 @@ class Clients:
     def get_clients_reports(self):
         """
         Clients reports method
-        :return: [client_report_dict, ]
+        :return list: [client_report_dict, ]
+        example client:
+        [ {'state': 'idle', 'human': '24 minutes ago', 'last': '2016-11-18T10:17:02+01:00', 'percent': 0,
+            'server': 'Burp1', 'name': 'demo2',
+        'backup_report': {'totsize': 8280079447,
+            'efs': {'total': 0, 'deleted': 0, 'unchanged': 0, 'scanned': 0, 'changed': 0, 'new': 0},
+            'vssheader_enc': {'total': 0, 'deleted': 0, 'unchanged': 0, 'scanned': 0, 'changed': 0, 'new': 0},
+            'start': '2016-11-18T09:17:02+01:00', 'encrypted': False,
+            'hardlink': {'total': 0, 'deleted': 0, 'unchanged': 0, 'scanned': 0, 'changed': 0, 'new': 0},
+            'windows': True,
+            'vssheader': {'total': 0, 'deleted': 0, 'unchanged': 0, 'scanned': 0, 'changed': 0, 'new': 0},
+            'softlink': {'total': 102, 'deleted': 0, 'unchanged': 102, 'scanned': 102, 'changed': 0, 'new': 0},
+            'files': {'total': 506894, 'deleted': 4, 'unchanged': 506882, 'scanned': 506894, 'changed': 10, 'new': 2},
+            'end': '2016-11-18T09:19:49+01:00',
+            'meta_enc': {'total': 0, 'deleted': 0, 'unchanged': 0, 'scanned': 0, 'changed': 0, 'new': 0},
+            'duration': 167, 'number': 2066,
+            'meta': {'total': 0, 'deleted': 0, 'unchanged': 0, 'scanned': 0, 'changed': 0, 'new': 0},
+            'special': {'total': 0, 'deleted': 0, 'unchanged': 0, 'scanned': 0, 'changed': 0, 'new': 0},
+            'dir': {'total': 33094, 'deleted': 0, 'unchanged': 33087, 'scanned': 33094, 'changed': 0, 'new': 7},
+            'vssfooter_enc': {'total': 0, 'deleted': 0, 'unchanged': 0, 'scanned': 0, 'changed': 0, 'new': 0},
+            'received': 1257441,
+            'vssfooter': {'total': 0, 'deleted': 0, 'unchanged': 0, 'scanned': 0, 'changed': 0, 'new': 0},
+            'files_enc': {'total': 0, 'deleted': 0, 'unchanged': 0, 'scanned': 0, 'changed': 0, 'new': 0}},
+        'phase': None}]
         """
 
         # Get a list of clients to use
@@ -225,8 +267,7 @@ class Clients:
             if clients_stats[cli].get('last', 'None') not in ['None', 'never']:
 
                 # Get client_report_stats ;
-                # Needs to add test if it's [] retry n times due to issue:
-                # https://git.ziirish.me/ziirish/burp-ui/issues/148
+                # It is a list of all backups stats
                 cr_stats = self._get_client_report_stats(client, server=server)
                 # and create a list of backups numbers only
                 for n in range(len(cr_stats)):

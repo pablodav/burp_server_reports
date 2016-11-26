@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Project SYSTEM "Project-5.1.dtd">
+<!-- eric project file for project burp_reports -->
+<!-- Saved: 2016-11-19, 21:07:52 -->
+<!-- Copyright (C) 2016 Pablo Estigarribia, pablodav@gmail.com -->
+<Project version="5.1">
+  <Language>en_US</Language>
+  <Hash>32015a94d1fc4a9da8f74263f3b07162a79be162</Hash>
+  <ProgLanguage mixed="0">Python3</ProgLanguage>
+  <ProjectType>Console</ProjectType>
+  <Description></Description>
+  <Version>1.1.1</Version>
+  <Author>Pablo Estigarribia</Author>
+  <Email>pablodav@gmail.com</Email>
+  <Sources>
+    <Source>__init__.py</Source>
+    <Source>burp_reports/__init__.py</Source>
+    <Source>burp_reports/__main__.py</Source>
+    <Source>burp_reports/backends/__init__.py</Source>
+    <Source>burp_reports/backends/burpui_api.py</Source>
+    <Source>burp_reports/defaults/__init__.py</Source>
+    <Source>burp_reports/defaults/default_config.py</Source>
+    <Source>burp_reports/dummy/__init__.py</Source>
+    <Source>burp_reports/dummy/burpui_api_translate_dummy.py</Source>
+    <Source>burp_reports/dummy/burpui_dummy_api.py</Source>
+    <Source>burp_reports/dummy/notusedyet/burpui_dummy_clients.py</Source>
+    <Source>burp_reports/interfaces/__init__.py</Source>
+    <Source>burp_reports/interfaces/burpui_api_interface.py</Source>
+    <Source>burp_reports/interfaces/burpui_api_translate.py</Source>
+    <Source>burp_reports/lib/__init__.py</Source>
+    <Source>burp_reports/lib/check_readme.py</Source>
+    <Source>burp_reports/lib/configs.py</Source>
+    <Source>burp_reports/lib/email.py</Source>
+    <Source>burp_reports/lib/files.py</Source>
+    <Source>burp_reports/lib/humanize.py</Source>
+    <Source>burp_reports/lib/is_up.py</Source>
+    <Source>burp_reports/lib/txt.py</Source>
+    <Source>burp_reports/lib/urlget.py</Source>
+    <Source>burp_reports/reports/__init__.py</Source>
+    <Source>burp_reports/reports/clients_reports.py</Source>
+    <Source>burp_reports/tests/__init__.py</Source>
+    <Source>burp_reports/tests/test_check_readme.py</Source>
+    <Source>burp_reports/tests/test_cli.py</Source>
+    <Source>burp_reports/tests/test_clients_dummy.py</Source>
+    <Source>burp_reports/tests/test_default_config.py</Source>
+    <Source>burp_reports/tests/test_dummy_api.py</Source>
+    <Source>burp_reports/tests/test_email.py</Source>
+    <Source>burp_reports/tests/test_inventory.py</Source>
+    <Source>burp_reports/tests/test_isup.py</Source>
+    <Source>burp_reports/tests/test_parser.py</Source>
+    <Source>burp_reports/tests/test_reports.py</Source>
+    <Source>burp_reports/tests/test_txt.py</Source>
+    <Source>burp_reports/tests/test_url.py</Source>
+    <Source>main.py</Source>
+    <Source>setup.py</Source>
+  </Sources>
+  <Forms/>
+  <Translations/>
+  <Resources>
+    <Resource>burp_reports/data/test_inventory.csv</Resource>
+  </Resources>
+  <Interfaces/>
+  <Others>
+    <Other>burp_reports/data/notes.md</Other>
+  </Others>
+  <MainScript>burp_reports/__main__.py</MainScript>
+  <Vcs>
+    <VcsType>None</VcsType>
+  </Vcs>
+  <FiletypeAssociations>
+    <FiletypeAssociation pattern="*.csv" type="RESOURCES"/>
+    <FiletypeAssociation pattern="*.idl" type="INTERFACES"/>
+    <FiletypeAssociation pattern="*.md" type="OTHERS"/>
+    <FiletypeAssociation pattern="*.py" type="SOURCES"/>
+    <FiletypeAssociation pattern="*.py3" type="SOURCES"/>
+    <FiletypeAssociation pattern="*.pyw" type="SOURCES"/>
+    <FiletypeAssociation pattern="*.pyw3" type="SOURCES"/>
+  </FiletypeAssociations>
+</Project>

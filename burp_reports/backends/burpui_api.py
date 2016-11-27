@@ -154,16 +154,20 @@ class Clients:
                 print('serviceurl: {}'.format(serviceurl))
 
             server_clients_stats = get_url_data(serviceurl=serviceurl)
+            # From demo: {'backups': [{'number': 11, 'name': 'demo3'}, {'number': 11, 'name': 'demo4'}], 'clients': [{'name': 'demo3', 'stats': {'windows': 'unknown', 'totsize': 8317913635, 'total': 540904}}, {'name': 'demo4', 'stats': {'windows': 'unknown', 'totsize': 8317913635, 'total': 540904}}]}
+
             if self.debug:
                 print('server_clients_stats: {}'.format(server_clients_stats))
 
+            #import pdb; pdb.set_trace()
             # Append client to clients_stats
-            for cli in range(len(server_clients_stats)):
-                client_stats = server_clients_stats[cli]
+            for cli in range(len(server_clients_stats['clients'])):
+                client_stats = server_clients_stats['clients'][cli]
                 client_stats['server'] = server
                 clients_stats.append(client_stats)
 
         return clients_stats
+
     def _get_backup_report_stats(self, client, number, server=None):
         """
         GET /api/client/(server)/report/(name)/(int: backup)
@@ -213,8 +217,6 @@ class Clients:
         client_report = get_url_data(serviceurl)
 
         return client_report
-
-
 
     def get_clients_stats(self):
         """

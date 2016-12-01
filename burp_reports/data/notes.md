@@ -45,23 +45,24 @@ Usable by reports scripts:
 
 #### More information that will be processed later:
 
-{'client_name':
-        { 'b_number'  : 'number',
-          'b_date'    : 'date',
-          'b_status'  : 'outdated/ok',
-          # 'b_type'    : 'finishing/working/current',
-          'quota'   : 'ok/soft/hard',
-          'warnings': 'warnings',
-          'exclude' : 'yes/no',
-          'b_phase' : 'phase1/phase2',
-          'b_phase_date' : 'date',
-          'b_phase_status' : 'outdated/ok',
-          'b_curr_taken' : 'seconds',
-          'backup_stats' : {'contents': 'all contents of backup_stats file for the client', some example:
-                            'time_taken': 'seconds', 'bytes_in_backup': 'bytes', bytes_received: 'bytes'}
-        }
-}
-
+```
+    {'client_name':
+            { 'b_number'  : 'number',
+              'b_date'    : 'date',
+              'b_status'  : 'outdated/ok',
+              # 'b_type'    : 'finishing/working/current',
+              'quota'   : 'ok/soft/hard',
+              'warnings': 'warnings',
+              'exclude' : 'yes/no',
+              'b_phase' : 'phase1/phase2',
+              'b_phase_date' : 'date',
+              'b_phase_status' : 'outdated/ok',
+              'b_curr_taken' : 'seconds',
+              'backup_stats' : {'contents': 'all contents of backup_stats file for the client', some example:
+                                'time_taken': 'seconds', 'bytes_in_backup': 'bytes', bytes_received: 'bytes'}
+            }
+    }
+```
 
 Testing with burpui demo server
 ==============================

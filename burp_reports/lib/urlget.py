@@ -14,10 +14,6 @@ cache_file = 'burp_reports_cache'
 expire_after = timedelta(minutes=30)
 cache_path = temp_file(cache_file)
 
-# timeout in seconds
-timeout = 90
-socket.setdefaulttimeout(timeout)
-
 requests_cache.install_cache(cache_path, backend='sqlite', expire_after=expire_after)
 
 
@@ -32,10 +28,11 @@ def get_url_data(serviceurl, params=None):
     # Get data from the url
     # Support https without verification of certificate
     # req = requests.get(serviceurl, verify=False, params=params)
-
+    timeout = 90
     cnt = 0
     max_retry = 3
     purl = parse_url(serviceurl)
+
     if purl.auth:
         username = purl.auth.split(':')[0]
         password = purl.auth.split(':')[1]
@@ -55,15 +52,29 @@ def get_url_data(serviceurl, params=None):
         try:
             req = requests.get(burl, verify=False, params=params, timeout=timeout, auth=(username, password))
             if req.json():
-                return req.json()
+                message = ''
+                if isinstance(req.json(), dict):
+                    message =  req.json().get('message', '')
+                elif isinstance(req.json(), list):
+                    if isinstance(req.json()[0], dict):
+                        message = req.json()[0].get('message', '')
+                if message == 'timed out':
+                    # next try
+                    cnt += 1
+                    requests_cache.clear()
+                    continue
+                # Don't try again
+                break
+
             elif req.from_cache:
                 # Clear cache to retry again
                 # Added in urlget module test if it's [] retry n times due to issue:
                 # https://git.ziirish.me/ziirish/burp-ui/issues/148
                 requests_cache.clear()
-                req = requests.get(burl, verify=False, params=params, timeout=timeout, auth=(username, password))
-                if req.json():
-                    return req.json()
+                # next try
+                cnt += 1
+                continue
+
             else:
                 # Raise a custom exception
                 raise ValueError('No data from response')
@@ -73,6 +84,9 @@ def get_url_data(serviceurl, params=None):
             cnt += 1
             if cnt >= max_retry:
                 raise e
+
+    if message == 'timed out':
+        raise TimeoutError('request timed out')
 
     data = req.json()
 

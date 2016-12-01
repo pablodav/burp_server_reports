@@ -154,12 +154,13 @@ class Clients:
                 print('serviceurl: {}'.format(serviceurl))
 
             server_clients_reports = get_url_data(serviceurl=serviceurl)
-            # From demo: {'backups': [{'number': 11, 'name': 'demo3'}, {'number': 11, 'name': 'demo4'}], 'clients': [{'name': 'demo3', 'stats': {'windows': 'unknown', 'totsize': 8317913635, 'total': 540904}}, {'name': 'demo4', 'stats': {'windows': 'unknown', 'totsize': 8317913635, 'total': 540904}}]}
+            # From demo: {'backups': [{'number': 11, 'name': 'demo3'}, {'number': 11, 'name': 'demo4'}],
+            # 'clients': [{'name': 'demo3', 'stats': {'windows': 'unknown', 'totsize': 8317913635, 'total': 540904}},
+            # {'name': 'demo4', 'stats': {'windows': 'unknown', 'totsize': 8317913635, 'total': 540904}}]}
 
             if self.debug:
                 print('server_clients_reports: {}'.format(server_clients_reports))
 
-            #import pdb; pdb.set_trace()
             # Append client to clients_reports
             for cli in range(len(server_clients_reports['clients'])):
                 client_stats = server_clients_reports['clients'][cli]

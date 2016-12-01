@@ -136,7 +136,7 @@ class Clients:
         if self.debug:
             print('burpui_servers: {}'.format(burpui_servers))
 
-        clients_stats = []
+        clients_reports = []
 
         for i in range(len(burpui_servers)):
 
@@ -153,20 +153,20 @@ class Clients:
             if self.debug:
                 print('serviceurl: {}'.format(serviceurl))
 
-            server_clients_stats = get_url_data(serviceurl=serviceurl)
+            server_clients_reports = get_url_data(serviceurl=serviceurl)
             # From demo: {'backups': [{'number': 11, 'name': 'demo3'}, {'number': 11, 'name': 'demo4'}], 'clients': [{'name': 'demo3', 'stats': {'windows': 'unknown', 'totsize': 8317913635, 'total': 540904}}, {'name': 'demo4', 'stats': {'windows': 'unknown', 'totsize': 8317913635, 'total': 540904}}]}
 
             if self.debug:
-                print('server_clients_stats: {}'.format(server_clients_stats))
+                print('server_clients_reports: {}'.format(server_clients_reports))
 
             #import pdb; pdb.set_trace()
-            # Append client to clients_stats
-            for cli in range(len(server_clients_stats['clients'])):
-                client_stats = server_clients_stats['clients'][cli]
+            # Append client to clients_reports
+            for cli in range(len(server_clients_reports['clients'])):
+                client_stats = server_clients_reports['clients'][cli]
                 client_stats['server'] = server
-                clients_stats.append(client_stats)
+                clients_reports.append(client_stats)
 
-        return clients_stats
+        return clients_reports
 
     def _get_backup_report_stats(self, client, number, server=None):
         """
@@ -267,12 +267,12 @@ class Clients:
             print("Url received: {}".format(self.apiurl))
 
         if self.IsMultiAgent:
-            clients_stats = self._get_clients_report_multi()
+            clients_report = self._get_clients_report_multi()
         else:
             serviceurl = self.apiurl + 'clients/report'
-            clients_stats = get_url_data(serviceurl=serviceurl)
+            clients_report = get_url_data(serviceurl=serviceurl)
 
-        return clients_stats
+        return clients_report
         
         
     def get_clients_reports(self):

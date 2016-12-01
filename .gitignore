@@ -57,3 +57,8 @@ Temporary Items
 # Eric6 files
 .e4p
 
+# Coverage
+.cache
+.coverage*
+coverage.xml
+

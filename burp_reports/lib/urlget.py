@@ -82,6 +82,7 @@ def get_url_data(serviceurl, params=None):
         except requests.exceptions.RequestException as e:
             time.sleep(2 ** cnt)
             cnt += 1
+            print('request failed to {} \n retry Nº: {}'.format(burl, cnt))
             if cnt >= max_retry:
                 raise e
 

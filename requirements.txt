@@ -7,3 +7,4 @@ validators
 rstcheck
 deco
 urllib3
+pandas

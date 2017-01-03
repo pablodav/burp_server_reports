@@ -74,6 +74,9 @@ def get_url_data(serviceurl, params=None, ignore_empty=False):
                 # Don't try again
                 break
 
+            elif ignore_empty:
+                continue
+
             elif req.from_cache:
                 # Clear cache to retry again
                 # Added in urlget module test if it's [] retry n times due to issue:
@@ -83,12 +86,8 @@ def get_url_data(serviceurl, params=None, ignore_empty=False):
                 cnt += 1
                 continue
 
-            elif ignore_empty:
-                continue
-
             else:
                 # Raise a custom exception
-                import pdb; pdb.set_trace()
                 raise ValueError('No data from response')
 
             time.sleep(2 ** cnt)
@@ -101,8 +100,6 @@ def get_url_data(serviceurl, params=None, ignore_empty=False):
                 raise e
 
     if message == 'timed out':
-        import pdb;
-        pdb.set_trace()
         raise TimeoutError('request timed out')
 
     data = req.json()

@@ -1,7 +1,6 @@
 # -*- coding: utf8 -*-
 from ..lib.urlget import get_url_data
 from collections import defaultdict
-from functools import lru_cache
 
 
 class Clients:
@@ -276,7 +275,6 @@ class Clients:
 
         return clients_report
 
-    @lru_cache(None)
     def get_clients_running(self, server=None) -> list:
         """
         http://burp-ui.readthedocs.io/en/latest/api.html#get--api-clients-(server)-running

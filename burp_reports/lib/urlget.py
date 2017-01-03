@@ -28,8 +28,8 @@ def get_url_data(serviceurl, params=None, ignore_empty=False):
     # Get data from the url
     # Support https without verification of certificate
     # req = requests.get(serviceurl, verify=False, params=params)
-    timeout = 90
-    cnt = 1
+    timeout = 60
+    retry_times = 0
     max_retry = 4
     purl = parse_url(serviceurl)
 
@@ -48,9 +48,10 @@ def get_url_data(serviceurl, params=None, ignore_empty=False):
         # Add path and query like: http://host:8080/path/uri?query
         burl += '{}'.format(purl.request_uri)
 
-    while cnt < max_retry:
+    while retry_times < max_retry:
 
         message = ''
+        retry_times += 1
 
         try:
             req = requests.get(burl, verify=False, params=params, timeout=timeout, auth=(username, password))
@@ -67,8 +68,8 @@ def get_url_data(serviceurl, params=None, ignore_empty=False):
 
                 if message == 'timed out':
                     # next try
-                    cnt += 1
                     requests_cache.clear()
+                    time.sleep(2)
                     continue
 
                 # Don't try again
@@ -82,21 +83,22 @@ def get_url_data(serviceurl, params=None, ignore_empty=False):
                 # Added in urlget module test if it's [] retry n times due to issue:
                 # https://git.ziirish.me/ziirish/burp-ui/issues/148
                 requests_cache.clear()
+                time.sleep(2)
                 # next try
-                cnt += 1
                 continue
 
             else:
                 # Raise a custom exception
                 raise ValueError('No data from response')
 
-            time.sleep(2 ** cnt)
+
 
         except requests.exceptions.RequestException as e:
-            time.sleep(2 ** cnt)
-            cnt += 1
-            print('request failed to {} \n retry Nº: {}'.format(burl, cnt))
-            if cnt >= max_retry:
+
+            time.sleep(2)
+
+            print('request failed to {} \n retry Nº: {}'.format(burl, retry_times))
+            if retry_times >= max_retry:
                 raise e
 
     if message == 'timed out':

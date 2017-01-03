@@ -1,6 +1,7 @@
 # -*- coding: utf8 -*-
 from ..lib.urlget import get_url_data
 from collections import defaultdict
+from functools import lru_cache
 
 
 class Clients:
@@ -215,7 +216,7 @@ class Clients:
         if self.debug:
             print('apiurl: {}'.format(serviceurl))
 
-        client_report = get_url_data(serviceurl)
+        client_report = get_url_data(serviceurl, ignore_empty=True)
 
         return client_report
 
@@ -257,7 +258,7 @@ class Clients:
 
         return clients_stats
 
-    def get_clients_reports_brief(self):
+    def get_clients_reports_brief(self) -> list:
         
         # For multi server:
         # https://burp-ui.readthedocs.io/en/latest/api.html#get--api-clients-(server)-report
@@ -274,7 +275,23 @@ class Clients:
             clients_report = get_url_data(serviceurl=serviceurl)
 
         return clients_report
-        
+
+    @lru_cache(None)
+    def get_clients_running(self, server=None) -> list:
+        """
+        http://burp-ui.readthedocs.io/en/latest/api.html#get--api-clients-(server)-running
+        :return: list of clients
+        """
+
+        if self.IsMultiAgent:
+            serviceurl = '{}clients/{}/running'.format(self.apiurl, server)
+
+        else:
+            serviceurl = '{}clients/running'.format(self.apiurl)
+
+        clients_running = get_url_data(serviceurl, ignore_empty=True)
+
+        return clients_running
         
     def get_clients_reports(self):
         """
@@ -321,6 +338,12 @@ class Clients:
             if self.debug:
                 print('server: {}'.format(server))
             client = clients_stats[cli].get('name', None)
+
+            # Omit getting stats for clients running a backup
+            # burpui doesn't return data when client is running.
+            server_running = self.get_clients_running(server)
+            if client in server_running:
+                continue
 
             # Create dict with all data of the client's dict
             client_report_dict = defaultdict(dict)

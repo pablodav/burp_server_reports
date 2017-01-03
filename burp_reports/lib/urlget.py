@@ -17,7 +17,7 @@ cache_path = temp_file(cache_file)
 requests_cache.install_cache(cache_path, backend='sqlite', expire_after=expire_after)
 
 
-def get_url_data(serviceurl, params=None):
+def get_url_data(serviceurl, params=None, ignore_empty=False):
     """
 
     :param serviceurl: url to retrieve data
@@ -29,8 +29,8 @@ def get_url_data(serviceurl, params=None):
     # Support https without verification of certificate
     # req = requests.get(serviceurl, verify=False, params=params)
     timeout = 90
-    cnt = 0
-    max_retry = 3
+    cnt = 1
+    max_retry = 4
     purl = parse_url(serviceurl)
 
     if purl.auth:
@@ -49,20 +49,28 @@ def get_url_data(serviceurl, params=None):
         burl += '{}'.format(purl.request_uri)
 
     while cnt < max_retry:
+
+        message = ''
+
         try:
             req = requests.get(burl, verify=False, params=params, timeout=timeout, auth=(username, password))
+
             if req.json():
-                message = ''
+
                 if isinstance(req.json(), dict):
                     message =  req.json().get('message', '')
+
                 elif isinstance(req.json(), list):
+
                     if isinstance(req.json()[0], dict):
                         message = req.json()[0].get('message', '')
+
                 if message == 'timed out':
                     # next try
                     cnt += 1
                     requests_cache.clear()
                     continue
+
                 # Don't try again
                 break
 
@@ -75,9 +83,15 @@ def get_url_data(serviceurl, params=None):
                 cnt += 1
                 continue
 
+            elif ignore_empty:
+                continue
+
             else:
                 # Raise a custom exception
+                import pdb; pdb.set_trace()
                 raise ValueError('No data from response')
+
+            time.sleep(2 ** cnt)
 
         except requests.exceptions.RequestException as e:
             time.sleep(2 ** cnt)
@@ -87,6 +101,8 @@ def get_url_data(serviceurl, params=None):
                 raise e
 
     if message == 'timed out':
+        import pdb;
+        pdb.set_trace()
         raise TimeoutError('request timed out')
 
     data = req.json()

@@ -1,8 +1,10 @@
 import os
 import platform
 from deco import concurrent, synchronized
+from functools import lru_cache
 
 
+@lru_cache(None)
 def is_up(hostname, give_feedback=False):
     """
 

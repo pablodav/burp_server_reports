@@ -1,6 +1,7 @@
 # -*- coding: utf8 -*-
 import arrow
 from collections import defaultdict
+from functools import lru_cache
 
 
 class TranslateBurpuiAPI:

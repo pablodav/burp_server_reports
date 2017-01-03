@@ -23,6 +23,7 @@ class Clients:
 
         self.IsMultiAgent = self._is_multi_agent()
 
+    @lru_cache(None)
     def _is_multi_agent(self):
         """
 
@@ -63,6 +64,7 @@ class Clients:
 
         return return_bool
 
+    @lru_cache(None)
     def _get_clients_stats_multi(self):
         """
 
@@ -122,6 +124,7 @@ class Clients:
 
         return clients_stats
 
+    @lru_cache(None)
     def _get_clients_report_multi(self):
         """
         doc: https://burp-ui.readthedocs.io/en/latest/api.html#get--api-clients-(server)-report
@@ -170,6 +173,7 @@ class Clients:
 
         return clients_reports
 
+    @lru_cache(None)
     def _get_backup_report_stats(self, client, number, server=None):
         """
         GET /api/client/(server)/report/(name)/(int: backup)
@@ -189,6 +193,7 @@ class Clients:
 
         return backup_report
 
+    @lru_cache(None)
     def _get_client_report_stats(self, client, server=None):
         """
         https://burp-ui.readthedocs.io/en/latest/api.html#get--api-client-stats-(name)
@@ -220,6 +225,7 @@ class Clients:
 
         return client_report
 
+    @lru_cache(None)
     def get_clients_stats(self):
         """
         #  server.get_all_clients()
@@ -258,6 +264,7 @@ class Clients:
 
         return clients_stats
 
+    @lru_cache(None)
     def get_clients_reports_brief(self) -> list:
         
         # For multi server:
@@ -292,7 +299,8 @@ class Clients:
         clients_running = get_url_data(serviceurl, ignore_empty=True)
 
         return clients_running
-        
+
+    @lru_cache(None)
     def get_clients_reports(self):
         """
         Clients reports method

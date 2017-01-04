@@ -4,7 +4,7 @@ import pandas as pd
 
 
 class BuiReports(Clients):
-    def clients_report(self):
+    def clients_report(self) -> pd.DataFrame:
         """
 
         :return (pandas.DataFrame):

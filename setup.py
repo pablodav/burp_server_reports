@@ -4,7 +4,8 @@
 # https://docs.python.org/3.4/distutils/setupscript.html#installing-additional-files
 # https://docs.python.org/3.4/tutorial/modules.html
 # Install it with python setup.py install
-# Or use: python setup.py develop (changes to the source files will be immediately available)
+# Or use: python setup.py develop (changes to the source files will be
+# immediately available)
 # https://pypi.python.org/pypi?%3Aaction=list_classifiers
 
 from setuptools import setup, find_packages
@@ -15,7 +16,8 @@ import rstcheck
 
 def check_readme(file='README.rst'):
     """
-    Checks readme rst file, to ensure it will upload to pypi and be formatted correctly.
+    Checks readme rst file, to ensure it will upload to pypi and be formatted
+    correctly.
     :param file:
     :return:
     """
@@ -25,7 +27,8 @@ def check_readme(file='README.rst'):
 
     errors = list(rstcheck.check(readme_content))
     if errors:
-        msg = 'There are errors in {}, errors \n {}'.format(file, errors[0].message)
+        msg = 'There are errors in {}, errors \n {}'.format(file,
+                                                            errors[0].message)
         raise SystemExit(msg)
     else:
         msg = 'No errors in {}'.format(file)

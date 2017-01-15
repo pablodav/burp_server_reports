@@ -62,3 +62,14 @@ Temporary Items
 .coverage*
 coverage.xml
 
+.kdev4/
+__pycache__/
+burp_reports/__pycache__/
+burp_reports/backends/__pycache__/
+burp_reports/defaults/__pycache__/
+burp_reports/dummy/__pycache__/
+burp_reports/interfaces/__pycache__/
+burp_reports/lib/__pycache__/
+burp_reports/reports/__pycache__/
+burp_reports/tests/__pycache__/
+test1.txt

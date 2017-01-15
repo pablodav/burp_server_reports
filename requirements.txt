@@ -1,10 +1,9 @@
 invpy_libs
-requests
-arrow
+requests>=2.10.0
+arrow>=0.7.0
 requests-cache
 pyzmail
 validators
 rstcheck
-deco
-urllib3
-pandas
+deco>=0.5
+urllib3>=1.15.1

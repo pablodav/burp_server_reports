@@ -13,6 +13,11 @@ import os
 from os import path
 import rstcheck
 
+here = path.abspath(path.dirname(__file__))
+
+with open(os.path.join(here, 'requirements.txt')) as f:
+    requires = [x.strip() for x in f if x.strip()]
+
 
 def check_readme(file='README.rst'):
     """
@@ -34,7 +39,6 @@ def check_readme(file='README.rst'):
         msg = 'No errors in {}'.format(file)
         print(msg)
 
-here = path.abspath(path.dirname(__file__))
 readme_file = path.join(here, 'README.rst')
 
 # Get the version from VERSION file
@@ -76,17 +80,9 @@ setup(name='burp_reports',
               'burp-reports = burp_reports.__main__:main'
           ]
       },
-      install_requires=[
-          'invpy_libs',
-          'requests',
-          'arrow',
-          'requests-cache',
-          'pyzmail',
-          'validators',
-          'rstcheck',
-          'deco',
-          'urllib3',
-          'pandas'
-      ],
+      install_requires=requires,
       tests_require=['pytest'],
+      extras_require={
+          'pandas': ["pandas>=0.19.1"]
+      },
       zip_safe=False)

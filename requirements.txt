@@ -5,5 +5,4 @@ arrow>=0.7.0
 pyzmail
 validators
 rstcheck
-deco>=0.5
 urllib3>=1.15.1

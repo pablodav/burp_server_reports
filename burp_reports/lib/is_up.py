@@ -1,7 +1,7 @@
 import os
 import platform
-from deco import concurrent, synchronized
 from functools import lru_cache
+from concurrent.futures import ThreadPoolExecutor as Executor
 
 
 @lru_cache(None)
@@ -33,34 +33,43 @@ def is_up(hostname, give_feedback=False):
 
 
 # Functions to add parallel ping:
-@concurrent
-def check_isup(k):
+def check_isup(k, return_client=None):
     """
     Checks ping and returns status
     Used with concurrent decorator for parallel checks
 
     :param k: name to ping
+    :param return_client: to change return format as '{k: {'comments': comments}}'
     :return(str): ping ok / -
     """
     if is_up(k):
         comments = 'ping ok'
     else:
         comments = ' - '
+
+    if return_client:
+        comments = {k: {'comments': comments}}
+
     return comments
 
 
-@synchronized
-def outdated_pings(outdated_clients):
+def outdated_pings(outdated_clients: dict):
     """
     Appends comments to clients if pings or not.
     Used with synchronized decorator for parallel checks (required def with concurrent decorator)
 
-    :param outdated: dict formatted with clients as keys
+    :param outdated_clients: dict formatted with clients as keys
     :return: dict with appended comments
     """
     outdated = outdated_clients
 
-    for k in outdated.keys():
+    with Executor(max_workers=10) as exe:
+        jobs = [exe.submit(check_isup, k, True) for k in outdated.keys() ]
+        results = [job.result() for job in jobs]
+
+    for n in range(len(results)):
+
         # Append ping information to outdated_clients
-        outdated[k]['comments'] = check_isup(k)
+        outdated.update(results[n])
+
     return outdated

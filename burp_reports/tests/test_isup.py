@@ -4,21 +4,17 @@ from ..lib.is_up import outdated_pings
 
 class TestIsUP(object):
 
-    def test_isupok(self):
+    def test_isup_ok(self):
         assert is_up('localhost')
 
-
-    def test_isupfail(self):
+    def test_isup_fail(self):
         assert not is_up('nohost')
 
-
-    def test_isupfeedbackok(self):
+    def test_isup_feedback_ok(self):
         assert is_up('localhost', give_feedback=True)
 
-
-    def test_isupfeedbackfail(self):
+    def test_isup_feedback_fail(self):
         assert not is_up('nohost', give_feedback=True)
-
 
     def test_outdated_pings(self):
         clients = {'localhost': {}}

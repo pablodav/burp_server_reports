@@ -1,7 +1,5 @@
 import pytest
 from ..lib.urlget import get_url_data
-import requests
-import json
 
 
 def test_wrong_url():
@@ -18,14 +16,14 @@ def test_wrong_url2():
     Raise SystemExit
     """
 
-    with pytest.raises(json.decoder.JSONDecodeError):
+    with pytest.raises(Exception):
         get_url_data('https://github.com/pablodav/cl')
 
 
-def test_wrong_url3():
+def test_wrong_url_timeout():
     """
     Raise SystemExit
     """
 
-    with pytest.raises(json.decoder.JSONDecodeError):
-        get_url_data('https://github.com:443/pablodav/cl')
+    with pytest.raises(Exception):
+        get_url_data('https://httpbin.org/delay/10', timeout=1)

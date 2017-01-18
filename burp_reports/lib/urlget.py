@@ -18,19 +18,21 @@ requests_cache.install_cache(cache_path, backend='sqlite', expire_after=expire_a
 
 def get_url_data(serviceurl: 'url to retrieve data',
                  params: "python requests params in url" = None,
-                 ignore_empty: "returned [] value will be ignored" = False):
+                 ignore_empty: "returned [] value will be ignored" = False,
+                 timeout: "how much time to wait for a response" = 60):
+
     """
 
     :param serviceurl: url to retrieve data
     :param params: http://docs.python-requests.org/en/master/user/quickstart/#passing-parameters-in-urls
     :param ignore_empty: returned [] value will be ignored, so it will allow return [] from url
+    :param timeout: how much time to wait for a response
     :return: json url_data
     """
 
     # Get data from the url
     # Support https without verification of certificate
     # req = requests.get(serviceurl, verify=False, params=params)
-    timeout = 60
     retry_times = 0
     max_retry = 4
     purl = parse_url(serviceurl)
@@ -71,7 +73,7 @@ def get_url_data(serviceurl: 'url to retrieve data',
                     if isinstance(req.json()[0], dict):
                         message = req.json()[0].get('message', '')
 
-                if message == 'timed out':
+                if message in ['timed out']:
                     # next try
                     requests_cache.clear()
                     time.sleep(2)
@@ -101,13 +103,18 @@ def get_url_data(serviceurl: 'url to retrieve data',
             time.sleep(2)
 
             print('request failed to {} \n retry Nº: {}'.format(burl, retry_times))
+
             if retry_times >= max_retry:
                 raise e
 
-        except json.decoder.JSONDecodeError as e:
+        except ValueError as e:
 
-            print('request failed to {} \ with exception')
+            print('request failed to get {}'.format(burl))
             raise e
+
+        except Exception as e:
+
+            e('request failed to {} \n with exception'.format(burl))
 
     if message == 'timed out':
         raise TimeoutError('request timed out')

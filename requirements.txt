@@ -1,6 +1,6 @@
 invpy_libs
 requests>=2.10.0
-requests>=1.1.0
+requests-cache>=0.4.13
 arrow>=0.7.0
 pyzmail
 validators

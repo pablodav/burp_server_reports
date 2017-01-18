@@ -1,14 +1,13 @@
 # -*- coding: utf8 -*-
-import requests
-# Doc from http://docs.python-requests.org/en/master/user/quickstart/
-import socket
-# https://requests-cache.readthedocs.io/en/latest/user_guide.html#usage
-import requests_cache
-from datetime import timedelta
-from . files import temp_file
-# http://stackoverflow.com/questions/27062099/python-requests-retrying-until-a-valid-response-is-received
+import json
 import time
+from datetime import timedelta
+
+import requests
+import requests_cache
 from urllib3.util import parse_url
+
+from .files import temp_file
 
 cache_file = 'burp_reports_cache'
 expire_after = timedelta(minutes=30)
@@ -17,11 +16,14 @@ cache_path = temp_file(cache_file)
 requests_cache.install_cache(cache_path, backend='sqlite', expire_after=expire_after)
 
 
-def get_url_data(serviceurl, params=None, ignore_empty=False):
+def get_url_data(serviceurl: 'url to retrieve data',
+                 params: "python requests params in url" = None,
+                 ignore_empty: "returned [] value will be ignored" = False):
     """
 
     :param serviceurl: url to retrieve data
     :param params: http://docs.python-requests.org/en/master/user/quickstart/#passing-parameters-in-urls
+    :param ignore_empty: returned [] value will be ignored, so it will allow return [] from url
     :return: json url_data
     """
 
@@ -32,6 +34,8 @@ def get_url_data(serviceurl, params=None, ignore_empty=False):
     retry_times = 0
     max_retry = 4
     purl = parse_url(serviceurl)
+    message = ''
+    req = []
 
     if purl.auth:
         username = purl.auth.split(':')[0]
@@ -55,11 +59,12 @@ def get_url_data(serviceurl, params=None, ignore_empty=False):
 
         try:
             req = requests.get(burl, verify=False, params=params, timeout=timeout, auth=(username, password))
+            req.json()
 
             if req.json():
 
                 if isinstance(req.json(), dict):
-                    message =  req.json().get('message', '')
+                    message = req.json().get('message', '')
 
                 elif isinstance(req.json(), list):
 
@@ -91,8 +96,6 @@ def get_url_data(serviceurl, params=None, ignore_empty=False):
                 # Raise a custom exception
                 raise ValueError('No data from response')
 
-
-
         except requests.exceptions.RequestException as e:
 
             time.sleep(2)
@@ -100,6 +103,11 @@ def get_url_data(serviceurl, params=None, ignore_empty=False):
             print('request failed to {} \n retry Nº: {}'.format(burl, retry_times))
             if retry_times >= max_retry:
                 raise e
+
+        except json.decoder.JSONDecodeError as e:
+
+            print('request failed to {} \ with exception')
+            raise e
 
     if message == 'timed out':
         raise TimeoutError('request timed out')

@@ -20,4 +20,3 @@ class BuiPdReports(Clients):
         preport = pd.DataFrame(dreport)
 
         return preport
-

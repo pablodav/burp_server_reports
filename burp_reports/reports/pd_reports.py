@@ -3,7 +3,8 @@ from pandas.io.json import json_normalize
 import pandas as pd
 
 
-class BuiReports(Clients):
+class BuiPdReports(Clients):
+
     def clients_report(self) -> pd.DataFrame:
         """
 

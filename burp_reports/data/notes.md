@@ -114,4 +114,10 @@ use python [hug](http://www.hug.rest/) module.
 * Then continue removing weird code from txt.py  
 * Then release burp_reports2?
 
- Important note: each new line should be py.tested.
+ Important note: each new line should be py.tested
+ 
+ Also use jinja2 templates to print data?
+ 
+ https://sarahleejane.github.io/learning/python/2015/08/09/simple-tables-in-webapps-using-flask-and-pandas-with-python.html
+ 
+ 

@@ -76,3 +76,42 @@ Or with conf:
     burp-reports -c ~/burp-reports.conf --debug --burpui_apiurl https://admin:admin@demo.ziirish.me/api/ --report outdated --detail
 
 
+Extra resources
+===============
+
+https://www.airpair.com/python/posts/top-mistakes-python-big-data-analytics
+
+
+Multiple sources
+================
+
+How to rethink about connecting burp from multiple data sources? 
+
+Case:
+-----
+
+Take data from different ways: 
+
+* from burpui server
+* from burpui agent
+* from burp -a m
+* expose its own web rest service when not having burpui? 
+
+Possibility:
+------------
+
+* Create one function to connect to all of them
+  * Implement inside the function the logic to know what is it. 
+  * Conntect to one of the sources of data
+  * Transform/Translate into right python dict so burp_reports will read it. Or use same format as burpui?
+  * Reuse same function to be able to expose as rest api. 
+
+use python [hug](http://www.hug.rest/) module. 
+
+* Then continue extending the burp_reports with pandas.  
+* Then migrate all to pandas?   
+* Generate more features from pandas, like graphs, more exports of data, etc.   
+* Then continue removing weird code from txt.py  
+* Then release burp_reports2?
+
+ 

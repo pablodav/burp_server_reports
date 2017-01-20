@@ -114,4 +114,4 @@ use python [hug](http://www.hug.rest/) module.
 * Then continue removing weird code from txt.py  
 * Then release burp_reports2?
 
- 
+ Important note: each new line should be py.tested.

@@ -1,3 +1,5 @@
+1.2.2: 
+        * remove unncesesary pandas dependency for now
 1.2.1:
         * fix non passing --detail correctly from cmd
 1.2.0: 

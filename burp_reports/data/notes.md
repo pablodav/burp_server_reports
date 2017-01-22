@@ -127,3 +127,6 @@ use python [hug](http://www.hug.rest/) module.
  https://sarahleejane.github.io/learning/python/2015/08/09/simple-tables-in-webapps-using-flask-and-pandas-with-python.html
  
  
+ Change logging options: 
+ https://docs.python.org/3/howto/logging.html#logging-from-multiple-modules
+ 

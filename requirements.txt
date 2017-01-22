@@ -7,3 +7,4 @@ validators
 rstcheck
 urllib3>=1.15.1
 pandas>=0.19.1
+jinja2>=2.8

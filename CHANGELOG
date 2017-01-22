@@ -1,3 +1,5 @@
+1.2.1:
+        * fix non passing --detail correctly from cmd
 1.2.0: 
         * Refactor debug usage with logging
         * improve more tests

@@ -157,7 +157,7 @@ def cli_execution(options):
             clients_dict = bui_dummy_clients_stats()
         else:
             # Get clients stats from burpui_api_interface
-            clients_dict = bui_api_clients_stats(burpui_apiurl)
+            clients_dict = bui_api_clients_stats(burpui_apiurl, detail=options.detail)
     else:
         raise SystemExit('burpui_apiurl is required in cmd or in config common section')
 

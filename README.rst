@@ -1,5 +1,5 @@
-.. image:: https://badge.fury.io/py/burp_reports.svg
-    :target: https://badge.fury.io/py/burp_reports
+.. image:: https://badge.fury.io/py/burp-reports.svg
+    :target: https://badge.fury.io/py/burp-reports
 
 .. image:: https://circleci.com/gh/pablodav/burp_server_reports.svg?style=svg
     :target: https://circleci.com/gh/pablodav/burp_server_reports

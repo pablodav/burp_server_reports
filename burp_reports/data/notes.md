@@ -97,12 +97,18 @@ Take data from different ways:
 * from burp -a m
 * expose its own web rest service when not having burpui? 
 
-Possibility:
+Other notes:
 ------------
 
-* Create one function to connect to all of them
-  * Implement inside the function the logic to know what is it. 
-  * Conntect to one of the sources of data
+How to manage the possibility to connect to different source?: 
+
+* from burpui
+* from burp itself.
+* from burpui_agent.
+
+* Create one function to connect to all of sources
+  * Implement inside the function the logic to know what source is it. 
+  * Connect to one of the sources of data.
   * Transform/Translate into right python dict so burp_reports will read it. Or use same format as burpui?
   * Reuse same function to be able to expose as rest api. 
 

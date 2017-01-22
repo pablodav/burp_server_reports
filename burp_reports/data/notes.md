@@ -114,19 +114,17 @@ How to manage the possibility to connect to different source?:
 
 use python [hug](http://www.hug.rest/) module. 
 
-* Then continue extending the burp_reports with pandas.  
-* Then migrate all to pandas?   
-* Generate more features from pandas, like graphs, more exports of data, etc.   
-* Then continue removing weird code from txt.py  
+* Then continue extending the burp_reports with pandas. (but optional, not as main requirements so it will be 
+small for those that doesn't want these features, should create new package?)  
+* Generate more features from pandas, like graphs, more exports of data, etc.
+   * Pandas will be used only from webui? 
+* Improve txt.py, use jinja2 templates?  
 * Then release burp_reports2?
 
  Important note: each new line should be py.tested
  
- Also use jinja2 templates to print data?
- 
  https://sarahleejane.github.io/learning/python/2015/08/09/simple-tables-in-webapps-using-flask-and-pandas-with-python.html
- 
- 
- Change logging options: 
+  
+ Change logging options (done): 
  https://docs.python.org/3/howto/logging.html#logging-from-multiple-modules
  

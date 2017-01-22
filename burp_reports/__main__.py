@@ -5,6 +5,7 @@
 import sys
 import os
 import argparse
+import logging
 from .lib.configs import parse_config2
 from .lib.configs import get_all_config
 from .reports.clients_reports import BurpReports
@@ -67,24 +68,17 @@ def parse_args(args):
     return parser.parse_args(args)
 
 
-def bui_api_clients_stats(burpui_apiurl, debug=None, detail=None):
+def bui_api_clients_stats(burpui_apiurl, detail=None):
     """
 
     :param burpui_apiurl: string to burpui_apiurl, full url http://user:pass@server:port/api/
-    :param debug: To activate debug on script
     :param detail: Adds more detailed info, backup_report nested dict with some info like: duration, received, totsize.
     :return: dict with clients stats
     """
     from .interfaces.burpui_api_interface import BUIClients
-    bui_clients = BUIClients(burpui_apiurl=burpui_apiurl,
-                             debug=debug)
+    bui_clients = BUIClients(burpui_apiurl=burpui_apiurl)
 
     clients_dict = bui_clients.translate_clients_stats(detail=detail)
-
-    if debug:
-        from pprint import pprint
-        print('List of clients got:')
-        pprint(clients_dict)
 
     return clients_dict
 
@@ -140,6 +134,12 @@ def cli_execution(options):
     # Configs that can be overwritten by command line options
     config_options = get_main_conf(options)
     debug = options.debug
+
+    if debug:
+        logging.basicConfig(level=logging.DEBUG)
+    else:
+        logging.basicConfig(level=logging.INFO)
+
     burpui_apiurl = config_options.get('burpui_apiurl')
     # Config with defaults settings if no file will be passed
     # Also with defaults sections and defaults keys for missing options in config
@@ -157,9 +157,7 @@ def cli_execution(options):
             clients_dict = bui_dummy_clients_stats()
         else:
             # Get clients stats from burpui_api_interface
-            clients_dict = bui_api_clients_stats(burpui_apiurl,
-                                                 debug,
-                                                 detail=options.detail)
+            clients_dict = bui_api_clients_stats(burpui_apiurl)
     else:
         raise SystemExit('burpui_apiurl is required in cmd or in config common section')
 

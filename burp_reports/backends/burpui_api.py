@@ -1,4 +1,5 @@
 # -*- coding: utf8 -*-
+import logging
 from ..lib.urlget import get_url_data
 from collections import defaultdict
 from functools import lru_cache
@@ -10,7 +11,7 @@ class Clients:
 
     """
 
-    def __init__(self, apiurl, debug=False):
+    def __init__(self, apiurl):
         """
         should be the api to connect
         like: http:/user:password@server:port/api/
@@ -19,11 +20,10 @@ class Clients:
         """
 
         self.apiurl = apiurl
-        self.debug = debug
 
         self.IsMultiAgent = self._is_multi_agent()
 
-    @lru_cache(None)
+    @lru_cache(maxsize=32)
     def _is_multi_agent(self):
         """
 
@@ -64,7 +64,7 @@ class Clients:
 
         return return_bool
 
-    @lru_cache(None)
+    @lru_cache(maxsize=32)
     def _get_clients_stats_multi(self):
         """
 
@@ -74,8 +74,7 @@ class Clients:
         serviceurl = self.apiurl + 'servers/stats'
         burpui_servers = get_url_data(serviceurl)
 
-        if self.debug:
-            print('burpui_servers: {}'.format(burpui_servers))
+        logging.debug('burpui_servers: {}'.format(burpui_servers))
 
         clients_stats = []
 
@@ -109,12 +108,10 @@ class Clients:
             # }
             serviceurl = self.apiurl + 'clients/{}/stats'.format(server)
 
-            if self.debug:
-                print('serviceurl: {}'.format(serviceurl))
+            logging.debug('serviceurl: {}'.format(serviceurl))
 
             server_clients_stats = get_url_data(serviceurl=serviceurl)
-            if self.debug:
-                print('server_clients_stats: {}'.format(server_clients_stats))
+            logging.debug('server_clients_stats: {}'.format(server_clients_stats))
 
             # Append client to clients_stats
             for cli in range(len(server_clients_stats)):
@@ -124,21 +121,20 @@ class Clients:
 
         return clients_stats
 
-    @lru_cache(None)
+    @lru_cache(maxsize=32)
     def _get_clients_report_multi(self):
         """
         doc: https://burp-ui.readthedocs.io/en/latest/api.html#get--api-clients-(server)-report
         GET /api/clients/(server)/report
         Returns a global report about all the clients of a given server
-        
+
         :return: return a complete list of clients for each alive server in multi-agent server.
         """
         # Get burpui servers:
         serviceurl = self.apiurl + 'servers/stats'
         burpui_servers = get_url_data(serviceurl)
 
-        if self.debug:
-            print('burpui_servers: {}'.format(burpui_servers))
+        logging.debug('burpui_servers: {}'.format(burpui_servers))
 
         clients_reports = []
 
@@ -154,16 +150,14 @@ class Clients:
             # GET /api/clients/(server)/report
             serviceurl = self.apiurl + 'clients/{}/report'.format(server)
 
-            if self.debug:
-                print('serviceurl: {}'.format(serviceurl))
+            logging.debug('serviceurl: {}'.format(serviceurl))
 
             server_clients_reports = get_url_data(serviceurl=serviceurl)
             # From demo: {'backups': [{'number': 11, 'name': 'demo3'}, {'number': 11, 'name': 'demo4'}],
             # 'clients': [{'name': 'demo3', 'stats': {'windows': 'unknown', 'totsize': 8317913635, 'total': 540904}},
             # {'name': 'demo4', 'stats': {'windows': 'unknown', 'totsize': 8317913635, 'total': 540904}}]}
 
-            if self.debug:
-                print('server_clients_reports: {}'.format(server_clients_reports))
+            logging.debug('server_clients_reports: {}'.format(server_clients_reports))
 
             # Append client to clients_reports
             for cli in range(len(server_clients_reports['clients'])):
@@ -173,7 +167,7 @@ class Clients:
 
         return clients_reports
 
-    @lru_cache(None)
+    @lru_cache(maxsize=32)
     def _get_backup_report_stats(self, client, number, server=None):
         """
         GET /api/client/(server)/report/(name)/(int: backup)
@@ -186,14 +180,13 @@ class Clients:
         if server:
             serviceurl = self.apiurl + 'client/{}/report/{}/{}'.format(server, client, number)
 
-        if self.debug:
-            print('apiurl: {}'.format(serviceurl))
+        logging.debug('apiurl: {}'.format(serviceurl))
 
         backup_report = get_url_data(serviceurl)
 
         return backup_report
 
-    @lru_cache(None)
+    @lru_cache(maxsize=32)
     def _get_client_report_stats(self, client, server=None):
         """
         https://burp-ui.readthedocs.io/en/latest/api.html#get--api-client-stats-(name)
@@ -218,14 +211,13 @@ class Clients:
         if server:
             serviceurl = self.apiurl + 'client/{}/stats/{}'.format(server, client)
 
-        if self.debug:
-            print('apiurl: {}'.format(serviceurl))
+        logging.debug('apiurl: {}'.format(serviceurl))
 
         client_report = get_url_data(serviceurl, ignore_empty=True)
 
         return client_report
 
-    @lru_cache(None)
+    @lru_cache(maxsize=32)
     def get_clients_stats(self):
         """
         #  server.get_all_clients()
@@ -253,8 +245,7 @@ class Clients:
         ]
         """
 
-        if self.debug:
-            print("Url received: {}".format(self.apiurl))
+        logging.debug("Url received: {}".format(self.apiurl))
 
         if self.IsMultiAgent:
             clients_stats = self._get_clients_stats_multi()
@@ -264,16 +255,15 @@ class Clients:
 
         return clients_stats
 
-    @lru_cache(None)
+    @lru_cache(maxsize=32)
     def get_clients_reports_brief(self) -> list:
-        
+
         # For multi server:
         # https://burp-ui.readthedocs.io/en/latest/api.html#get--api-clients-(server)-report
         # For single server:
         # https://burp-ui.readthedocs.io/en/latest/api.html#get--api-clients-report
         # GET /api/clients/report
-        if self.debug:
-            print("Url received: {}".format(self.apiurl))
+        logging.debug("Url received: {}".format(self.apiurl))
 
         if self.IsMultiAgent:
             clients_report = self._get_clients_report_multi()
@@ -283,7 +273,7 @@ class Clients:
 
         return clients_report
 
-    @lru_cache(None)
+    @lru_cache(maxsize=32)
     def get_clients_running(self, server=None) -> list:
         """
         http://burp-ui.readthedocs.io/en/latest/api.html#get--api-clients-(server)-running
@@ -300,7 +290,7 @@ class Clients:
 
         return clients_running
 
-    @lru_cache(None)
+    @lru_cache(maxsize=32)
     def get_clients_reports(self):
         """
         Clients reports method
@@ -333,8 +323,7 @@ class Clients:
         # Get a list of clients to use
         clients_stats = self.get_clients_stats()
 
-        if self.debug:
-            print('clients_stats: {}'.format(clients_stats))
+        logging.debug('clients_stats: {}'.format(clients_stats))
 
         # Create a new list to return
         clients_report = []
@@ -343,8 +332,7 @@ class Clients:
 
             # Server, client is required to fetch report_stats
             server = clients_stats[cli].get('server', None)
-            if self.debug:
-                print('server: {}'.format(server))
+            logging.debug('server: {}'.format(server))
             client = clients_stats[cli].get('name', None)
 
             # Omit getting stats for clients running a backup
@@ -383,8 +371,6 @@ class Clients:
                     client_report_dict['backup_report'] = {}
             else:
                 client_report_dict['backup_report'] = {}
-
-            # if self.debug: print('backup_report: {}'.format(client_report_dict))
 
             clients_report.append(client_report_dict)
 

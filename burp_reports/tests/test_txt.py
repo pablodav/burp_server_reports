@@ -27,10 +27,11 @@ class TestTxt:
 
     def test_detail_txt_debug(self):
         clients = test_dummy()
+        import logging
+        logging.basicConfig(level=logging.DEBUG)
         # Create the object to export the report
         clients_reports = TxtReports(clients,
-                                     detail=True,
-                                     debug=True
+                                     detail=True
                                      )
 
         clients_reports.report_to_txt(print_text=True)

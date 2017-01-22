@@ -8,13 +8,15 @@ class TxtReports:
     Formats a dict of clients and prints to stdout or exports to file
     """
 
-    def __init__(self, clients, file=None, detail=None, debug=None,
-                 additional_columns=None, foot_notes=''):
+    def __init__(self, clients,
+                 file=None,
+                 detail=None,
+                 additional_columns=None,
+                 foot_notes=''):
         """
         :param clients: dict of clients formatted for burp reports.
         :param file: file to export the printed text
         :param detail: Use True when more detailed information is required
-        :param debug: Used to active more debug info if required.
         :param additional_columns: Add more column in format: {'Column name': 'key'}
                 Where 'key' is the key to search in, example: clients['key']
         :param foot_notes: str with more notes in the foot of the text
@@ -22,7 +24,6 @@ class TxtReports:
         self.clients = clients
         self.file = file
         self.detail = detail
-        self.debug = debug
         self.additional_columns = additional_columns
         self.foot_notes = foot_notes
 

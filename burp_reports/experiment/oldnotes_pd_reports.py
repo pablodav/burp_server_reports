@@ -1,4 +1,4 @@
-from ..reports.pd_reports import BuiPdReports
+from burp_reports.reports.pd_reports import BuiPdReports
 
 
 class TestPdReportsDemo:

@@ -67,13 +67,13 @@ Usable by reports scripts:
 Testing with burpui demo server
 ==============================
 
-    burp-reports --debug --burpui_apiurl https://admin:admin@demo.ziirish.me/api/ --report outdated --detail
-    burp-reports --debug --burpui_apiurl https://admin:admin@demo.ziirish.me/api/ --detail
-    burp-reports --burpui_apiurl https://admin:admin@demo.ziirish.me/api/
+    burp-reports --debug --burpui_apiurl https://admin:admin@demo.burp-ui.org/api/ --report outdated --detail
+    burp-reports --debug --burpui_apiurl https://admin:admin@demo.burp-ui.org/api/ --detail
+    burp-reports --burpui_apiurl https://admin:admin@demo.burp-ui.org/api/
 
 Or with conf:
 
-    burp-reports -c ~/burp-reports.conf --debug --burpui_apiurl https://admin:admin@demo.ziirish.me/api/ --report outdated --detail
+    burp-reports -c ~/burp-reports.conf --debug --burpui_apiurl https://admin:admin@demo.burp-ui.org/api/ --report outdated --detail
 
 
 Extra resources

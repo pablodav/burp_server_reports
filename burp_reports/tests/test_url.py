@@ -8,7 +8,7 @@ def test_wrong_url():
     """
 
     with pytest.raises(ValueError):
-        get_url_data('https://admin:admin@demo.ziirish.me/api/demo1/c')
+        get_url_data('https://admin:admin@demo.burp-ui.org/api/demo1/c')
 
 
 def test_wrong_url2():

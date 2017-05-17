@@ -89,21 +89,21 @@ class TestCli:
     def test_demo_ui_outdated_detail(self):
         """
         """
-        options = parse_args(['-ui', 'https://admin:admin@demo.ziirish.me/api/', '--report', 'outdated', '--detail'])
+        options = parse_args(['-ui', 'https://admin:admin@demo.burp-ui.org/api/', '--report', 'outdated', '--detail'])
 
         cli_execution(options)
 
     def test_demo_ui_outdated(self):
         """
         """
-        options = parse_args(['-ui', 'https://admin:admin@demo.ziirish.me/api/', '--report', 'outdated'])
+        options = parse_args(['-ui', 'https://admin:admin@demo.burp-ui.org/api/', '--report', 'outdated'])
 
         cli_execution(options)
 
     def test_demo_ui_outdated_debug(self):
         """
         """
-        options = parse_args(['-ui', 'https://admin:admin@demo.ziirish.me/api/',
+        options = parse_args(['-ui', 'https://admin:admin@demo.burp-ui.org/api/',
                               '--report', 'outdated',
                               '--detail',
                               '--debug'])
@@ -113,7 +113,7 @@ class TestCli:
     def test_demo_ui_debug(self):
         """
         """
-        options = parse_args(['-ui', 'https://admin:admin@demo.ziirish.me/api/',
+        options = parse_args(['-ui', 'https://admin:admin@demo.burp-ui.org/api/',
                               '--detail',
                               '--debug'])
 

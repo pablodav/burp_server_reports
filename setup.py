@@ -82,9 +82,5 @@ setup(name='burp_reports',
       },
       install_requires=requires,
       tests_require=['pytest',
-                     'pytest-cov',
-                     'pandas>=0.19.1'],
-      extras_require={
-          'pandas': ["pandas>=0.19.1"]
-      },
+                     'pytest-cov'],
       zip_safe=False)

@@ -13,4 +13,3 @@ def temp_file(file='temporal'):
     cache_path = os.path.join(tempfile.gettempdir(), file)
 
     return cache_path
-

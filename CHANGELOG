@@ -1,4 +1,8 @@
-1.2.2: 
+1.2.3:
+        * change to new burpui demo url
+        * fix tests removing unnecesary pandas dependencies as it is not used
+        * fix multiplatform usage, changing temp files from os.getuid() to getpass.getuser()
+1.2.2:
         * remove unncesesary pandas dependency for now
 1.2.1:
         * fix non passing --detail correctly from cmd

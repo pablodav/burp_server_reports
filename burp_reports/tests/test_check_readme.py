@@ -1,8 +1,9 @@
 from ..lib.check_readme import check_readme
 import os
+import pytest
+
 
 __readme__ = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', '..', 'README.rst')
-import pytest
 
 
 def test_check_readme():

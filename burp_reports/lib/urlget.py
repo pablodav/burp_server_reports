@@ -19,7 +19,8 @@ requests_cache.install_cache(cache_path, backend='sqlite', expire_after=expire_a
 def get_url_data(serviceurl: 'url to retrieve data',
                  params: "python requests params in url" = None,
                  ignore_empty: "returned [] value will be ignored" = False,
-                 timeout: "how much time to wait for a response" = 60):
+                 timeout: "how much time to wait for a response" = 60,
+                 check_multi: "check if response has data or not" = False):
 
     """
 
@@ -61,42 +62,46 @@ def get_url_data(serviceurl: 'url to retrieve data',
 
         try:
             req = requests.get(burl, verify=False, params=params, timeout=timeout, auth=(username, password))
+            if check_multi:
+                if not req.json():
+                    return []
 
-            if req:
-                if req.json():
+            req.json()
 
-                    if isinstance(req.json(), dict):
-                        message = req.json().get('message', '')
+            if req.json():
 
-                    elif isinstance(req.json(), list):
+                if isinstance(req.json(), dict):
+                    message = req.json().get('message', '')
 
-                        if isinstance(req.json()[0], dict):
-                            message = req.json()[0].get('message', '')
+                elif isinstance(req.json(), list):
 
-                    if message in ['timed out']:
-                        # next try
-                        requests_cache.clear()
-                        time.sleep(2)
-                        continue
+                    if isinstance(req.json()[0], dict):
+                        message = req.json()[0].get('message', '')
 
-                    # Don't try again
-                    break
-
-                elif ignore_empty:
-                    continue
-
-                elif req.from_cache:
-                    # Clear cache to retry again
-                    # Added in urlget module test if it's [] retry n times due to issue:
-                    # https://git.ziirish.me/ziirish/burp-ui/issues/148
+                if message in ['timed out']:
+                    # next try
                     requests_cache.clear()
                     time.sleep(2)
-                    # next try
                     continue
 
-                else:
-                    # Raise a custom exception
-                    raise ValueError('No data from response')
+                # Don't try again
+                break
+
+            elif ignore_empty:
+                continue
+
+            elif req.from_cache:
+                # Clear cache to retry again
+                # Added in urlget module test if it's [] retry n times due to issue:
+                # https://git.ziirish.me/ziirish/burp-ui/issues/148
+                requests_cache.clear()
+                time.sleep(2)
+                # next try
+                continue
+
+            else:
+                # Raise a custom exception
+                raise ValueError('No data from response')
 
         except requests.exceptions.RequestException as e:
 
@@ -119,9 +124,6 @@ def get_url_data(serviceurl: 'url to retrieve data',
     if message == 'timed out':
         raise TimeoutError('request timed out')
 
-    if req:
-        data = req.json()
-    else:
-        data = req
+    data = req.json()
 
     return data

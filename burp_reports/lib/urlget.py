@@ -61,42 +61,42 @@ def get_url_data(serviceurl: 'url to retrieve data',
 
         try:
             req = requests.get(burl, verify=False, params=params, timeout=timeout, auth=(username, password))
-            req.json()
 
-            if req.json():
+            if req:
+                if req.json():
 
-                if isinstance(req.json(), dict):
-                    message = req.json().get('message', '')
+                    if isinstance(req.json(), dict):
+                        message = req.json().get('message', '')
 
-                elif isinstance(req.json(), list):
+                    elif isinstance(req.json(), list):
 
-                    if isinstance(req.json()[0], dict):
-                        message = req.json()[0].get('message', '')
+                        if isinstance(req.json()[0], dict):
+                            message = req.json()[0].get('message', '')
 
-                if message in ['timed out']:
-                    # next try
-                    requests_cache.clear()
-                    time.sleep(2)
+                    if message in ['timed out']:
+                        # next try
+                        requests_cache.clear()
+                        time.sleep(2)
+                        continue
+
+                    # Don't try again
+                    break
+
+                elif ignore_empty:
                     continue
 
-                # Don't try again
-                break
+                elif req.from_cache:
+                    # Clear cache to retry again
+                    # Added in urlget module test if it's [] retry n times due to issue:
+                    # https://git.ziirish.me/ziirish/burp-ui/issues/148
+                    requests_cache.clear()
+                    time.sleep(2)
+                    # next try
+                    continue
 
-            elif ignore_empty:
-                continue
-
-            elif req.from_cache:
-                # Clear cache to retry again
-                # Added in urlget module test if it's [] retry n times due to issue:
-                # https://git.ziirish.me/ziirish/burp-ui/issues/148
-                requests_cache.clear()
-                time.sleep(2)
-                # next try
-                continue
-
-            else:
-                # Raise a custom exception
-                raise ValueError('No data from response')
+                else:
+                    # Raise a custom exception
+                    raise ValueError('No data from response')
 
         except requests.exceptions.RequestException as e:
 
@@ -119,6 +119,9 @@ def get_url_data(serviceurl: 'url to retrieve data',
     if message == 'timed out':
         raise TimeoutError('request timed out')
 
-    data = req.json()
+    if req:
+        data = req.json()
+    else:
+        data = req
 
     return data

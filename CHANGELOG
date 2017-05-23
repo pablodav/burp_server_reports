@@ -1,3 +1,5 @@
+1.2.4: 
+        * fix #10 not working with burpui standalone due to wrong test for multi-agent
 1.2.3:
         * change to new burpui demo url
         * fix tests removing unnecesary pandas dependencies as it is not used

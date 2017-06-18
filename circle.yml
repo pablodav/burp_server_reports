@@ -1,10 +1,10 @@
 machine:
   python:
     version: 3.4.3
+    version: 3.5.2
+    version: 3.6.1
 test:
   override:
     - pip install pytest-cov
     - py.test --cov=burp_reports --verbose --tb=short --cov-report=term-missing --cov-report=xml --cov-append
     - bash <(curl -s https://codecov.io/bash)
-
-

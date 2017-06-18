@@ -3,6 +3,8 @@ machine:
     TOX_PY34: '3.4.3'
     TOX_PY35: '3.5.2'
     TOX_PY36: '3.6.1'
+  python:
+    version: 3.4.3
 
 dependencies:
   override:

@@ -1,10 +1,19 @@
 machine:
+  environment:
+    TOX_PY34: '3.4.3'
+    TOX_PY35: '3.5.2'
+    TOX_PY36: '3.6.1'
   python:
     version: 3.4.3
+
+dependencies:
+  override:
+    - pip -V
+    - pip install -U pip
+    - pip install --upgrade tox
+    - pip install --upgrade tox-pyenv
+    - pyenv local $TOX_PY34 $TOX_PY35 $TOX_PY36
+
 test:
   override:
-    - pip install pytest-cov
-    - py.test --cov=burp_reports --verbose --tb=short --cov-report=term-missing --cov-report=xml --cov-append
-    - bash <(curl -s https://codecov.io/bash)
-
-
+    - tox -v --recreate

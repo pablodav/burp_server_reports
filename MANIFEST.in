@@ -4,3 +4,5 @@ global-include *.csv
 include burp_reports/VERSION
 include README.rst
 include license
+include requirements.txt
+include test-requirements.txt

@@ -1,3 +1,5 @@
+1.2.6:
+        * fix https://github.com/pablodav/burp_server_reports/issues/13 from @roms2000 fix sender address
 1.2.5:
         * added pyzmail36 to be compatible with all python3 included python3.6 fix #12
         * added tox.ini tests with multiple python versions for easier testing

@@ -85,7 +85,7 @@ class EmailNotifications:
         # Compose the email in payload, mail_from, rcpt_to, msg_id
 
         payload, mail_from, rcpt_to, msg_id = pyzmail.compose_mail(
-            self.sender,
+            (self.sender, self.sender),
             self.recipients,
             self.subject,
             preferred_encoding,

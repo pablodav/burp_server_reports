@@ -50,9 +50,15 @@ def set_defaults():
         'foot_notes': 'A sample notes'
     }
 
+    format_text = {
+        'name_length': '15',
+        'all_column_lenght': '11'
+    }
+
     config['common'] = common
     config['inventory_columns'] = inventory_columns
     config['inventory_status'] = inventory_status
     config['email_notification'] = email_notification
+    config['format_text'] = format_text
 
     return config

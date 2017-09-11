@@ -12,7 +12,8 @@ class TxtReports:
                  file=None,
                  detail=None,
                  additional_columns=None,
-                 foot_notes=''):
+                 foot_notes='',
+                 format_text=None):
         """
         :param clients: dict of clients formatted for burp reports.
         :param file: file to export the printed text
@@ -20,12 +21,20 @@ class TxtReports:
         :param additional_columns: Add more column in format: {'Column name': 'key'}
                 Where 'key' is the key to search in, example: clients['key']
         :param foot_notes: str with more notes in the foot of the text
+        :param format_text: dict with some settings for format text like: 
+               { 'name_length': '15', 'all_column_lenght': '11' }
         """
         self.clients = clients
         self.file = file
         self.detail = detail
         self.additional_columns = additional_columns
         self.foot_notes = foot_notes
+        # set the format_text dict:
+        default_format_text = {
+            'name_length': '15',
+            'all_column_lenght': '11'
+        }
+        self.format_text = format_text or default_format_text
 
     def format_client_text(self, client=None, header=None):
         """
@@ -39,7 +48,8 @@ class TxtReports:
         :return: client/header str depending on the option chosen
         """
 
-        jt = 11
+        nlength = int(self.format_text.get('name_lenght')) # column length for name
+        clength = int(self.format_text.get('all_column_lenght')) # column length for all columns except name
         headers_text = ''
         client_text = ''
 
@@ -47,8 +57,7 @@ class TxtReports:
         client_details = [{'Date(local)': 'b_date'},
                           {'Time(local)': 'b_time'},
                           {'State': 'b_state'},
-                          {'Phase': 'b_phase'}
-                          ]
+                          {'Phase': 'b_phase'}]
 
         empty_values = ('null', 'Null', 'None')
 
@@ -62,52 +71,54 @@ class TxtReports:
 
         # Format basic header
         if header:
-            headers_text = str('\n burp report'.ljust(jt * 9) + datetime.now().strftime('%Y-%m-%d %H:%M:%S') + '\n')
+            headers_text = str('\n burp report'.ljust(clength * 9) + datetime.now().strftime('%Y-%m-%d %H:%M:%S') + '\n')
 
             # The clients name will be centered if there is detail, so the string starts different for client
             if self.detail:
-                headers_text += ' {:>{}.{}} '.format('Name   ', jt, jt)
+                headers_text += ' {:>{}.{}} '.format('Name   ', clength, clength)
             else:
-                headers_text += ' {:>{}.{}} '.format('Name   ', jt * 3, jt)
+                headers_text += ' {:>{}.{}} '.format('Name   ', clength * 3, clength)
 
             # Look on each item on client_details list
             for n in range(len(client_details)):
                 detail_dict = client_details[n]
                 for k in detail_dict.keys():
                     # Append header from clients_details
-                    headers_text += ' {:{}.{}} '.format(k, jt, jt)
+                    headers_text += ' {:{}.{}} '.format(k, clength, clength)
 
             # Add more details from static method
             if self.detail:
-                headers_text += self._txt_header_details(jt)
+                headers_text += self._txt_header_details(clength)
 
         # Format basic client information for the basic header
         if client:
             # Dict of client only data
             client_data = self.clients[client]
 
-            # The clients name will be centered if there is detail, so the string starts different for client
+            # The clients name will be centered if there is detail, so the string
+            # starts different for client
             if self.detail:
-                client_text = ' {:>{}.{}} '.format(client, jt, jt)
+                client_text = ' {:>{}.{}} '.format(client, nlength, nlength)
             else:
-                client_text = ' {:>{}.{}} '.format(client, jt * 3, jt)
+                client_text = ' {:>{}.{}} '.format(client, nlength * 2, nlength)
 
             # Look on each item on client_details list
             for n in range(len(client_details)):
                 detail_dict = client_details[n]
                 for key, value in detail_dict.items():
-                    # Add client data to the string client_text using client_details list to fetch keys
+                    # Add client data to the string client_text using client_details
+                    # list to fetch keys
                     item_value = client_data.get(value, ' --- ')
                     # Check if item value is valid to be a string, if not add empty str value.
                     if not item_value or item_value in empty_values:
                         item_value = ' --- '
                     # Add the value of the item from client dictionary to client_text
                     # :Will put left , .Will truncate
-                    client_text += ' {:{}.{}} '.format(item_value, jt, jt)
+                    client_text += ' {:{}.{}} '.format(item_value, clength, clength)
 
             # Add more details from static method
             if self.detail:
-                client_text += self._txt_client_details(client_data, jt)
+                client_text += self._txt_client_details(client_data, clength)
 
         # Return formatted text
         if header:
@@ -132,25 +143,25 @@ class TxtReports:
         return footer_text
 
     @staticmethod
-    def _txt_header_details(jt):
+    def _txt_header_details(clength):
         """
 
-        :param jt: number of spaces to use to justify and format columns
+        :param clength: number of spaces to use to justify and format columns
         :return:
         """
         # Additional details to add on headers and clients to the end of the strings
-        headers_text = ' {:{}.{}} '.format('Duration', jt, jt)
-        headers_text += ' {:{}.{}} '.format('Size', jt, jt)
-        headers_text += ' {:{}.{}} '.format('Received', jt, jt)
+        headers_text = ' {:{}.{}} '.format('Duration', clength, clength)
+        headers_text += ' {:{}.{}} '.format('Size', clength, clength)
+        headers_text += ' {:{}.{}} '.format('Received', clength, clength)
 
         return headers_text
 
     @staticmethod
-    def _txt_client_details(client_data, jt):
+    def _txt_client_details(client_data, clength):
         """
 
         :param client_data: dict in burp reports format only for the client you want to get additional details
-        :param jt: number of spaces to use to justify and format columns
+        :param clength: number of spaces to use to justify and format columns
         :return:
         """
         # Additional details to add on headers and clients to the end of the strings
@@ -164,9 +175,9 @@ class TxtReports:
         received = int(client_data.get('backup_report', {}).get('received', 0))
 
         # Additional calculated added data
-        client_text = ' {:^{}} '.format(duration, jt, jt)
-        client_text += ' {:<{}} '.format(humanize_file_size(totsize), jt)
-        client_text += ' {:<{}} '.format(humanize_file_size(received), jt)
+        client_text = ' {:^{}} '.format(duration, clength, clength)
+        client_text += ' {:<{}} '.format(humanize_file_size(totsize), clength)
+        client_text += ' {:<{}} '.format(humanize_file_size(received), clength)
 
         return client_text
 
@@ -183,37 +194,38 @@ class TxtReports:
         :return: text line if no print_text
         """
 
-        f = None
+        file_obj = None
 
         if self.file:
             if header:
-                f = open(self.file, 'w')
+                file_obj = open(self.file, 'w')
             else:
-                f = open(self.file, 'a')
+                file_obj = open(self.file, 'a')
 
         if header:
             header_text = self.format_client_text(client=None, header=True)
             if print_text:
-                print(header_text, file=f)
+                print(header_text, file=file_obj)
             else:
                 return header_text
 
         if client:
             client_text = self.format_client_text(client, header=None)
             if print_text:
-                print(client_text, file=f)
+                print(client_text, file=file_obj)
             else:
                 return client_text
 
         if footer:
             footer_text = self._foot_notes(footer=footer)
             if print_text:
-                print(footer_text, file=f)
+                print(footer_text, file=file_obj)
             else:
                 return footer_text
 
     def report_to_txt(self, print_text=True):
         """
+        Method used to format the clients to text in stdout
 
         """
 

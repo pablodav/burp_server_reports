@@ -37,6 +37,9 @@ class BurpReports:
         if config:
             # Set dict for from common section
             self.common_config = dict(self.config['common'])
+            # Set dict for format_text section
+            if config.has_section('format_text'):
+                self.format_text = dict(self.config['format_text'])
         else:
             self.common_config = {
                 'csv_delimiter': ';'

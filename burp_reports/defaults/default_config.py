@@ -52,7 +52,7 @@ def set_defaults():
 
     format_text = {
         'name_length': '15',
-        'all_column_lenght': '11'
+        'all_column_length': '11'
     }
 
     config['common'] = common

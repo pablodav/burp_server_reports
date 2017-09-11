@@ -22,7 +22,7 @@ class TxtReports:
                 Where 'key' is the key to search in, example: clients['key']
         :param foot_notes: str with more notes in the foot of the text
         :param format_text: dict with some settings for format text like: 
-               { 'name_length': '15', 'all_column_lenght': '11' }
+               { 'name_length': '15', 'all_column_length': '11' }
         """
         self.clients = clients
         self.file = file
@@ -32,7 +32,7 @@ class TxtReports:
         # set the format_text dict:
         default_format_text = {
             'name_length': '15',
-            'all_column_lenght': '11'
+            'all_column_length': '11'
         }
         self.format_text = format_text or default_format_text
 
@@ -48,8 +48,8 @@ class TxtReports:
         :return: client/header str depending on the option chosen
         """
 
-        nlength = int(self.format_text.get('name_lenght')) # column length for name
-        clength = int(self.format_text.get('all_column_lenght')) # column length for all columns except name
+        nlength = int(self.format_text.get('name_length')) # column length for name
+        clength = int(self.format_text.get('all_column_length')) # column length for all columns except name
         headers_text = ''
         client_text = ''
 

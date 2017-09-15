@@ -73,3 +73,6 @@ burp_reports/lib/__pycache__/
 burp_reports/reports/__pycache__/
 burp_reports/tests/__pycache__/
 test1.txt
+
+.tox
+test_write_config.conf

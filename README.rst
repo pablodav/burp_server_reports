@@ -138,6 +138,7 @@ More possible options in config:
 .. code-block:: ini
 
         [inventory_columns]
+        burpui_apiurl = http://user:pass@servername/api
         server = servidor
         status = status
         sub_status = status (detailed)
@@ -166,6 +167,9 @@ More possible options in config:
         smtp_port = 25
         foot_notes = a sample notes in the end of your email
 
+        [format_text]
+        name_length = 15        # This allows you to choose the name length for column in print to stdout 
+        all_column_length = 11  # This allows you to choose the length for all columns except name column in print to stdout 
 
 * ``email_to`` you can add a list of comma separated values without spaces.
 * ``smtp_mode`` you can use normal/ssl/tls

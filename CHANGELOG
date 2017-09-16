@@ -1,3 +1,5 @@
+1.2.7:
+        * fix https://github.com/pablodav/burp_server_reports/issues/14 added feature to change name length column on print text to stdout
 1.2.6:
         * fix https://github.com/pablodav/burp_server_reports/issues/13 from @roms2000 fix sender address
 1.2.5:

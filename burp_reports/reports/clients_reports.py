@@ -37,6 +37,9 @@ class BurpReports:
         if config:
             # Set dict for from common section
             self.common_config = dict(self.config['common'])
+            # Set dict for format_text section
+            if config.has_section('format_text'):
+                self.format_text = dict(self.config['format_text'])
         else:
             self.common_config = {
                 'csv_delimiter': ';'
@@ -46,7 +49,8 @@ class BurpReports:
 
     def print_basic_txt(self):
         clients_reports = TxtReports(self.clients,
-                                     detail=self.detail)
+                                     detail=self.detail,
+                                     format_text=self.format_text)
         clients_reports.report_to_txt()
 
     def _get_outdated(self):
@@ -248,7 +252,8 @@ class BurpReports:
         # Create the object to export the report
         clients_reports = TxtReports(outdated_clients,
                                      additional_columns=columns,
-                                     detail=self.detail)
+                                     detail=self.detail,
+                                     format_text=self.format_text)
 
         if export_txt:
             clients_reports.report_to_txt()
@@ -285,7 +290,8 @@ class BurpReports:
 
         clients_reports = TxtReports(clients,
                                      detail=self.detail,
-                                     foot_notes=email_config.get('foot_notes', ''))
+                                     foot_notes=email_config.get('foot_notes', ''),
+                                     format_text=self.format_text)
 
         body_str = clients_reports.report_to_txt(print_text=None)
 

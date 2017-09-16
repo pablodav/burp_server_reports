@@ -75,9 +75,9 @@ class TxtReports:
 
             # The clients name will be centered if there is detail, so the string starts different for client
             if self.detail:
-                headers_text += ' {:>{}.{}} '.format('Name   ', clength, clength)
+                headers_text += ' {:>{}.{}} '.format('Name   ', nlength, nlength)
             else:
-                headers_text += ' {:>{}.{}} '.format('Name   ', clength * 3, clength)
+                headers_text += ' {:>{}.{}} '.format('Name   ', nlength * 2, nlength)
 
             # Look on each item on client_details list
             for n in range(len(client_details)):

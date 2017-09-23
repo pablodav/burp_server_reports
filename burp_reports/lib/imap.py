@@ -103,5 +103,7 @@ class ImapReceive:
                 # finally write the stuff
                 with open(att_path, 'wb') as file_open:
                     file_open.write(part.get_payload(decode=True))
+                # Save the attachment only for one file
+                break
 
         conn.close()

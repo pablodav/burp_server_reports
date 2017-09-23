@@ -18,12 +18,13 @@ class ImapReceive:
             'imap_password': 'password',
             'imap_user': 'username', # You can use 'domain\\user'
             'imap_folder': 'INBOX',
+            'email_subject': 'inventory',
             'imap_search': 'TODAY', # TODAY will set today date in
             format: "SENTON 23-Sep-2017 Subject \"inventory\""
             # you could filter using the IMAP rules here (check
             # http://www.example-code.com/csharp/imap-search-critera.asp)
             'imap_port': '993',
-            'attachment_save_directory': '/tmp'
+            'attachment_save_directory': '/tmp',
             'attachment_filename': 'inventory.csv'
         }
 
@@ -33,6 +34,7 @@ class ImapReceive:
         self.user = config['imap_user']
         self.password = config['imap_password']
         self.imap_folder = config['imap_folder'] or 'INBOX'
+        self.email_subject = config['email_subject'] or 'inventory'
         self.imap_search = config['imap_search'] or 'TODAY'
         self.imap_port = config['imap_port'] or '993'
         self.save_directory = config['attachment_save_directory'] or '.'
@@ -40,7 +42,7 @@ class ImapReceive:
 
         if config['imap_search'] == 'TODAY':
             today_string = arrow.now().format('DD-MMM-YYYY')
-            self.imap_search = "SENTON {} Subject \"inventory\"".format(today_string)
+            self.imap_search = "SENTON {} Subject \"{}\"".format(today_string, self.email_subject)
 
     def _connect_imap(self):
 
@@ -62,6 +64,7 @@ class ImapReceive:
         msg_ids = data[0]
         msg_id_list = msg_ids.split()
         detach_dir = self.save_directory # directory where to save attachments (default: current)
+        filename = self.filename
 
         for emailid in msg_id_list:
             # fetching the mail, "`(RFC822)`" means "get the whole stuff", but you can ask for
@@ -93,7 +96,6 @@ class ImapReceive:
 
                 #filename = part.get_filename()
                 #filename = mail["From"] + "_hw1answer"
-                filename = self.filename
 
                 att_path = os.path.join(detach_dir, filename)
 

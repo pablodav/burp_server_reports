@@ -1,3 +1,6 @@
+"""
+Generates the default configuration for all sections.
+"""
 import configparser
 import socket
 
@@ -6,7 +9,7 @@ def set_defaults():
     """
     Generates the default configuration for all sections.
 
-    :return:
+    :return: configparser.ConfigParser object
     """
 
     config = configparser.ConfigParser(allow_no_value=True)
@@ -55,10 +58,26 @@ def set_defaults():
         'all_column_length': '11'
     }
 
+    email_inventory = {
+        'imap_host': 'hostname',
+        'imap_password': 'password',
+        'imap_user': 'username', # You can use 'domain\\user'
+        'imap_folder': 'INBOX',
+        'email_subject': 'inventory',
+        'imap_search': 'TODAY', # TODAY will set today date in
+        # format: "SENTON 23-Sep-2017 Subject \"inventory\"" (subject comes from email_subject key)
+        # you could filter using the IMAP rules here (check
+        # http://www.example-code.com/csharp/imap-search-critera.asp)
+        'imap_port': '993',
+        'attachment_save_directory': '/tmp',
+        'attachment_filename': 'inventory.csv'
+    }
+
     config['common'] = common
     config['inventory_columns'] = inventory_columns
     config['inventory_status'] = inventory_status
     config['email_notification'] = email_notification
     config['format_text'] = format_text
+    config['email_inventory'] = email_inventory
 
     return config

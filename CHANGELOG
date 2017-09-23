@@ -1,4 +1,17 @@
-1.2.2: 
+1.2.7:
+        * fix https://github.com/pablodav/burp_server_reports/issues/14 added feature to change name length column on print text to stdout
+1.2.6:
+        * fix https://github.com/pablodav/burp_server_reports/issues/13 from @roms2000 fix sender address
+1.2.5:
+        * added pyzmail36 to be compatible with all python3 included python3.6 fix #12
+        * added tox.ini tests with multiple python versions for easier testing
+1.2.4: 
+        * fix #10 not working with burpui standalone due to wrong test for multi-agent
+1.2.3:
+        * change to new burpui demo url
+        * fix tests removing unnecesary pandas dependencies as it is not used
+        * fix multiplatform usage, changing temp files from os.getuid() to getpass.getuser()
+1.2.2:
         * remove unncesesary pandas dependency for now
 1.2.1:
         * fix non passing --detail correctly from cmd

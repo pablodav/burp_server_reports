@@ -1,21 +1,24 @@
 #! python3
-# Help from: http://www.scotttorborg.com/python-packaging/minimal.html
-# https://docs.python.org/3/distutils/commandref.html#sdist-cmd
-# https://docs.python.org/3.4/distutils/setupscript.html#installing-additional-files
-# https://docs.python.org/3.4/tutorial/modules.html
-# Install it with python setup.py install
-# Or use: python setup.py develop (changes to the source files will be
-# immediately available)
-# https://pypi.python.org/pypi?%3Aaction=list_classifiers
-
-from setuptools import setup, find_packages
+# pylint: disable=invalid-name
+"""
+ Setup file to package burp_reports
+ Help from: http://www.scotttorborg.com/python-packaging/minimal.html
+ https://docs.python.org/3/distutils/commandref.html#sdist-cmd
+ https://docs.python.org/3.4/distutils/setupscript.html#installing-additional-files
+ https://docs.python.org/3.4/tutorial/modules.html
+ Install it with python setup.py install
+ Or use: python setup.py develop (changes to the source files will be
+ immediately available)
+ https://pypi.python.org/pypi?%3Aaction=list_classifiers
+"""
 import os
 from os import path
+from setuptools import setup, find_packages
 import rstcheck
 
-here = path.abspath(path.dirname(__file__))
+here_path = path.abspath(path.dirname(__file__))
 
-with open(os.path.join(here, 'requirements.txt')) as f:
+with open(os.path.join(here_path, 'requirements.txt')) as f:
     requires = [x.strip() for x in f if x.strip()]
 
 
@@ -27,19 +30,19 @@ def check_readme(file='README.rst'):
     :return:
     """
     # Get the long description from the relevant file
-    with open(file, encoding='utf-8') as f:
-        readme_content = f.read()
+    with open(file, encoding='utf-8') as f_object:
+        readme_content = f_object.read()
 
     errors = list(rstcheck.check(readme_content))
     if errors:
-        msg = 'There are errors in {}, errors \n {}'.format(file,
+        msg = 'There_path are errors in {}, errors \n {}'.format(file,
                                                             errors[0].message)
         raise SystemExit(msg)
     else:
         msg = 'No errors in {}'.format(file)
         print(msg)
 
-readme_file = path.join(here, 'README.rst')
+readme_path = path.join(here_path, 'README.rst')
 
 # Get the version from VERSION file
 mypackage_root_dir = 'burp_reports'
@@ -47,10 +50,10 @@ with open(os.path.join(mypackage_root_dir, 'VERSION')) as version_file:
     version = version_file.read().strip()
 
 # Get the long description from the relevant file
-with open(readme_file, encoding='utf-8') as f:
+with open(readme_path, encoding='utf-8') as f:
     long_description = f.read()
 
-check_readme(readme_file)
+check_readme(readme_path)
 
 # Define setuptools specifications
 setup(name='burp_reports',
@@ -82,9 +85,5 @@ setup(name='burp_reports',
       },
       install_requires=requires,
       tests_require=['pytest',
-                     'pytest-cov',
-                     'pandas>=0.19.1'],
-      extras_require={
-          'pandas': ["pandas>=0.19.1"]
-      },
+                     'pytest-cov'],
       zip_safe=False)

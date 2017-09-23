@@ -3,6 +3,7 @@ import logging
 from ..lib.urlget import get_url_data
 from collections import defaultdict
 from functools import lru_cache
+import requests
 
 
 class Clients:
@@ -56,7 +57,7 @@ class Clients:
         #   },
         #  ]
         serviceurl = self.apiurl + 'servers/stats'
-        burpui_servers = get_url_data(serviceurl)
+        burpui_servers = get_url_data(serviceurl, check_multi=True)
         return_bool = None
 
         if burpui_servers:

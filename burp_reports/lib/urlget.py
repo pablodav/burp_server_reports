@@ -19,7 +19,8 @@ requests_cache.install_cache(cache_path, backend='sqlite', expire_after=expire_a
 def get_url_data(serviceurl: 'url to retrieve data',
                  params: "python requests params in url" = None,
                  ignore_empty: "returned [] value will be ignored" = False,
-                 timeout: "how much time to wait for a response" = 60):
+                 timeout: "how much time to wait for a response" = 60,
+                 check_multi: "check if response has data or not" = False):
 
     """
 
@@ -61,6 +62,10 @@ def get_url_data(serviceurl: 'url to retrieve data',
 
         try:
             req = requests.get(burl, verify=False, params=params, timeout=timeout, auth=(username, password))
+            if check_multi:
+                if not req.json():
+                    return []
+
             req.json()
 
             if req.json():

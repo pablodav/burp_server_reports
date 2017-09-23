@@ -32,7 +32,7 @@ class ImapReceive:
         self.host = config['imap_host']
         self.user = config['imap_user']
         self.password = config['imap_password']
-        self.imap_folder = config['imap_folder'] or '.'
+        self.imap_folder = config['imap_folder'] or 'INBOX'
         self.imap_search = config['imap_search'] or 'TODAY'
         self.imap_port = config['imap_port'] or '993'
         self.save_directory = config['attachment_save_directory'] or '.'

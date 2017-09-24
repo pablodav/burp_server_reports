@@ -13,6 +13,7 @@ dependencies:
     - pip install --upgrade tox
     - pip install --upgrade tox-pyenv
     - pyenv local $TOX_PY34 $TOX_PY35 $TOX_PY36
+    - bash burp_reports/utils/run_greenmail.sh
 
 test:
   override:

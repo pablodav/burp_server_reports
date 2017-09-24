@@ -59,7 +59,7 @@ def set_defaults():
     }
 
     email_inventory = {
-        'imap_host': 'hostname',
+        'imap_host': 'localhost',
         'imap_password': 'password',
         'imap_user': 'username', # You can use 'domain\\user'
         'imap_folder': 'INBOX',

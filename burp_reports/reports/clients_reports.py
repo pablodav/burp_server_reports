@@ -99,7 +99,8 @@ class BurpReports:
         """
 
         :param csv_inventory: Input filename to compare from (also can be an url to download it)
-        :return: list csv_rows_inventory_status (status of each client) in nested list one row per client
+        :return: list csv_rows_inventory_status (status of each client) in nested list one
+        row per client
         """
 
         # Set dict of status from config

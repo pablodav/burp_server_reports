@@ -8,5 +8,5 @@
 # POP3 (test port 3110)
 # and POP3S (test port 3995)
 # using localhost/127.0.0.1 : 
-
+cd burp_reports/utils/
 java -Dgreenmail.setup.test.all -Dgreenmail.users=test1:pwd1,test2:pwd2@example.com -jar greenmail-standalone-1.5.5.jar &

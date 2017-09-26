@@ -86,6 +86,20 @@ class TestCli:
 
         cli_execution(options)
 
+    def test_report_inventory_email(self):
+        """
+        """
+        # Read inventory file from data dir
+        config_file = os.path.normpath(os.path.join(os.path.dirname(
+            os.path.realpath(__file__)), '..', 'data', 'test_config.conf'))
+
+        output = temp_file('inventory_test_email.csv')
+
+        options = parse_args(['-ui', 'dummy', '-c', config_file, '--report',
+                              'inventory', '-i', 'email_inventory', '-o', output])
+
+        cli_execution(options)
+
     def test_demo_ui_outdated_detail(self):
         """
         """

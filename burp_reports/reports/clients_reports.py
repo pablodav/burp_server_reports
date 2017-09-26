@@ -126,7 +126,7 @@ class BurpReports:
                 email_inventory_config = dict(self.config['email_inventory'])
                 email_inventory_obj = ImapReceive(config=email_inventory_config)
                 email_inventory_obj.download_attachment() # Read email and download
-                csv_inventory = email_inventory_obj.filename
+                csv_inventory = email_inventory_obj.save_file
             else:
                 print("you must setup the section [email_inventory]"
                       "in configuration to use email_inventory")

@@ -39,6 +39,7 @@ class ImapReceive:
         self.imap_port = config['imap_port'] or '993'
         self.save_directory = config['attachment_save_directory'] or '.'
         self.filename = config['attachment_filename'] or 'inventory.csv'
+        self.save_file = os.path.join(self.save_directory, self.filename)
 
         if config['imap_search'] == 'TODAY':
             today_string = arrow.now().format('DD-MMM-YYYY')
@@ -63,8 +64,6 @@ class ImapReceive:
 
         msg_ids = data[0]
         msg_id_list = msg_ids.split()
-        detach_dir = self.save_directory # directory where to save attachments (default: current)
-        filename = self.filename
 
         for emailid in msg_id_list:
             # fetching the mail, "`(RFC822)`" means "get the whole stuff", but you can ask for
@@ -97,7 +96,7 @@ class ImapReceive:
                 #filename = part.get_filename()
                 #filename = mail["From"] + "_hw1answer"
 
-                att_path = os.path.join(detach_dir, filename)
+                att_path = self.save_file
 
                 #Check if its already there
                 #if not os.path.isfile(att_path):

@@ -6,6 +6,7 @@ from invpy_libs import csv_as_dict, save_csv_data, get_csv_from_url
 from ..lib.email import EmailNotifications
 import validators
 from ..lib.files import temp_file
+from ..lib.imap import ImapReceive
 
 
 class BurpReports:
@@ -98,7 +99,8 @@ class BurpReports:
         """
 
         :param csv_inventory: Input filename to compare from (also can be an url to download it)
-        :return: list csv_rows_inventory_status (status of each client) in nested list one row per client
+        :return: list csv_rows_inventory_status (status of each client) in nested list one
+        row per client
         """
 
         # Set dict of status from config
@@ -118,6 +120,17 @@ class BurpReports:
         if validators.url(csv_inventory):
             get_csv_from_url(csv_inventory, csv_output=self.tempfile, delimiter=delimiter)
             csv_inventory = self.tempfile
+
+        elif csv_inventory == 'email_inventory':
+            if self.config.has_section('email_inventory'):
+                email_inventory_config = dict(self.config['email_inventory'])
+                email_inventory_obj = ImapReceive(config=email_inventory_config)
+                email_inventory_obj.download_attachment() # Read email and download
+                csv_inventory = email_inventory_obj.save_file
+            else:
+                print("you must setup the section [email_inventory]"
+                      "in configuration to use email_inventory")
+                exit(2)
 
         # Get inventory from CSV file
         inventory = csv_as_dict(csv_inventory, client_column, delimiter=delimiter)

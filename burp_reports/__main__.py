@@ -36,7 +36,8 @@ def parse_args(args):
                           'requires -i and -o, check input inventory and generates a comparison\n'
                           '    Input csv headers required: device name; status; Status (detailed) \n'
                           '       Example line:            demo1; active; \n'
-                          '                                demo2; active; spare \n',
+                          '                                demo2; active; spare \n'
+                          '     -i email_inventory will download email from imap account set in config',
                       "email_outdated": "Will send email to configured recipients on config file\n"}
 
     parser.add_argument("--report", '-r', dest='report', nargs='?', default='print', const='print',

@@ -76,3 +76,7 @@ test1.txt
 
 .tox
 test_write_config.conf
+
+# tests
+inventory_email.csv
+

@@ -102,7 +102,7 @@ Windows env::
 * ``--report email_outdated``: Will send email with outdated clients, requires config.
 
 * ``-i`` (also can be an url, the program will recognize the url and download the file from it)
-** ``-i email_inventory`` will read the inventory file from email! see [email_inventory] section in config
+* ``-i email_inventory`` will read the inventory file from email! see [email_inventory] section in config
 * ``--detail`` it adds more info like duration, size, received to the list printed. Can be used with ``--report outdated``
 * ``--ping`` it adds ping check to ``--report outdated`` only, so you can fast-check which outdated client is pinging.
 

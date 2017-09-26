@@ -1,3 +1,7 @@
+1.2.8: 
+        * added feature https://github.com/pablodav/burp_server_reports/issues/6 to download inventory.csv from email. 
+        * added more examples in README.rst
+        * updated versions in README.rst
 1.2.7:
         * fix https://github.com/pablodav/burp_server_reports/issues/14 added feature to change name length column on print text to stdout
 1.2.6:

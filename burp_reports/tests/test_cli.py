@@ -35,7 +35,8 @@ class TestCli:
     def test_report_outdated_withconfig(self):
         """
         """
-        options = parse_args(['-ui', 'dummy', '-c', 'test_write_config.conf', '--report', 'outdated'])
+        options = parse_args(['-ui', 'dummy', '-c', 'test_write_config.conf',
+                              '--report', 'outdated'])
 
         cli_execution(options)
 
@@ -71,12 +72,14 @@ class TestCli:
         """
         """
         # Read inventory file from data dir
-        inventory = os.path.normpath(os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'data',
+        inventory = os.path.normpath(os.path.join(os.path.dirname(os.path.realpath(__file__)),
+                                                  '..', 'data',
                                                   'test_inventory.csv'))
 
         output = temp_file('inventory_test.csv')
 
-        options = parse_args(['-ui', 'dummy', '--report', 'inventory', '-i', inventory, '-o', output])
+        options = parse_args(['-ui', 'dummy', '--report', 'inventory',
+                              '-i', inventory, '-o', output])
 
         cli_execution(options)
 
@@ -87,7 +90,8 @@ class TestCli:
         inventory = 'https://raw.githubusercontent.com/pablodav/burp_server_reports/master/burp_reports/data/test_inventory.csv'
         output = temp_file('inventory_test.csv')
 
-        options = parse_args(['-ui', 'dummy', '--report', 'inventory', '-i', inventory, '-o', output])
+        options = parse_args(['-ui', 'dummy', '--report', 'inventory',
+                              '-i', inventory, '-o', output])
 
         cli_execution(options)
 
@@ -105,17 +109,21 @@ class TestCli:
 
         cli_execution(options)
 
+        assert os.path.isfile(output)
+
     def test_demo_ui_outdated_detail(self):
         """
         """
-        options = parse_args(['-ui', 'https://admin:admin@demo.burp-ui.org/api/', '--report', 'outdated', '--detail'])
+        options = parse_args(['-ui', 'https://admin:admin@demo.burp-ui.org/api/',
+                              '--report', 'outdated', '--detail'])
 
         cli_execution(options)
 
     def test_demo_ui_outdated(self):
         """
         """
-        options = parse_args(['-ui', 'https://admin:admin@demo.burp-ui.org/api/', '--report', 'outdated'])
+        options = parse_args(['-ui', 'https://admin:admin@demo.burp-ui.org/api/',
+                              '--report', 'outdated'])
 
         cli_execution(options)
 
@@ -154,4 +162,3 @@ class TestCli:
 
         with pytest.raises(SystemExit):
             cli_execution(options)
-

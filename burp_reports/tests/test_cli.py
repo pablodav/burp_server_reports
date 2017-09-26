@@ -2,12 +2,12 @@
 
 import os
 import pytest
-from .test_imap import send_email
+#from .test_imap import send_email
 from ..lib.files import temp_file
 from ..__main__ import parse_args, cli_execution
 
 # Send an email with attachment to perform tests with download the attachment
-send_email()
+#send_email()
 
 class TestCli:
 

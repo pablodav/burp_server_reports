@@ -48,10 +48,10 @@ pip install to install requirements listed in setup.py and also in requirements.
 Recommendations
 ===============
 
-burpui 0.3.0+ (to be released but with many improvements in api performance and stability)    
-burp 2.0.42+ (burp monitor has been improved a lot since this release)    
+burpui 0.5.0+ (release with many improvements in api performance and stability)    
+burp 2.0.54+ (burp monitor has been improved a lot since this release)    
 
-Use protocol = 1  with burp2 server!!!!
+Use protocol = 1  with burp2 server as for now is the stable protocol for backups!!!!
 
 Install
 =======
@@ -102,6 +102,7 @@ Windows env::
 * ``--report email_outdated``: Will send email with outdated clients, requires config.
 
 * ``-i`` (also can be an url, the program will recognize the url and download the file from it)
+** ``-i email_inventory`` will read the inventory file from email! see [email_inventory] section in config
 * ``--detail`` it adds more info like duration, size, received to the list printed. Can be used with ``--report outdated``
 * ``--ping`` it adds ping check to ``--report outdated`` only, so you can fast-check which outdated client is pinging.
 
@@ -170,6 +171,23 @@ More possible options in config:
         [format_text]
         name_length = 15        # This allows you to choose the name length for column in print to stdout 
         all_column_length = 11  # This allows you to choose the length for all columns except name column in print to stdout 
+
+        [email_inventory]
+        imap_search = TODAY # TODAY will set today date in
+        # format: "SENTON 23-Sep-2017 Subject \"inventory\"" (subject comes from email_subject key)
+        # you could filter using the IMAP rules here (check
+        # http://www.example-code.com/csharp/imap-search-critera.asp)
+        # ALL: will download ALL emails
+        imap_port = 993
+        imap_folder = INBOX
+        imap_host = localhost
+        attachment_save_directory = /tmp
+        imap_password = password
+        email_subject = inventory # The subject that will be used when using imap_search = TODAY
+        attachment_filename = inventory.csv
+        imap_user = username
+        # -ui http://burpui_apiurl:port -c config_file.conf --report inventory -i email_inventory -o compared_inventory.csv
+        
 
 * ``email_to`` you can add a list of comma separated values without spaces.
 * ``smtp_mode`` you can use normal/ssl/tls
@@ -276,6 +294,7 @@ Just report on github issues: https://github.com/pablodav/burp_server_reports/is
 TODO:
 
 * Add features section?
+* See also bugs and requests issues
 
 Thanks
 ======
@@ -292,6 +311,46 @@ Other helpful docs used for this project:
 -----------------------------------------
 
 http://tjelvarolsson.com/blog/five-steps-to-add-the-bling-factor-to-your-python-package/
+
+Examples
+========
+
+Compare with inventory from email::
+
+    burp_reports -ui http://burpui_apiurl:port -c config_file.conf --report inventory -i email_inventory -o compared_inventory.csv
+
+Compare with inventory from url::
+
+    burp_reports -ui http://burpui_apiurl:port -c config_file.conf --report inventory -i http://some_host/inventory.csv -o compared_inventory.csv
+
+Compare with inventory from file::
+
+    burp_reports -ui http://burpui_apiurl:port -c config_file.conf --report inventory -i inventory.csv -o compared_inventory.csv
+
+See outdated::
+
+    burp_reports -ui http://burpui_apiurl:port -c config_file.conf --report outdated
+    burp_reports -ui http://burpui_apiurl:port --report outdated
+
+See outdated with more details::
+
+    burp_reports -ui http://burpui_apiurl:port -c config_file.conf --report outdated --detail
+
+See outdated with more details and also ping to see if some of the outdated is alive::
+
+    burp_reports -ui http://burpui_apiurl:port -c config_file.conf --report outdated --detail --ping
+
+Send outdated via email::
+
+    burp_reports -ui http://burpui_apiurl:port -c config_file.conf --report email_outdated
+
+Send outdated via email with details::
+
+    burp_reports -ui http://burpui_apiurl:port -c config_file.conf --report email_outdated --detail
+
+See all clients with details::
+
+    burp_reports -ui http://burpui_apiurl:port -c config_file.conf --report print --detail
 
 Packaging: 
 ----------

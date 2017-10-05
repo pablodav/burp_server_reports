@@ -161,7 +161,7 @@ def cli_execution(options):
             clients_dict = bui_api_clients_stats(burpui_apiurl, detail=options.detail)
     else:
         raise SystemExit('burpui_apiurl is required in cmd or in config common section')
-
+    
     # Generate burp_reports object to use for reports.
     reports = BurpReports(clients_dict,
                           days_outdated=days_outdated,

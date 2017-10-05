@@ -1,6 +1,7 @@
 # -*- coding: utf8 -*-
 import logging
 from ..lib.urlget import get_url_data
+from ..defaults.default_data_structure import empty_backup_report
 from collections import defaultdict
 from functools import lru_cache
 import requests
@@ -369,9 +370,16 @@ class Clients:
                     # Add the backup_report to the dict of the client
                     client_report_dict['backup_report'] = self._get_backup_report_stats(client, number, server=server)
                 else:
-                    client_report_dict['backup_report'] = {}
+                    client_report_dict['backup_report'] = empty_backup_report
             else:
-                client_report_dict['backup_report'] = {}
+                client_report_dict['backup_report'] = empty_backup_report
+
+            if not client_report_dict['backup_report'].get('totsize'):
+                client_report_dict['backup_report']['totsize'] = 0
+            if not client_report_dict['backup_report'].get('received'):
+                client_report_dict['backup_report']['received'] = 0
+            if not client_report_dict['backup_report'].get('duration'):
+                client_report_dict['backup_report']['duration'] = 0
 
             clients_report.append(client_report_dict)
 

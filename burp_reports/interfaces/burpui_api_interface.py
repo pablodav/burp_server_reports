@@ -30,7 +30,6 @@ class BUIClients:
             clients = self.clientsobj.get_clients_stats()
 
         logging.debug('clients: {}'.format(clients))
-
         # Set clients list from api interface to TranslateBurpuiAPI object
         clients_list_api = TranslateBurpuiAPI(clients=clients)
         # Translate with method translate_clients()

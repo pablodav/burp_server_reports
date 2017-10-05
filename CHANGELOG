@@ -1,3 +1,5 @@
+master: 
+        * added more default data to be more resilient when using --detail reports
 1.2.8: 
         * added feature https://github.com/pablodav/burp_server_reports/issues/6 to download inventory.csv from email. 
         * added more examples in README.rst

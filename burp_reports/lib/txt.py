@@ -1,5 +1,6 @@
 from datetime import datetime
 from .humanize import humanize_file_size
+from ..defaults.default_data_structure import empty_backup_report
 import os
 
 
@@ -167,12 +168,13 @@ class TxtReports:
         # Additional details to add on headers and clients to the end of the strings
         # Additional calculated added data
         # Look into client_data['backup_report']['duration']
-        s = int(client_data.get('backup_report', {}).get('duration', 0))
+        s = int(client_data.get('backup_report', empty_backup_report).get('duration', 0))
         duration = str('{:02}:{:02}:{:02}'.format(s // 3600, s % 3600 // 60, s % 60))
         # Look into client_data['backup_report']['totsize']
-        totsize = int(client_data.get('backup_report', {}).get('totsize', 0))
+        totsize = int(client_data.get('backup_report', empty_backup_report).get('totsize', 0))
+
         # Look into client_data['backup_report']['received']
-        received = int(client_data.get('backup_report', {}).get('received', 0))
+        received = int(client_data.get('backup_report', empty_backup_report).get('received', 0))
 
         # Additional calculated added data
         client_text = ' {:^{}} '.format(duration, clength, clength)

@@ -1,7 +1,7 @@
 # -*- coding: utf8 -*-
 import logging
 from ..lib.urlget import get_url_data
-from ..defaults.default_data_structure import empty_backup_report
+from ..defaults.default_data_structure import default_client_backup_report
 from collections import defaultdict
 from functools import lru_cache
 import requests
@@ -24,6 +24,7 @@ class Clients:
         self.apiurl = apiurl
 
         self.IsMultiAgent = self._is_multi_agent()
+        self.empty_backup_report = default_client_backup_report()
 
     @lru_cache(maxsize=32)
     def _is_multi_agent(self):
@@ -370,9 +371,9 @@ class Clients:
                     # Add the backup_report to the dict of the client
                     client_report_dict['backup_report'] = self._get_backup_report_stats(client, number, server=server)
                 else:
-                    client_report_dict['backup_report'] = empty_backup_report
+                    client_report_dict['backup_report'] = self.empty_backup_report
             else:
-                client_report_dict['backup_report'] = empty_backup_report
+                client_report_dict['backup_report'] = self.empty_backup_report
 
             if not client_report_dict['backup_report'].get('totsize'):
                 client_report_dict['backup_report']['totsize'] = 0

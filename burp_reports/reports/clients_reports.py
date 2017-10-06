@@ -93,7 +93,7 @@ class BurpReports:
                     outdated_clients[k] = v
                     outdated_clients[k]['b_status'] = 'outdated'
 
-            # When having details, check the totsize of the client
+            # When having details, check the totsize of the client)
             if self.detail:
                 if v.get('backup_report').get('totsize') == 0:
                     outdated_clients[k]['b_status'] = 'never'

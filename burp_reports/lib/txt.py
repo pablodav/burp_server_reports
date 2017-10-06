@@ -1,6 +1,6 @@
 from datetime import datetime
 from .humanize import humanize_file_size
-from ..defaults.default_data_structure import empty_backup_report
+from ..defaults.default_data_structure import default_client_backup_report
 import os
 
 
@@ -30,11 +30,14 @@ class TxtReports:
         self.detail = detail
         self.additional_columns = additional_columns
         self.foot_notes = foot_notes
+        self.empty_backup_report = default_client_backup_report()
+
         # set the format_text dict:
         default_format_text = {
             'name_length': '15',
             'all_column_length': '11'
         }
+        
         self.format_text = format_text or default_format_text
 
     def format_client_text(self, client=None, header=None):
@@ -119,7 +122,7 @@ class TxtReports:
 
             # Add more details from static method
             if self.detail:
-                client_text += self._txt_client_details(client_data, clength)
+                client_text += self._txt_client_details(client_data=client_data, clength=clength)
 
         # Return formatted text
         if header:
@@ -157,8 +160,7 @@ class TxtReports:
 
         return headers_text
 
-    @staticmethod
-    def _txt_client_details(client_data, clength):
+    def _txt_client_details(self, client_data, clength):
         """
 
         :param client_data: dict in burp reports format only for the client you want to get additional details
@@ -168,13 +170,13 @@ class TxtReports:
         # Additional details to add on headers and clients to the end of the strings
         # Additional calculated added data
         # Look into client_data['backup_report']['duration']
-        s = int(client_data.get('backup_report', empty_backup_report).get('duration', 0))
+        s = int(client_data.get('backup_report', self.empty_backup_report).get('duration', 0))
         duration = str('{:02}:{:02}:{:02}'.format(s // 3600, s % 3600 // 60, s % 60))
         # Look into client_data['backup_report']['totsize']
-        totsize = int(client_data.get('backup_report', empty_backup_report).get('totsize', 0))
+        totsize = int(client_data.get('backup_report', self.empty_backup_report).get('totsize', 0))
 
         # Look into client_data['backup_report']['received']
-        received = int(client_data.get('backup_report', empty_backup_report).get('received', 0))
+        received = int(client_data.get('backup_report', self.empty_backup_report).get('received', 0))
 
         # Additional calculated added data
         client_text = ' {:^{}} '.format(duration, clength, clength)

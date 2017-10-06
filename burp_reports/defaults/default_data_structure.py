@@ -2,7 +2,10 @@
 # 
 
 # Default dict for 
-empty_backup_report = {'totsize': 0,
+
+def default_client_backup_report():
+    empty_backup_report = dict()
+    empty_backup_report = {'totsize': 0,
                        'efs': {'total': 0, 'deleted': 0, 'unchanged': 0, 'scanned': 0, 'changed': 0, 'new': 0},
                        'vssheader_enc': {'total': 0, 'deleted': 0, 'unchanged': 0, 'scanned': 0, 'changed': 0, 'new': 0},
                        'start': '0', 'encrypted': False,
@@ -22,3 +25,5 @@ empty_backup_report = {'totsize': 0,
                        'vssfooter': {'total': 0, 'deleted': 0, 'unchanged': 0, 'scanned': 0, 'changed': 0, 'new': 0},
                        'files_enc': {'total': 0, 'deleted': 0, 'unchanged': 0, 'scanned': 0, 'changed': 0, 'new': 0}
                        }
+    
+    return empty_backup_report

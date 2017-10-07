@@ -104,6 +104,7 @@ Windows env::
 * ``-i`` (also can be an url, the program will recognize the url and download the file from it)
 * ``-i email_inventory`` will read the inventory file from email! see [email_inventory] section in config
 * ``--detail`` it adds more info like duration, size, received to the list printed. Can be used with ``--report outdated``
+  when ``--detail`` used with ``--report outdated`` it will check if backup has 0B and report as status **never** 
 * ``--ping`` it adds ping check to ``--report outdated`` only, so you can fast-check which outdated client is pinging.
 
 Optional Configuration file
@@ -332,7 +333,7 @@ See outdated::
     burp_reports -ui http://burpui_apiurl:port -c config_file.conf --report outdated
     burp_reports -ui http://burpui_apiurl:port --report outdated
 
-See outdated with more details::
+See outdated with more details (very recommended as it will also check if backup has 0B and report as never)::
 
     burp_reports -ui http://burpui_apiurl:port -c config_file.conf --report outdated --detail
 

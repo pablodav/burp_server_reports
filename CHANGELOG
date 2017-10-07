@@ -1,5 +1,6 @@
-master: 
+1.2.9: 
         * added more default data to be more resilient when using --detail reports
+        * added report client as backup status: never when it has 0B in backup (only works when used --report outdated with --detail)
 1.2.8: 
         * added feature https://github.com/pablodav/burp_server_reports/issues/6 to download inventory.csv from email. 
         * added more examples in README.rst

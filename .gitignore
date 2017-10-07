@@ -1,6 +1,11 @@
 # Compiled python modules.
 *.pyc
 
+# sphinx build folder
+_build
+_static
+_templates
+
 # Setuptools distribution folder.
 /dist/
 /build/

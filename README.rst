@@ -366,4 +366,9 @@ https://docs.python.org/3.4/tutorial/modules.html
 
 https://pypi.python.org/pypi?%3Aaction=list_classifiers  
 
+Automated deployment
+====================
 
+Use my official ansible role: https://galaxy.ansible.com/CoffeeITWorks/burp_reports/ 
+
+Also check all roles collection: https://github.com/grke/burp/wiki/Automated-deploy-and-maintenance

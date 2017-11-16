@@ -1,3 +1,7 @@
+current:
+
+       * fixed #18 --ping removed data from clients outdated
+
 1.2.9: 
         * added more default data to be more resilient when using --detail reports
         * added report client as backup status: never when it has 0B in backup (only works when used --report outdated with --detail)

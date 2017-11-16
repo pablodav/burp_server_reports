@@ -66,17 +66,20 @@ def outdated_pings(outdated_clients: dict):
     with Executor(max_workers=10) as exe:
         # jobs are executed in parallel with exe.submit
         # params passed to exe.submit are: (function, args, args)
-        # in this case we pass client, True. True is to get a return as dict with key as client and new comments
+        # in this case we pass client, True. True is to get a return as dict 
+        # with key as client and new comments
         # we use one are from a list appending a for in the list
         jobs = [exe.submit(check_isup, k, True) for k in outdated.keys()]
         # results are generated from jobs
         results = [job.result() for job in jobs]
 
-    for n in range(len(results)):
-
+    for i, values1 in enumerate(results):
+        data_client = list(values1.items())
+        client = data_client[0][0]
+        comment = data_client[0][1].get('comments')
         # Append ping information to outdated_clients
         # as we have same format in results as the original dict, we just update the values.
         # dict returned by results is {k: {'comments': comments}}
-        outdated.update(results[n])
+        outdated[client]['comments'] = comment
 
     return outdated

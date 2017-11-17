@@ -41,6 +41,8 @@ class BurpReports:
             # Set dict for format_text section
             if config.has_section('format_text'):
                 self.format_text = dict(self.config['format_text'])
+            if config.has_section('inventory_columns'):
+                self.inventory_columns = dict(self.config['inventory_columns'])
         else:
             self.common_config = {
                 'csv_delimiter': ';'
@@ -116,7 +118,7 @@ class BurpReports:
         active_status = all_status['active'].split(',')
 
         # Set dict of status from config
-        all_columns = dict(self.config['inventory_columns'])
+        all_columns = self.inventory_columns
 
         client_column = all_columns['client_name']
         delimiter = self.common_config['csv_delimiter']

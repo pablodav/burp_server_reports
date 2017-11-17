@@ -149,6 +149,7 @@ More possible options in config:
         sub_status = status (detailed)
         client_name = device name
         
+        # Always use lowercase, as it will compare in lowercase
         [inventory_status]
         not_inventory_in_burp = not in inventory
         in_many_servers = duplicated

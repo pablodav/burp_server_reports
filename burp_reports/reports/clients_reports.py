@@ -138,7 +138,9 @@ class BurpReports:
                 exit(2)
 
         # Get inventory from CSV file
-        inventory = csv_as_dict(csv_inventory, client_column, delimiter=delimiter)
+        inventory = csv_as_dict(csv_inventory, client_column,
+                                delimiter=delimiter,
+                                encoding=self.common_config.get('csv_encoding'))
         # Get a list of clients outdated in burp:
         outdated_clients = self._get_outdated()
 
@@ -148,7 +150,8 @@ class BurpReports:
         headers.insert(0, client_column)  # Change First header column as client
         headers.insert(1, all_columns['status'])  # Change Second header column as status
         headers.insert(2, all_columns['server'])  # Change Third header column as server
-        headers.insert(3, all_columns['sub_status'])  # Change Fourth header column as status detailed
+        # Change Fourth header column as status detailed
+        headers.insert(3, all_columns['sub_status'])
 
         first_client = next(iter(inventory.keys()))  # Gets first key of dict
 

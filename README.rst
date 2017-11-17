@@ -126,6 +126,9 @@ Options to use in the file:
     burpui_apiurl = http://user:pass@localhost:5000/api/
     days_outdated = 31
     csv_delimiter = ;
+    # Options: https://docs.python.org/3.5/library/codecs.html#text-encodings
+    # use mbcs for ansi on python prior 3.6
+    csv_encoding = utf-8,
     excluded_clients = list,of,clients,that,will,not,be,added,to,outdated,reports
 
 

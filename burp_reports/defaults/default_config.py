@@ -38,6 +38,9 @@ def set_defaults():
     common = {
         'days_outdated': '31',
         'csv_delimiter': ';',
+        # Options: https://docs.python.org/3.5/library/codecs.html#text-encodings
+        # use mbcs for ansi on python prior 3.6
+        'csv_encoding': 'utf-8',
         'excluded_clients': 'monitor,agent'
     }
 

@@ -20,12 +20,21 @@ class TranslateBurpuiAPI:
         """
 
         :param data_t: list of clients dicts to use for translation
+        ej: 
+        {
+            'b_phase': 'phase',
+            'b_state': 'state',
+            'b_orig_state': 'state',
+            'b_last': 'last',
+            'client_name': 'name'
+        }
+
         :return: d_clients dictionary of clients translated to use in burp_reports
         example from clients stats:
 
         {'client_name':
             { 'b_last'    : 'YYYY-MM-DDTHH:mm:ssZZ',
-              'b_state'    : 'working/current',
+              'b_state'    : 'idle/working/current',
               'b_phase' : 'phase1/phase2',
               'b_date' : 'date(local)',
               'b_time' : 'time(local)',
@@ -83,10 +92,11 @@ class TranslateBurpuiAPI:
         :return:
         {'client_name':
             { 'b_last'    : '2016-06-23T14:33:06-03:00',
-              'b_state'    : 'working/current',
-              'b_phase' : 'phase1/phase2'
-              'b_date' : 'local time date'
-              'b_time' : 'local time'
+              'b_state'    : 'idle/working/current',
+              'b_phase' : 'phase1/phase2',
+              'b_orig_state': 'idle/working/current',
+              'b_date' : 'local time date',
+              'b_time' : 'local time',
               'backup_report' : 'dict with backup report, data like duration, totsize, received'
             }
         }
@@ -94,10 +104,11 @@ class TranslateBurpuiAPI:
 
         # Dictionary to use for translation
         data_t = {
-            "b_phase": 'phase',
-            "b_state": "state",
-            "b_last": "last",
-            "client_name": "name"}
+            'b_phase': 'phase',
+            'b_state': 'state',
+            'b_orig_state': 'state',
+            'b_last': 'last',
+            'client_name': 'name'}
 
         # Check if key backup_report exists in clients
         if 'backup_report' in self.clients[0]:

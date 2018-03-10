@@ -29,6 +29,7 @@ class Clients:
 
         self.IsMultiAgent = self._is_multi_agent()
         self.empty_backup_report = default_client_backup_report()
+        self.check_idle = check_idle
 
     @lru_cache(maxsize=32)
     def _is_multi_agent(self):
@@ -250,14 +251,15 @@ class Clients:
 
         for i, values in enumerate(clients_stats):
             client_state = clients_stats[i].get('state', None)
-            client_last = clients_stats[i].get('last', None)
-            
+            client_last = clients_stats[i].get('last', None)   
+            # Create dict with all data of the client's dict
+            client_report_dict = defaultdict(dict)
+            client_report_dict.update(values)
+
             if client_state != 'idle' and client_last not in ['never', None]:
 
-                # Create dict with all data of the client's dict
-                client_report_dict = defaultdict(dict)
-                client_report_dict.update(values)
                 client = client_report_dict.get('name', None)
+                logging.debug("client {} has status != idle and client_last not in never, getting totsize".format(client))
                 if not client:
                     continue
                 server = client_report_dict.get('server', None)
@@ -268,9 +270,9 @@ class Clients:
                 if client in server_running:
                     continue
 
-                client_report_dict = self._get_client_report_backups(client_report_dict)
+            client_report_dict = self._get_client_report_backups(client_report_dict)
 
-                clients_report.append(client_report_dict)
+            clients_report.append(client_report_dict)
 
         return clients_report
 
@@ -312,6 +314,9 @@ class Clients:
         else:
             serviceurl = self.apiurl + 'clients/stats'
             clients_stats = get_url_data(serviceurl=serviceurl)
+
+        if self.check_idle:
+            clients_stats = self._check_idle_state_clients_stats(clients_stats)
 
         return clients_stats
 

@@ -1,11 +1,8 @@
 .. image:: https://badge.fury.io/py/burp-reports.svg
     :target: https://badge.fury.io/py/burp-reports
 
-.. image:: https://circleci.com/gh/pablodav/burp_server_reports.svg?style=svg
-    :target: https://circleci.com/gh/pablodav/burp_server_reports
-
-.. image:: https://circleci.com/gh/pablodav/burp_server_reports.svg?style=svg
-    :target: https://circleci.com/gh/pablodav/burp_server_reports
+.. image:: https://travis-ci.org/pablodav/burp_server_reports.svg?branch=master
+    :target: https://travis-ci.org/pablodav/burp_server_reports
 
 .. image:: https://codecov.io/gh/pablodav/burp_server_reports/branch/master/graph/badge.svg
   :target: https://codecov.io/gh/pablodav/burp_server_reports
@@ -337,7 +334,7 @@ See outdated::
     burp_reports -ui http://burpui_apiurl:port -c config_file.conf --report outdated
     burp_reports -ui http://burpui_apiurl:port --report outdated
 
-See outdated with more details (very recommended as it will also check if backup has 0B and report as never)::
+See outdated with more details::
 
     burp_reports -ui http://burpui_apiurl:port -c config_file.conf --report outdated --detail
 
@@ -356,6 +353,35 @@ Send outdated via email with details::
 See all clients with details::
 
     burp_reports -ui http://burpui_apiurl:port -c config_file.conf --report print --detail
+
+
+Smarter check by default for outdated
+=====================================
+
+feature #19
+
+Example of normal report with burpui demo::
+
+    burp report                                                                                      2018-03-10 18:54:50
+                            Name     Date(local)  Time(local)  State        Phase
+                            agent   ---          ---         idle          ---
+                        demo-pablo  2018-03-10   17:35:50     client cras   ---
+                            demo1  2018-03-10   15:42:02     idle          ---
+                            demo2  2018-03-10   14:17:02     server cras   ---
+                            demo3  2018-03-10   17:24:07     idle          ---
+                            demo4  2018-03-10   16:59:03     idle          ---
+    [pablo@localhost burp_server_reports]$ burp-reports -c burp_reports/data/test_config_demo.conf --report outdated
+
+    burp report                                                                                      2018-03-10 18:55:01
+                            Name     Date(local)  Time(local)  State        Phase        Status
+                        demo-pablo   ---          ---          ---          ---         never
+
+
+As you can see, demo-pablo has date of backup: so in the past if check for dates It can think it is updated/ok!  
+but now burp-reports is smarter and checks for clients non idle by default and identifies this kind of client without backup!
+This client was created in: https://git.ziirish.me/ziirish/burp-ui/issues/252#note_2644 for demostrating this behaviour.
+
+When you use --detail parameter, it checks for backup size for every client, doesn't matter its status, so is slower but more accurate too.
 
 Packaging: 
 ----------

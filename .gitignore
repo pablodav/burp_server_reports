@@ -85,3 +85,5 @@ test_write_config.conf
 # tests
 inventory_email.csv
 
+# vscode
+.vscode

@@ -1,3 +1,7 @@
+1.4.0:
+       * feature #19 - be smarter and get backup report for clients without status idle, see "Smarter check by default for outdated" in readme.
+       * Migrate ci to travis-ci
+       * Increase code coverage to from 94% to 96%
 1.3.3:
        * upgrade invpy_libs to 0.4.2 to fix errors with encoding on csv files
 1.3.1:

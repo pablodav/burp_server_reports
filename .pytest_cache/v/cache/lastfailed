@@ -1,0 +1,4 @@
+{
+  "burp_reports/tests/test_1_imap.py::TestImap::()::test_attachment": true,
+  "burp_reports/tests/test_1_imap.py::TestImap::()::test_connection": true
+}

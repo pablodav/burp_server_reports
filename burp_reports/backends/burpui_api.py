@@ -256,18 +256,11 @@ class Clients:
             client_report_dict = defaultdict(dict)
             client_report_dict.update(values)
 
-            if client_state != 'idle' and client_last not in ['never', None]:
+            if client_state not in ['idle', 'running'] and client_last not in ['never', None]:
 
                 client = client_report_dict.get('name', None)
-                logging.debug("client {} has status != idle and client_last not in never, getting totsize".format(client))
+                logging.info("client {} has no clean status, getting totsize, status: {}".format(client, client_state))
                 if not client:
-                    continue
-                server = client_report_dict.get('server', None)
-                # running clients on server
-                server_running = self.get_clients_running(server)
-                # Omit getting stats for clients running a backup
-                # burpui doesn't return data when client is running.
-                if client in server_running:
                     continue
 
             client_report_dict = self._get_client_report_backups(client_report_dict)

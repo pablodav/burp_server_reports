@@ -122,7 +122,10 @@ def get_url_data(serviceurl: 'url to retrieve data',
             e('request failed to {} \n with exception'.format(burl))
 
     if message == 'timed out':
-        raise TimeoutError('request timed out')
+        raise TimeoutError('request timed out with retries: {}\n url: {}'.format(
+                              retry_times,
+                              burl)
+                          )
 
     data = req.json()
 

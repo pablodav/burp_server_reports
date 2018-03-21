@@ -262,8 +262,15 @@ class Clients:
                 logging.info("client {} has no clean status, getting totsize, status: {}".format(client, client_state))
                 if not client:
                     continue
-
-            client_report_dict = self._get_client_report_backups(client_report_dict)
+                server = client_report_dict.get('server', None)
+                # running clients on server
+                server_running = self.get_clients_running(server)
+                # Omit getting stats for clients running a backup
+                # burpui doesn't return data when client is running.
+                if client in server_running:
+                    continue
+            
+                client_report_dict = self._get_client_report_backups(client_report_dict)
 
             clients_report.append(client_report_dict)
 
@@ -300,7 +307,7 @@ class Clients:
         ]
         """
 
-        logging.debug("Url received: {}".format(self.apiurl))
+        logging.debug("get_clients_stats: Url received: {}".format(self.apiurl))
 
         if self.IsMultiAgent:
             clients_stats = self._get_clients_stats_multi()
@@ -321,7 +328,7 @@ class Clients:
         # For single server:
         # https://burp-ui.readthedocs.io/en/latest/api.html#get--api-clients-report
         # GET /api/clients/report
-        logging.debug("Url received: {}".format(self.apiurl))
+        logging.debug("get_clients_reports_brief: Url received: {}".format(self.apiurl))
 
         if self.IsMultiAgent:
             clients_report = self._get_clients_report_multi()
@@ -343,6 +350,8 @@ class Clients:
 
         else:
             serviceurl = '{}clients/running'.format(self.apiurl)
+
+        logging.debug("get_clients_running: get info")
 
         clients_running = get_url_data(serviceurl, ignore_empty=True)
 
@@ -423,7 +432,7 @@ class Clients:
         backups = []
         # Server, client is required to fetch report_stats
         server = client_report_dict.get('server', None)
-        logging.debug('server: {}'.format(server))
+        logging.debug('_get_client_report_backups: server: {}'.format(server))
         client = client_report_dict.get('name', None)
 
         if client_report_dict.get('last', 'None') not in ['None', 'never']:

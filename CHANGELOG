@@ -1,3 +1,6 @@
+1.4.1:
+       * enhance some comments in code and debuggin info
+       * Performance: fix standard behaviour, do not fetch data for clients not required.
 1.4.0:
        * feature #19 - be smarter and get backup report for clients without status idle, see "Smarter check by default for outdated" in readme.
        * Migrate ci to travis-ci

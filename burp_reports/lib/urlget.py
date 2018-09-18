@@ -35,7 +35,8 @@ def get_url_data(serviceurl: 'url to retrieve data',
     # Support https without verification of certificate
     # req = requests.get(serviceurl, verify=False, params=params)
     retry_times = 0
-    max_retry = 4
+    max_retry = 5
+    retry_sleep_seconds = 30
     purl = parse_url(serviceurl)
     message = ''
     req = []
@@ -59,6 +60,8 @@ def get_url_data(serviceurl: 'url to retrieve data',
 
         message = ''
         retry_times += 1
+        if retry_times >= 1:
+            time.sleep(retry_sleep_seconds)
 
         try:
             req = requests.get(burl, verify=False, params=params, timeout=timeout, auth=(username, password))
@@ -81,7 +84,6 @@ def get_url_data(serviceurl: 'url to retrieve data',
                 if message in ['timed out']:
                     # next try
                     requests_cache.clear()
-                    time.sleep(2)
                     continue
 
                 # Don't try again
@@ -95,7 +97,6 @@ def get_url_data(serviceurl: 'url to retrieve data',
                 # Added in urlget module test if it's [] retry n times due to issue:
                 # https://git.ziirish.me/ziirish/burp-ui/issues/148
                 requests_cache.clear()
-                time.sleep(2)
                 # next try
                 continue
 
@@ -119,7 +120,8 @@ def get_url_data(serviceurl: 'url to retrieve data',
 
         except Exception as e:
 
-            e('request failed to {} \n with exception'.format(burl))
+            print('request failed to {} \n with exception'.format(burl))
+            raise e
 
     if message == 'timed out':
         raise TimeoutError('request timed out with retries: {}\n url: {}'.format(

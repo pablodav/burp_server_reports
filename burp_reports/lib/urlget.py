@@ -36,7 +36,7 @@ def get_url_data(serviceurl: 'url to retrieve data',
     # req = requests.get(serviceurl, verify=False, params=params)
     retry_times = 0
     max_retry = 5
-    retry_sleep_seconds = 30
+    retry_sleep_seconds = 5
     purl = parse_url(serviceurl)
     message = ''
     req = []
@@ -61,8 +61,9 @@ def get_url_data(serviceurl: 'url to retrieve data',
         message = ''
         if retry_times >= 1:
             time.sleep(retry_sleep_seconds)
+            retry_sleep_seconds += 15
         retry_times += 1
-        
+
         try:
             req = requests.get(burl, verify=False, params=params, timeout=timeout, auth=(username, password))
             if check_multi:

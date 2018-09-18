@@ -59,10 +59,10 @@ def get_url_data(serviceurl: 'url to retrieve data',
     while retry_times < max_retry:
 
         message = ''
-        retry_times += 1
         if retry_times >= 1:
             time.sleep(retry_sleep_seconds)
-
+        retry_times += 1
+        
         try:
             req = requests.get(burl, verify=False, params=params, timeout=timeout, auth=(username, password))
             if check_multi:

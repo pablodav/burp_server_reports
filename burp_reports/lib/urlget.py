@@ -64,7 +64,8 @@ def get_url_data(serviceurl: 'url to retrieve data',
     s.verify = False
     s.params = params
     s.timeout = timeout
-    s.auth = (username, password)
+    if username and password:
+        s.auth = (username, password)
     # Add the adapter with retries to http and https
     s.mount('http://', a)
     s.mount('https://', a)

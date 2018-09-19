@@ -89,3 +89,5 @@ inventory_email.csv
 .vscode
 
 .spyproject
+
+.pytest_cache

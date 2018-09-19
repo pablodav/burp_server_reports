@@ -18,12 +18,3 @@ def test_wrong_url2():
 
     with pytest.raises(Exception):
         get_url_data('https://github.com/pablodav/cl')
-
-
-def test_wrong_url_timeout():
-    """
-    Raise SystemExit
-    """
-
-    with pytest.raises(Exception):
-        get_url_data('https://httpbin.org/delay/10', timeout=1)

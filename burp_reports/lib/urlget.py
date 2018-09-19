@@ -6,12 +6,15 @@ from datetime import timedelta
 import requests
 import requests_cache
 from urllib3.util import parse_url
+import urllib3
 
 from .files import temp_file
 
 cache_file = 'burp_reports_cache'
 expire_after = timedelta(minutes=30)
 cache_path = temp_file(cache_file)
+# Disable warning about not using certificate verification
+urllib3.disable_warnings()
 
 requests_cache.install_cache(cache_path, backend='sqlite', expire_after=expire_after)
 
@@ -19,7 +22,7 @@ requests_cache.install_cache(cache_path, backend='sqlite', expire_after=expire_a
 def get_url_data(serviceurl: 'url to retrieve data',
                  params: "python requests params in url" = None,
                  ignore_empty: "returned [] value will be ignored" = False,
-                 timeout: "how much time to wait for a response" = 60,
+                 timeout: "how much time to wait for a response" = 30,
                  check_multi: "check if response has data or not" = False):
 
     """
@@ -35,7 +38,7 @@ def get_url_data(serviceurl: 'url to retrieve data',
     # Support https without verification of certificate
     # req = requests.get(serviceurl, verify=False, params=params)
     retry_times = 0
-    max_retry = 5
+    max_retry = 3
     retry_sleep_seconds = 5
     purl = parse_url(serviceurl)
     message = ''
@@ -55,6 +58,16 @@ def get_url_data(serviceurl: 'url to retrieve data',
     if purl.request_uri:
         # Add path and query like: http://host:8080/path/uri?query
         burl += '{}'.format(purl.request_uri)
+    
+    s = requests.Session()
+    a = requests.adapters.HTTPAdapter(max_retries=max_retry)
+    s.verify = False
+    s.params = params
+    s.timeout = timeout
+    s.auth = (username, password)
+    # Add the adapter with retries to http and https
+    s.mount('http://', a)
+    s.mount('https://', a)
 
     while retry_times < max_retry:
 
@@ -65,7 +78,7 @@ def get_url_data(serviceurl: 'url to retrieve data',
         retry_times += 1
 
         try:
-            req = requests.get(burl, verify=False, params=params, timeout=timeout, auth=(username, password))
+            req = s.get(burl)
             if check_multi:
                 if not req.json():
                     return []
@@ -90,6 +103,7 @@ def get_url_data(serviceurl: 'url to retrieve data',
                 # Don't try again
                 break
 
+            # If you want to ignore empty list
             elif ignore_empty:
                 continue
 
@@ -97,7 +111,8 @@ def get_url_data(serviceurl: 'url to retrieve data',
                 # Clear cache to retry again
                 # Added in urlget module test if it's [] retry n times due to issue:
                 # https://git.ziirish.me/ziirish/burp-ui/issues/148
-                requests_cache.clear()
+                # As now issue is fixed, let's see how it goes for future try
+                # requests_cache.clear()
                 # next try
                 continue
 
@@ -106,8 +121,6 @@ def get_url_data(serviceurl: 'url to retrieve data',
                 raise ValueError('No data from response')
 
         except requests.exceptions.RequestException as e:
-
-            time.sleep(2)
 
             print('request failed to {} \n retry Nº: {}'.format(burl, retry_times))
 
@@ -123,12 +136,6 @@ def get_url_data(serviceurl: 'url to retrieve data',
 
             print('request failed to {} \n with exception'.format(burl))
             raise e
-
-    if message == 'timed out':
-        raise TimeoutError('request timed out with retries: {}\n url: {}'.format(
-                              retry_times,
-                              burl)
-                          )
 
     data = req.json()
 

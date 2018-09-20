@@ -5,8 +5,9 @@ from datetime import timedelta
 
 import requests
 import requests_cache
-from urllib3.util import parse_url
 import urllib3
+from urllib3.util import parse_url
+from functools import lru_cache
 
 from .files import temp_file
 
@@ -18,7 +19,7 @@ urllib3.disable_warnings()
 
 requests_cache.install_cache(cache_path, backend='sqlite', expire_after=expire_after)
 
-
+@lru_cache(maxsize=32)
 def get_url_data(serviceurl: 'url to retrieve data',
                  params: "python requests params in url" = None,
                  ignore_empty: "returned [] value will be ignored" = False,
@@ -38,11 +39,14 @@ def get_url_data(serviceurl: 'url to retrieve data',
     # Support https without verification of certificate
     # req = requests.get(serviceurl, verify=False, params=params)
     retry_times = 0
-    max_retry = 3
+    max_retry = 5
     retry_sleep_seconds = 5
     purl = parse_url(serviceurl)
     message = ''
     req = []
+
+    # wait at least 1s between api calls
+    time.sleep(1)
 
     if purl.auth:
         username = purl.auth.split(':')[0]

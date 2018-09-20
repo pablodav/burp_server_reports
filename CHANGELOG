@@ -1,3 +1,7 @@
+1.4.2:
+       * Avoid crash on large deployments due to some timeouts.
+       * Ensure api calls are not overloading burpui.
+        Coverage stays 96%
 1.4.1:
        * enhance some comments in code and debuggin info
        * Performance: fix standard behaviour, do not fetch data for clients not required.

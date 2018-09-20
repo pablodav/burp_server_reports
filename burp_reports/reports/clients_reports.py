@@ -75,7 +75,7 @@ class BurpReports:
 
             actual_time = arrow.get()
             # get date to consider as outdated
-            outdated_time = actual_time.replace(days=-self.days_outdated)
+            outdated_time = actual_time.shift(days=-self.days_outdated)
             client_last = v.get('b_last', None)
 
             # Add client to outdated list if not backup

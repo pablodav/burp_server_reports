@@ -73,7 +73,7 @@ class Clients:
         server = 'server1'
         # Add clients with random last in a range of 100
         for num in range(1, 101):
-                    client_time = actual_time.replace(days=-random.randrange(5, 200))
+                    client_time = actual_time.shift(days=-random.randrange(5, 200))
                     client_last = client_time.isoformat(sep='T')
                     client_name = "client_{:03d}".format(num)
                     client_state = random.choice(['idle', 'working'])

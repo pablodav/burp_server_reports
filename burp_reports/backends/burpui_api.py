@@ -305,6 +305,7 @@ class Clients:
                 "percent": 42,
             }
         ]
+        
         """
 
         logging.debug("get_clients_stats: Url received: {}".format(self.apiurl))

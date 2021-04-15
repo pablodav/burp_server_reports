@@ -1,5 +1,5 @@
 .. burp_reports documentation master file, created by
-   sphinx-quickstart on Wed Apr 14 23:17:53 2021.
+   sphinx-quickstart on Wed Apr 14 23:58:22 2021.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
@@ -10,8 +10,7 @@ Welcome to burp_reports's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-.. include:: README.rst
-
+.. include:: ../README.rst
 
 Indices and tables
 ==================

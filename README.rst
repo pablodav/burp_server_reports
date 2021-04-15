@@ -1,11 +1,11 @@
 .. image:: https://badge.fury.io/py/burp-reports.svg
-    :target: https://badge.fury.io/py/burp-reports
+   :target: https://badge.fury.io/py/burp-reports
 
 .. image:: https://travis-ci.org/pablodav/burp_server_reports.svg?branch=master
-    :target: https://travis-ci.org/pablodav/burp_server_reports
+   :target: https://travis-ci.org/pablodav/burp_server_reports
 
 .. image:: https://codecov.io/gh/pablodav/burp_server_reports/branch/master/graph/badge.svg
-  :target: https://codecov.io/gh/pablodav/burp_server_reports
+   :target: https://codecov.io/gh/pablodav/burp_server_reports
 
 burp_server_reports
 ===================
@@ -53,24 +53,34 @@ Use protocol = 1  with burp2 server as for now is the stable protocol for backup
 Install
 =======
 
-Linux::
+Linux:
+
+.. code-block:: SHELL
 
     sudo pip3 install burp_reports --upgrade
 
-Also is possible to use::
+Also is possible to use:
+
+.. code-block:: SHELL
 
     sudo python3 -m pip install burp_reports --upgrade
 
-On windows with python3.4::
+On windows with python3.4:
+
+.. code-block:: SHELL
 
     \python34\scripts\pip install burp_reports --upgrade
 
-For proxies add::
+For proxies add:
+
+.. code-block:: SHELL
 
     --proxy='http://user:passw@server:port'
 
 *IMPORTANT NOTE FOR UBUNTU 14.04 and maybe others*
-I have problems on the first try, it said `No distributions matching  the version`, and fixed it with::
+I have problems on the first try, it said ``No distributions matching  the version``, and fixed it with:
+
+.. code-block:: SHELL
 
     pip3 install pip --upgrade
 
@@ -82,20 +92,24 @@ It caches the data of burp-ui for 1h , if you need to refresh the data just remo
 Usage
 =====
 
-Use the command line::
+Use the command line:
+
+.. code-block:: SHELL
 
     burp-reports --help
 
-Windows env::
+Windows env:
+
+.. code-block:: SHELL
 
     \python34\scripts\burp-reports.exe --help
 
 * ``--report`` report choices report options.
 * ``--report print`` (By default if no --report is given) - Print txt clients list only
 * ``--report outdated``: will report outdated clients
-* ``--report inventory``: Will compare with `-i input.csv` and will export to `-o output.csv`
+* ``--report inventory``: Will compare with `-i input.csv` and will export to ``-o output.csv``
 * ``-c config.conf``: Ini file to use
-* ``--write_config``: will write all default settings on config file not overwrites any existing, requires `-c`
+* ``--write_config``: will write all default settings on config file not overwrites any existing, requires ``-c``
 * ``--report email_outdated``: Will send email with outdated clients, requires config.
 
 * ``-i`` (also can be an url, the program will recognize the url and download the file from it)
@@ -107,7 +121,9 @@ Windows env::
 Optional Configuration file
 ===========================
 
-Configuration is required only to send emails. But allows you to customize the defaults used too::
+Configuration is required only to send emails. But allows you to customize the defaults used too:
+
+.. code-block:: SHELL
 
     burp-reports -c /config/file/path.conf
 
@@ -211,7 +227,7 @@ required.
 
 An example in input csv (you can also add many more columns as you desire, it will be automatically appended on output, like notes):
 
-::
+.. code-block:: text
 
         device name;status;Status (detailed);notes
         demo1; active;;should be ok
@@ -224,13 +240,15 @@ As the example, it will give you details only on "active" assets and will compar
 You can use it to compare with your list of clients (useful to see if all your inventory is in burp or not).    
 It can also tell you if you have clients not in the inventory
 
-Command line::
+Command line:
+
+.. code-block:: SHELL
 
     --report inventory -i input.csv -o output.csv
 
 *Status explained:*
 
-::
+.. code-block:: text
 
         not_inventory_in_burp:    A client that's in burp but is not in input inventory
         in_many_servers:          A client that's active in inventory and in more than one burp server (only possible with multiagent burp-ui server)
@@ -259,9 +277,13 @@ I would recommend to create a file  in ``/etc/cron.d/burp_reports``
 
 Cron file must be configured with lines in this way:
 
+.. code-block:: text
+
     minute   hour   day   month   dayofweek   user   command
 
-A template file example::
+A template file example:
+
+.. code-block:: SHELL
 
     SHELL=/bin/bash
     PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin
@@ -317,40 +339,58 @@ http://tjelvarolsson.com/blog/five-steps-to-add-the-bling-factor-to-your-python-
 Examples
 ========
 
-Compare with inventory from email::
+Compare with inventory from email:
+
+.. code-block:: SHELL
 
     burp_reports -ui http://burpui_apiurl:port -c config_file.conf --report inventory -i email_inventory -o compared_inventory.csv
 
-Compare with inventory from url::
+Compare with inventory from url:
+
+.. code-block:: SHELL
 
     burp_reports -ui http://burpui_apiurl:port -c config_file.conf --report inventory -i http://some_host/inventory.csv -o compared_inventory.csv
 
-Compare with inventory from file::
+Compare with inventory from file:
+
+.. code-block:: SHELL
 
     burp_reports -ui http://burpui_apiurl:port -c config_file.conf --report inventory -i inventory.csv -o compared_inventory.csv
 
-See outdated::
+See outdated:
+
+.. code-block:: SHELL
 
     burp_reports -ui http://burpui_apiurl:port -c config_file.conf --report outdated
     burp_reports -ui http://burpui_apiurl:port --report outdated
 
-See outdated with more details::
+See outdated with more details:
+
+.. code-block:: SHELL
 
     burp_reports -ui http://burpui_apiurl:port -c config_file.conf --report outdated --detail
 
-See outdated with more details and also ping to see if some of the outdated is alive::
+See outdated with more details and also ping to see if some of the outdated is alive:
+
+.. code-block:: SHELL
 
     burp_reports -ui http://burpui_apiurl:port -c config_file.conf --report outdated --detail --ping
 
-Send outdated via email::
+Send outdated via email:
+
+.. code-block:: SHELL
 
     burp_reports -ui http://burpui_apiurl:port -c config_file.conf --report email_outdated
 
-Send outdated via email with details::
+Send outdated via email with details:
+
+.. code-block:: SHELL
 
     burp_reports -ui http://burpui_apiurl:port -c config_file.conf --report email_outdated --detail
 
-See all clients with details::
+See all clients with details:
+
+.. code-block:: SHELL
 
     burp_reports -ui http://burpui_apiurl:port -c config_file.conf --report print --detail
 
@@ -360,7 +400,9 @@ Smarter check by default for outdated
 
 feature #19
 
-Example of normal report with burpui demo::
+Example of normal report with burpui demo:
+
+.. code-block:: SHELL
 
     burp report                                                                                      2018-03-10 18:54:50
                             Name     Date(local)  Time(local)  State        Phase

@@ -75,6 +75,18 @@ def bui_api_clients_stats(burpui_apiurl, detail=None):
     :param burpui_apiurl: string to burpui_apiurl, full url http://user:pass@server:port/api/
     :param detail: Adds more detailed info, backup_report nested dict with some info like: duration, received, totsize.
     :return: dict with clients stats
+    d_clients dictionary of clients translated to use in burp_reports
+        example from clients stats:
+
+        {'client_name':
+            { 'b_last'    : 'YYYY-MM-DDTHH:mm:ssZZ',
+              'b_state'    : 'idle/working/current',
+              'b_phase' : 'phase1/phase2',
+              'b_date' : 'date(local)',
+              'b_time' : 'time(local)',
+              'server': 'server in multi-agent mode'
+            }
+        }
     """
     from .interfaces.burpui_api_interface import BUIClients
     bui_clients = BUIClients(burpui_apiurl=burpui_apiurl)
@@ -96,7 +108,15 @@ def get_main_conf(options):
     """
 
     :param options: options from argparser
-    :return: dict with options from config file or defaults
+    :return: dict with options from common section from config file or defaults
+    {
+        'days_outdated': '31',
+        'csv_delimiter': ';',
+        # Options: https://docs.python.org/3.5/library/codecs.html#text-encodings
+        # use mbcs for ansi on python prior 3.6
+        'csv_encoding': 'utf-8',
+        'excluded_clients': 'monitor,agent'
+    }
     """
     _options = defaultdict(dict)
 

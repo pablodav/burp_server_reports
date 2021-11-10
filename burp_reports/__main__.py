@@ -148,9 +148,10 @@ def cli_execution(options):
     if options.write_config:
         if not options.reports_conf:
             raise SystemExit('--write_config requires -c configfile.conf')
-
+        #Write the config
         with open(options.reports_conf, 'w', encoding='utf-8') as f:
             all_config.write(f, space_around_delimiters=True)
+
     days_outdated = all_config.getint('common', 'days_outdated')
     # If there is an option to for burpui_apiurl, get clients from that apiurl
     if burpui_apiurl:

@@ -1,0 +1,5 @@
+Change email sending module to https://python-emails.readthedocs.io/en/latest/
+
+Change print rendering to https://jinja2docs.readthedocs.io/en/stable/api.html#basics
+
+Allow every action to be emailed.

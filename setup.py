@@ -75,7 +75,7 @@ setup(name='burp_reports',
       packages=find_packages(),
       include_package_data=True,
       package_data={
-          'data': 'burp_reports/data/*',
+          'data': ['burp_reports/data/*'],
       },
       data_files=[('VERSION', ['burp_reports/VERSION'])],
       entry_points={
